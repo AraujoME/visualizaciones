@@ -1,10 +1,10 @@
-# 📊 Análisis de Precios: Medicamentos Oncológicos (2012-2025)
+# Análisis de Precios: Medicamentos Oncológicos (2012-2025)
 **Proyecto:** @SocioNomicsLab  
 **Elaborado por:** Eric Araujo Martínez
 
 ---
 
-## 📝 Nota Metodológica
+## Nota Metodológica
 Para construir la evolución de precios de mercado (**gasto de bolsillo**) de los medicamentos oncológicos seleccionados, se utilizó el siguiente procedimiento:
 
 ### 1. Selección de la Muestra
@@ -21,7 +21,7 @@ Se eligieron 5 medicamentos clave (*Cisplatino, Carboplatino, Asparaginasa, Mito
 
 ---
 
-## 📈 Resultados
+## Resultados
 1.  **Estabilidad Previa (2012-2018):** Variación mínima ligada a la inflación. El abasto público funcionaba como un "tope" natural al precio privado.
 2.  **La Hiperinflación por Escasez (2019-2021):**
     * El **Cisplatino** pasó de ~$350 a ~$2,800 (**+700%**).
@@ -30,7 +30,7 @@ Se eligieron 5 medicamentos clave (*Cisplatino, Carboplatino, Asparaginasa, Mito
 
 ---
 
-## 🧠 Interpretación
+## Interpretación
 La gráfica evidencia el fenómeno económico del **"Gasto de Bolsillo Catastrófico"**. Las decisiones administrativas de 2019 rompieron la cadena de suministro, obligando a las familias a acudir al mercado privado simultáneamente.
 
 * **Oferta y Demanda:** Ante una demanda desesperada y una oferta estrangulada, el mercado reaccionó con precios especulativos.
@@ -38,7 +38,7 @@ La gráfica evidencia el fenómeno económico del **"Gasto de Bolsillo Catastró
 
 ---
 
-## 📚 Bibliografía (APA)
+## Bibliografía
 * Colectivo Cero Desabasto. (2022). *Radiografía del Desabasto de Medicamentos en México 2021*. cerodesabasto.org.
 * Instituto Farmacéutico (INEFAM). (2024). *Comportamiento del mercado de medicamentos oncológicos: Análisis 2018-2023*. CDMX.
 * Nariz Roja A.C. (2023). *El costo del cáncer: Reportes de precios y escasez*. Guadalajara, Jalisco.
