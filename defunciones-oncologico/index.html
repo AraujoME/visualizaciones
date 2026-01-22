@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mortalidad Cáncer: Jóvenes vs Adultos (2012-2025)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- LIBRERÍAS DE GRÁFICAS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    
+    <!-- Librería para capturar pantalla -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <style>
+        @media print {
+            body { background-color: white; }
+            .no-print { display: none !important; }
+            .shadow-2xl { box-shadow: none !important; }
+            .border { border: none !important; }
+            #report-container { margin: 0; width: 100%; box-shadow: none; border: none; }
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-stone-50 p-2 md:p-8 font-sans text-stone-800">
+
+    <!-- BARRA DE HERRAMIENTAS -->
+    <div class="max-w-6xl mx-auto mb-4 flex justify-end gap-3 no-print">
+        <button onclick="downloadImage()" class="flex items-center px-4 py-2 bg-white text-slate-700 rounded-lg shadow-sm hover:shadow border border-slate-200 font-semibold transition-all text-sm md:text-base">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            Guardar Imagen
+        </button>
+    </div>
+
+    <!-- REPORT CONTAINER -->
+    <div id="report-container" class="max-w-6xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden border border-stone-200">
+        
+        <!-- ENCABEZADO RESPONSIVO -->
+        <div class="bg-indigo-900 p-5 md:p-8 text-white relative overflow-hidden">
+            <div class="relative z-10">
+                <p class="text-indigo-400 font-bold text-[10px] md:text-xs uppercase tracking-widest mb-1">@SocioNomicsLab</p>
+                <h1 class="text-2xl md:text-4xl font-black mb-2 tracking-tight leading-tight">Brecha Generacional Oncológica</h1>
+                <p class="text-indigo-200 text-sm md:text-lg font-medium leading-snug">
+                    Comparativa de defunciones anuales: Población joven vs. Población adulta (2012-2025)
+                </p>
+            </div>
+            <!-- Fondo decorativo -->
+            <div class="absolute top-0 right-0 w-64 h-64 md:w-80 md:h-80 bg-violet-600 rounded-full mix-blend-overlay filter blur-[60px] md:blur-[80px] opacity-40 transform translate-x-1/3 -translate-y-1/3"></div>
+        </div>
+
+        <!-- LEYENDA ESTRUCTURADA (Grid Responsivo) -->
+        <div class="bg-white border-b border-slate-100 p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
+            <div class="flex items-center p-3 md:p-4 rounded-lg bg-orange-50 border-l-4 border-orange-500 shadow-sm">
+                <span class="text-xl md:text-2xl mr-3">🧒</span>
+                <div>
+                    <p class="font-bold text-orange-900 text-base md:text-lg">Menores de 20 años</p>
+                    <p class="text-xs md:text-sm text-orange-700">Niños y Adolescentes (Eje Izquierdo)</p>
+                </div>
+            </div>
+            <div class="flex items-center p-3 md:p-4 rounded-lg bg-slate-50 border-l-4 border-slate-600 shadow-sm">
+                <span class="text-xl md:text-2xl mr-3">👨‍🦳</span>
+                <div>
+                    <p class="font-bold text-slate-900 text-base md:text-lg">Adultos (20+ años)</p>
+                    <p class="text-xs md:text-sm text-slate-600">Población General (Eje Derecho)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- GRÁFICA RESPONSIVA -->
+        <div class="p-4 md:p-8 relative h-[50vh] md:h-[65vh] w-full bg-white">
+            <canvas id="cancerChart"></canvas>
+        </div>
+
+        <!-- TABLA DE DATOS SELECTOS (Texto ajustable) -->
+        <div class="p-5 md:p-8 bg-slate-50 border-t border-slate-200">
+            <h3 class="text-base md:text-lg font-bold text-slate-800 mb-4 flex items-center">
+                <svg class="w-5 h-5 mr-2 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                Impacto acumulado por grupo
+            </h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-xs md:text-sm text-left text-stone-600">
+                    <thead class="text-[10px] md:text-xs text-stone-700 uppercase bg-stone-100">
+                        <tr>
+                            <th scope="col" class="px-3 md:px-6 py-3 rounded-l-lg">Grupo</th>
+                            <th scope="col" class="px-3 md:px-6 py-3 text-right">Cierre '18</th>
+                            <th scope="col" class="px-3 md:px-6 py-3 text-right font-bold text-red-700">Cierre '25</th>
+                            <th scope="col" class="px-3 md:px-6 py-3 rounded-r-lg">Variación</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-stone-100">
+                        <tr class="bg-orange-50 border-l-4 border-orange-500">
+                            <td class="px-3 md:px-6 py-4 font-bold text-orange-900">Menores (0-19)</td>
+                            <td class="px-3 md:px-6 py-4 text-right">~2,400</td>
+                            <td class="px-3 md:px-6 py-4 text-right font-bold">~2,710</td>
+                            <td class="px-3 md:px-6 py-4 text-[10px] md:text-xs italic font-bold text-orange-700">+12.9%</td>
+                        </tr>
+                        <tr class="bg-white border-l-4 border-slate-500">
+                            <td class="px-3 md:px-6 py-4 font-bold text-slate-900">Adultos (20+)</td>
+                            <td class="px-3 md:px-6 py-4 text-right">~83k</td>
+                            <td class="px-3 md:px-6 py-4 text-right font-black text-red-800">~98k</td>
+                            <td class="px-3 md:px-6 py-4 text-[10px] md:text-xs italic font-bold text-slate-700">+18.0%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mt-6 pt-4 border-t border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center text-[10px] md:text-xs text-slate-400 gap-2">
+                <p>Fuente: INEGI (EDR) y SINAIS (Preliminar 2025).</p>
+                <p class="font-bold text-slate-500 self-end md:self-auto">Elaborado por Eric Araujo Martínez</p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN DE LICENCIAS Y DERECHOS -->
+        <div class="p-6 bg-slate-100 border-t border-slate-200 text-xs text-slate-500">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <!-- Licencia Creative Commons (Contenido) -->
+                <div class="flex flex-col items-center md:items-start text-center md:text-left">
+                    <p class="font-bold text-slate-600 uppercase tracking-widest text-[10px] mb-2">Licencia de Contenido</p>
+                    <a rel="license" href="http://creativecommons.org/licenses/by/4.0/" target="_blank" class="mb-2">
+                        <img alt="Licencia Creative Commons" style="border-width:0" src="https://licensebuttons.net/l/by/4.0/88x31.png" onerror="this.style.display='none'" />
+                    </a>
+                    <p class="leading-relaxed">
+                        Esta obra visual está bajo una <a rel="license" href="http://creativecommons.org/licenses/by/4.0/" target="_blank" class="text-indigo-600 font-bold hover:underline">Licencia Creative Commons Atribución 4.0 Internacional</a>. 
+                        Usted es libre de compartir y adaptar el material siempre que otorgue el crédito a su creador: <strong>Eric Araujo Martínez (@SocioNomicsLab)</strong>.
+                    </p>
+                </div>
+
+                <!-- Licencia MIT (Software) -->
+                <div class="flex flex-col items-center md:items-end text-center md:text-right border-t md:border-t-0 md:border-l border-slate-300 pt-4 md:pt-0 md:pl-8">
+                    <p class="font-bold text-slate-600 uppercase tracking-widest text-[10px] mb-2">Licencia de Software</p>
+                    <div class="bg-white p-3 rounded border border-slate-200 shadow-sm max-w-xs">
+                        <div class="flex items-center justify-center md:justify-end gap-2 mb-1">
+                            <svg class="w-4 h-4 text-slate-700" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            <span class="font-bold text-slate-800">MIT License</span>
+                        </div>
+                        <p class="text-[9px] text-slate-500 leading-tight">
+                            Copyright © 2026 Eric Araujo Martínez. Permission is hereby granted, free of charge, to any person obtaining a copy...
+                        </p>
+                        <a href="https://opensource.org/licenses/MIT" target="_blank" class="block mt-1 text-[9px] text-indigo-600 font-bold hover:underline">Ver Licencia Completa &rarr;</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        Chart.register(ChartDataLabels, window['chartjs-plugin-annotation']);
+
+        // Detectar si es móvil para ajustar configuración
+        const isMobile = window.innerWidth < 768;
+
+        const ctx = document.getElementById('cancerChart').getContext('2d');
+
+        // AÑOS
+        const years = ['2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'];
+
+        // DATOS CONSOLIDADOS (0-19 AÑOS)
+        const youthData = [2360, 2350, 2330, 2360, 2370, 2390, 2400, 2470, 2520, 2580, 2570, 2630, 2670, 2710];
+
+        // DATOS ADULTOS (20+ AÑOS)
+        const adultData = [76000, 77500, 78200, 79500, 81000, 82500, 83200, 85000, 89000, 91500, 93000, 94800, 96500, 98000];
+
+        // CONFIGURACIÓN DINÁMICA DE FUENTES
+        const fontConfig = {
+            title: isMobile ? 16 : 20, 
+            ticks: isMobile ? 12 : 14, 
+            // AUMENTO DE TAMAÑO Y GROSOR DE DATALABELS
+            datalabels: isMobile ? 11 : 14,
+            annotation: isMobile ? 9 : 11
+        };
+
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        label: 'Menores de 20 años',
+                        data: youthData,
+                        borderColor: '#ea580c', 
+                        backgroundColor: '#fed7aa', 
+                        borderWidth: isMobile ? 2 : 4,
+                        pointRadius: isMobile ? 3 : 6,
+                        pointBackgroundColor: '#fff',
+                        pointBorderColor: '#ea580c',
+                        pointHoverRadius: 9,
+                        yAxisID: 'y', 
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Adultos (20+)',
+                        data: adultData,
+                        borderColor: '#475569', 
+                        backgroundColor: '#cbd5e1', 
+                        borderWidth: isMobile ? 2 : 4,
+                        pointRadius: isMobile ? 3 : 5,
+                        pointStyle: 'rectRot',
+                        borderDash: [5, 5],
+                        yAxisID: 'y1', 
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                layout: { 
+                    padding: { 
+                        top: 20, 
+                        right: isMobile ? 0 : 10,
+                        left: isMobile ? 0 : 10
+                    } 
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { 
+                            font: { family: 'Inter', size: fontConfig.ticks, weight: 'bold' }, 
+                            color: '#475569',
+                            maxRotation: 45, 
+                            minRotation: isMobile ? 45 : 0 
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: isMobile ? 'Defunciones (0-19)' : 'Defunciones (0-19 años)',
+                            font: { family: 'Inter', size: fontConfig.title, weight: 'bold' },
+                            color: '#ea580c'
+                        },
+                        min: 2200, 
+                        max: 2900,
+                        position: 'left',
+                        grid: { color: '#fff7ed' },
+                        ticks: { 
+                            color: '#ea580c',
+                            font: { size: fontConfig.ticks, weight: 'bold' }
+                        }
+                    },
+                    y1: {
+                        title: {
+                            display: true,
+                            text: isMobile ? 'Defunciones (Adultos)' : 'Defunciones (Adultos)',
+                            font: { family: 'Inter', size: fontConfig.title, weight: 'bold' },
+                            color: '#475569'
+                        },
+                        min: 70000,
+                        max: 100000,
+                        position: 'right',
+                        grid: { display: false },
+                        ticks: { 
+                            color: '#475569',
+                            font: { size: fontConfig.ticks, weight: 'bold' },
+                            callback: (val) => val / 1000 + 'k'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                        titleFont: { size: 14 },
+                        bodyFont: { size: 14 },
+                        padding: 10,
+                        callbacks: {
+                            label: (ctx) => {
+                                let label = ctx.dataset.label;
+                                let val = new Intl.NumberFormat('es-MX').format(ctx.raw);
+                                return `${label}: ${val}`;
+                            }
+                        }
+                    },
+                    datalabels: {
+                        // AJUSTE DINÁMICO DE POSICIÓN
+                        align: (ctx) => {
+                            // Si es el primer punto (2012) de Adultos (dataset 1), ponerlo abajo
+                            if (ctx.datasetIndex === 1 && ctx.dataIndex === 0) return 'bottom';
+                            return 'top';
+                        },
+                        // AUMENTO DE PESO A "900" (Extra Bold) Y TAMAÑO
+                        font: { weight: '900', size: fontConfig.datalabels },
+                        color: (ctx) => ctx.dataset.borderColor,
+                        formatter: (val, ctx) => {
+                            const showIndex = isMobile ? [0, 6, 13] : [0, 6, 13];
+                            if(showIndex.includes(ctx.dataIndex)) {
+                                if (ctx.dataset.label.includes('Adultos')) return (val/1000).toFixed(1) + 'k';
+                                return val;
+                            }
+                            return '';
+                        }
+                    },
+                    annotation: {
+                        annotations: {
+                            line1: {
+                                type: 'line',
+                                xMin: 6.5, 
+                                xMax: 6.5,
+                                scaleID: 'x',
+                                borderColor: '#9ca3af',
+                                borderWidth: 2,
+                                borderDash: [2, 2],
+                                label: {
+                                    content: isMobile ? 'Crisis' : 'Cambio de Régimen / Crisis',
+                                    display: true,
+                                    position: 'start',
+                                    backgroundColor: '#f1f5f9',
+                                    color: '#4b5563',
+                                    font: { size: fontConfig.annotation },
+                                    yAdjust: 0
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        function downloadImage() {
+            const container = document.getElementById('report-container');
+            html2canvas(container, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: "#ffffff"
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'grafica_mortalidad_cancer_responsive.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
