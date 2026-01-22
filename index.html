@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocioNomicsLab | Data Intelligence Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome para iconos sociales -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a;
+        }
+
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .glass-card:hover {
+            border-color: #818cf8;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .social-btn {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: #94a3b8;
+        }
+
+        .social-btn:hover {
+            background: #6366f1;
+            color: white;
+            border-color: #818cf8;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body class="text-slate-200 selection:bg-indigo-500/30">
+
+    <!-- DECORACIÓN DE FONDO -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-[10%] -right-[10%] w-[50%] h-[50%] bg-indigo-600/10 rounded-full blur-[120px]"></div>
+        <div class="absolute -bottom-[10%] -left-[10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px]">
+        </div>
+    </div>
+
+    <div class="relative z-10 max-w-6xl mx-auto px-6 py-12 md:py-24">
+
+        <!-- HEADER / PERFIL -->
+        <header class="text-center md:text-left mb-20 space-y-6">
+            <div class="inline-flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-2 rounded-full mb-4">
+                <span class="relative flex h-3 w-3">
+                    <span
+                        class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                </span>
+                <span class="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 leading-none">Intelligence
+                    Unit Online</span>
+            </div>
+
+            <h1 class="text-5xl md:text-8xl font-black tracking-tighter leading-none gradient-text">
+                Eric Araujo <br class="hidden md:block"> Martínez
+            </h1>
+
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-8 pt-4">
+                <p class="text-xl md:text-2xl font-medium text-slate-400 italic max-w-2xl leading-tight">
+                    Desarrollando visualizaciones de <span class="text-indigo-400">Impacto Social</span> y auditoría de
+                    datos para la toma de decisiones.
+                </p>
+
+                <!-- REDES SOCIALES -->
+                <div class="flex gap-4">
+                    <a href="https://github.com/araujome" target="_blank" class="social-btn" title="GitHub">
+                        <i class="fab fa-github text-xl"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="social-btn"
+                        title="LinkedIn Personal">
+                        <i class="fab fa-linkedin-in text-xl"></i>
+                    </a>
+                    <a href="https://x.com/SocioNomicsLab" target="_blank" class="social-btn"
+                        title="SocioNomics Lab en X">
+                        <i class="fab fa-x-twitter text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- SECCIÓN DE PROYECTOS -->
+        <section class="space-y-10">
+            <div class="flex items-end justify-between border-b border-white/10 pb-6">
+                <div>
+                    <h2
+                        class="text-xs font-black uppercase tracking-[0.5em] text-indigo-400 mb-2 leading-none text-shadow-sm">
+                        Portafolio</h2>
+                    <h3 class="text-3xl font-black tracking-tighter uppercase italic leading-none">Proyectos Destacados
+                    </h3>
+                </div>
+                <div class="hidden md:block text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                    Selecciona para ver el reporte interactivo
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <!-- PROYECTO 1: ONCOLOGÍA (ENLACE ACTUALIZADO) -->
+                <a href="https://araujome.github.io/visualizaciones/oncologicos/" target="_blank"
+                    class="glass-card rounded-[2.5rem] p-8 space-y-6 group">
+                    <div
+                        class="w-14 h-14 bg-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-purple-900/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-microscope text-2xl text-white"></i>
+                    </div>
+                    <div class="space-y-2">
+                        <h4 class="text-xl font-black tracking-tight leading-none uppercase italic">Crisis Oncológica
+                        </h4>
+                        <p class="text-sm text-slate-400 leading-snug">Auditoría de precios de medicamentos ante el
+                            desabasto institucional en México.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <span
+                            class="px-3 py-1 bg-white/5 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/5">Chart.js</span>
+                        <span
+                            class="px-3 py-1 bg-white/5 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/5">Auditoría</span>
+                    </div>
+                </a>
+
+                <!-- PROYECTO 2: IMPACTO SOCIAL -->
+                <a href="#" class="glass-card rounded-[2.5rem] p-8 space-y-6 group opacity-70 hover:opacity-100">
+                    <div
+                        class="w-14 h-14 bg-emerald-600 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-900/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-users-rays text-2xl text-white"></i>
+                    </div>
+                    <div class="space-y-2">
+                        <h4 class="text-xl font-black tracking-tight leading-none uppercase italic">Impacto Social</h4>
+                        <p class="text-sm text-slate-400 leading-snug">Simulador de bienestar basado en redes de apoyo y
+                            entornos familiares.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <span
+                            class="px-3 py-1 bg-white/5 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/5">React</span>
+                        <span
+                            class="px-3 py-1 bg-white/5 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/5">DataViz</span>
+                    </div>
+                </a>
+
+                <!-- PROYECTO 3: DEUDA PER CÁPITA -->
+                <a href="#" class="glass-card rounded-[2.5rem] p-8 space-y-6 group opacity-70 hover:opacity-100">
+                    <div
+                        class="w-14 h-14 bg-indigo-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-900/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-money-bill-trend-up text-2xl text-white"></i>
+                    </div>
+                    <div class="space-y-2">
+                        <h4 class="text-xl font-black tracking-tight leading-none uppercase italic">Deuda Per Cápita
+                        </h4>
+                        <p class="text-sm text-slate-400 leading-snug">Visualización de la carga generacional de la
+                            deuda pública en México.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <span
+                            class="px-3 py-1 bg-white/5 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/5">Economics</span>
+                        <span
+                            class="px-3 py-1 bg-white/5 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/5">Infografía</span>
+                    </div>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- SECCIÓN STACK -->
+        <section class="mt-32 p-12 bg-white/5 rounded-[3rem] border border-white/10">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="space-y-6">
+                    <h3 class="text-3xl font-black tracking-tighter italic uppercase leading-none">Metodología <br>
+                        <span class="text-indigo-400">@SocioNomicsLab</span></h3>
+                    <p class="text-slate-400 leading-relaxed font-medium italic">
+                        "Transformamos datos crudos en inteligencia accionable. Nuestra misión es documentar la realidad
+                        económica y social mediante rigor técnico y diseño estratégico."
+                    </p>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="p-6 bg-slate-900 rounded-3xl border border-white/5">
+                        <i class="fa-solid fa-code text-indigo-400 mb-4 block text-xl"></i>
+                        <span class="text-[10px] font-black text-slate-500 uppercase tracking-widest block">Frontend
+                            Stack</span>
+                        <p class="text-sm font-bold mt-1">Tailwind, React, JS</p>
+                    </div>
+                    <div class="p-6 bg-slate-900 rounded-3xl border border-white/5">
+                        <i class="fa-solid fa-chart-pie text-indigo-400 mb-4 block text-xl"></i>
+                        <span
+                            class="text-[10px] font-black text-slate-500 uppercase tracking-widest block">Visualization</span>
+                        <p class="text-sm font-bold mt-1">Chart.js, Canvas, SVG</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer
+            class="mt-32 pt-12 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="text-center md:text-left">
+                <p class="text-2xl font-black text-indigo-500 tracking-tighter italic leading-none">@SocioNomicsLab</p>
+                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-[0.4em] mt-1">Social Intelligence for
+                    Action</p>
+            </div>
+
+            <!-- LICENCIA CC BY-NC 4.0 -->
+            <div class="flex items-center gap-6 bg-white/5 px-6 py-4 rounded-2xl border border-white/5">
+                <div class="flex gap-1.5 items-center">
+                    <div
+                        class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-[9px] font-black text-white">
+                        CC</div>
+                    <div
+                        class="w-6 h-6 bg-slate-800 rounded-full flex items-center justify-center text-[9px] font-black text-white">
+                        BY</div>
+                    <div
+                        class="w-6 h-6 bg-slate-800 rounded-full flex items-center justify-center text-[9px] font-black text-white">
+                        NC</div>
+                </div>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                    CC BY-NC 4.0 | 2025
+                </p>
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+
+</html>
