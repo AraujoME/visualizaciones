@@ -22,12 +22,24 @@
             backdrop-filter: blur(12px);
             border: 1px solid rgba(99, 102, 241, 0.1);
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .glass-card:hover {
             border-color: #6366f1;
             transform: translateY(-5px);
             background: rgba(30, 41, 59, 0.9);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Hover para mortalidad (Ámbar) */
+        .glass-card.card-mortalidad:hover {
+            border-color: #f59e0b;
         }
 
         .name-highlight {
@@ -75,6 +87,7 @@
 
     <div id="capture-root" class="relative min-h-screen bg-[#020617] overflow-hidden p-8 md:p-20">
         
+        <!-- IMAGEN DE FONDO -->
         <img src="./visualizacionesportada1.png" class="hero-bg w-full h-full object-cover" alt="" onerror="this.style.opacity='0'">
         <div class="vignette-overlay"></div>
 
@@ -104,43 +117,63 @@
                 </div>
             </header>
 
+            <!-- GRID DE PROYECTOS -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 
-                <a href="./oncologicos/" class="glass-card rounded-[2.5rem] p-8 space-y-5 block">
-                    <div class="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg"><i class="fa-solid fa-pills text-white"></i></div>
-                    <div>
-                        <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Reporte Oncológico</h3>
-                        <p class="text-[11px] text-slate-400 mt-2 leading-relaxed">Auditoría de precios y desabasto de quimioterapias en México (2012-2025).</p>
+                <!-- 1. CAJA: MORTALIDAD CÁNCER (GitHub Link) -->
+                <a href="https://araujome.github.io/visualizaciones/defunciones-oncologico/" class="glass-card card-mortalidad rounded-[2.5rem] p-8 group">
+                    <div class="space-y-5">
+                        <div class="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-child-reaching text-white text-xl"></i>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Crisis de Mortalidad</h3>
+                                <span class="bg-red-500/20 text-red-400 text-[9px] font-bold px-2 py-0.5 rounded border border-red-500/30">NUEVO</span>
+                            </div>
+                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
+                                Brecha generacional en defunciones por cáncer: Menores vs. Adultos (2012-2025).
+                            </p>
+                        </div>
+                    </div>
+                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
+                        <div class="flex flex-col">
+                            <span class="uppercase tracking-wider font-bold text-amber-500">Menores</span>
+                            <span class="text-white font-bold text-xs">+12.9%</span>
+                        </div>
+                        <div class="flex flex-col text-right">
+                            <span class="uppercase tracking-wider font-bold text-slate-400">Adultos</span>
+                            <span class="text-white font-bold text-xs">+18.0%</span>
+                        </div>
                     </div>
                 </a>
 
-                <div class="glass-card rounded-[2.5rem] p-8 space-y-5 opacity-60">
-                    <div class="w-12 h-12 bg-rose-600 rounded-xl flex items-center justify-center shadow-lg"><i class="fa-solid fa-gavel text-white"></i></div>
-                    <div>
-                        <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Tabla de Impunidad</h3>
-                        <p class="text-[11px] text-slate-400 mt-2 leading-relaxed">Próximamente: Análisis del índice de impunidad y cifra negra.</p>
+                <!-- 2. CAJA: REPORTE ONCOLÓGICO (Link Actualizado) -->
+                <a href="https://araujome.github.io/visualizaciones/oncologicos/" class="glass-card rounded-[2.5rem] p-8 group">
+                    <div class="space-y-5">
+                        <div class="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-pills text-white text-xl"></i>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Reporte Oncológico</h3>
+                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
+                                Auditoría de precios y desabasto de quimioterapias en México (2012-2025).
+                            </p>
+                        </div>
                     </div>
-                </div>
-
-                <div class="glass-card rounded-[2.5rem] p-8 space-y-5 opacity-60">
-                    <div class="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center shadow-lg"><i class="fa-solid fa-globe text-white"></i></div>
-                    <div>
-                        <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">PIB Per Cápita</h3>
-                        <p class="text-[11px] text-slate-400 mt-2 leading-relaxed">Próximamente: Comparativa global de poder adquisitivo.</p>
-                    </div>
-                </div>
+                </a>
 
             </div>
 
             <footer class="mt-32 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
                 <div>
                     <p class="text-4xl font-black text-indigo-500 tracking-tighter italic uppercase leading-none">@SocioNomicsLab</p>
-                    <p class="text-[9px] font-black text-slate-600 uppercase tracking-[0.4em] mt-3">Intelligence for Social Action • 2025</p>
+                    <p class="text-[9px] font-black text-slate-600 uppercase tracking-[0.4em] mt-3">Intelligence for Social Action • 2026</p>
                 </div>
             </footer>
         </div>
     </div>
 </body>
-
 </html>
-
