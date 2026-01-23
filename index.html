@@ -31,15 +31,24 @@
         }
 
         .glass-card:hover {
-            border-color: #6366f1;
             transform: translateY(-5px);
             background: rgba(30, 41, 59, 0.9);
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
         }
 
-        /* Hover para mortalidad (Ámbar) */
+        /* Hover específico para PIB (Esmeralda) */
+        .glass-card.card-pib:hover {
+            border-color: #10b981;
+        }
+
+        /* Hover específico para Mortalidad (Ámbar) */
         .glass-card.card-mortalidad:hover {
             border-color: #f59e0b;
+        }
+
+        /* Hover específico para Reporte Oncológico (Indigo) */
+        .glass-card.card-reporte:hover {
+            border-color: #6366f1;
         }
 
         .name-highlight {
@@ -47,9 +56,8 @@
             text-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
         }
 
+        /* Botones Sociales Responsivos */
         .social-btn {
-            width: 2.5rem;
-            height: 2.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -58,6 +66,20 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
             color: #64748b;
+            
+            /* Tamaño por defecto (Móvil - Más grande para tocar fácil) */
+            width: 3.5rem;
+            height: 3.5rem;
+            font-size: 1.5rem;
+        }
+
+        /* Tamaño Escritorio (Más sutil) */
+        @media (min-width: 768px) {
+            .social-btn {
+                width: 2.5rem;
+                height: 2.5rem;
+                font-size: 1rem;
+            }
         }
 
         .social-btn:hover {
@@ -120,7 +142,38 @@
             <!-- GRID DE PROYECTOS -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 
-                <!-- 1. CAJA: MORTALIDAD CÁNCER (GitHub Link) -->
+                <!-- 1. CAJA: PIB PER CÁPITA (NUEVO - Posición 1) -->
+                <a href="https://araujome.github.io/visualizaciones/pibpercapitappa/" class="glass-card card-pib rounded-[2.5rem] p-8 group">
+                    <div class="space-y-5">
+                        <div class="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-earth-americas text-white text-xl"></i>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">PIB Global</h3>
+                                <span class="bg-red-500/20 text-red-400 text-[9px] font-bold px-2 py-0.5 rounded border border-red-500/30">NUEVO</span>
+                            </div>
+                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
+                                Comparación del PIB per cápita: China, Rusia, EEUU y México.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Mini Dashboard -->
+                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
+                        <div class="flex flex-col">
+                            <span class="uppercase tracking-wider font-bold text-emerald-500">Enfoque</span>
+                            <span class="text-white font-bold text-xs">Geopolítica</span>
+                        </div>
+                        <div class="flex flex-col text-right">
+                            <span class="uppercase tracking-wider font-bold text-slate-400">Datos</span>
+                            <span class="text-white font-bold text-xs">BM / FMI</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 2. CAJA: MORTALIDAD CÁNCER INFANTIL (Posición 2) -->
                 <a href="https://araujome.github.io/visualizaciones/defunciones-oncologico/" class="glass-card card-mortalidad rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -128,15 +181,13 @@
                         </div>
                         
                         <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Crisis de Mortalidad</h3>
-                                <span class="bg-red-500/20 text-red-400 text-[9px] font-bold px-2 py-0.5 rounded border border-red-500/30">NUEVO</span>
-                            </div>
+                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Crisis de Mortalidad</h3>
                             <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
                                 Brecha generacional en defunciones por cáncer: Menores vs. Adultos (2012-2025).
                             </p>
                         </div>
                     </div>
+
                     <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
                         <div class="flex flex-col">
                             <span class="uppercase tracking-wider font-bold text-amber-500">Menores</span>
@@ -149,8 +200,8 @@
                     </div>
                 </a>
 
-                <!-- 2. CAJA: REPORTE ONCOLÓGICO (Link Actualizado) -->
-                <a href="https://araujome.github.io/visualizaciones/oncologicos/" class="glass-card rounded-[2.5rem] p-8 group">
+                <!-- 3. CAJA: REPORTE ONCOLÓGICO (Posición 3) -->
+                <a href="./oncologicos/" class="glass-card card-reporte rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                             <i class="fa-solid fa-pills text-white text-xl"></i>
@@ -162,6 +213,11 @@
                                 Auditoría de precios y desabasto de quimioterapias en México (2012-2025).
                             </p>
                         </div>
+                    </div>
+                    
+                    <!-- Elemento decorativo inferior -->
+                    <div class="mt-6 pt-4 border-t border-slate-700/50">
+                        <span class="text-[10px] text-indigo-400 font-bold uppercase tracking-wider">Proyecto Activo</span>
                     </div>
                 </a>
 
