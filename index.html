@@ -36,25 +36,12 @@
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
         }
 
-        /* Hover específico para PIB (Esmeralda) */
-        .glass-card.card-pib:hover {
-            border-color: #10b981;
-        }
-
-        /* Hover específico para Mortalidad (Ámbar) */
-        .glass-card.card-mortalidad:hover {
-            border-color: #f59e0b;
-        }
-
-        /* Hover específico para Reporte Oncológico (Indigo) */
-        .glass-card.card-reporte:hover {
-            border-color: #6366f1;
-        }
-
-        /* Hover específico para Auditoría Petrolera (Azul) */
-        .glass-card.card-petroleo:hover {
-            border-color: #3b82f6;
-        }
+        /* Colores Temáticos por Categoría */
+        .glass-card.card-pib:hover { border-color: #10b981; }
+        .glass-card.card-mortalidad:hover { border-color: #f59e0b; }
+        .glass-card.card-reporte:hover { border-color: #6366f1; }
+        .glass-card.card-petroleo:hover { border-color: #3b82f6; }
+        .glass-card.card-deuda:hover { border-color: #a855f7; }
 
         .name-highlight {
             color: #818cf8;
@@ -143,7 +130,37 @@
             <!-- GRID DE PROYECTOS -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 
-                <!-- 1. CAJA: AUDITORÍA PETROLERA -->
+                <!-- 1. CAJA: DEUDA PÚBLICA (NUEVO) -->
+                <a href="https://araujome.github.io/visualizaciones/deuda-publica/" class="glass-card card-deuda rounded-[2.5rem] p-8 group">
+                    <div class="space-y-5">
+                        <div class="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-money-bill-trend-up text-white text-xl"></i>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Deuda Personal</h3>
+                                <span class="bg-purple-500/20 text-purple-400 text-[9px] font-bold px-2 py-0.5 rounded border border-purple-500/30">NUEVO</span>
+                            </div>
+                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
+                                Análisis del Saldo Histórico de Requerimientos del Sector Público por habitante (2000-2025).
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
+                        <div class="flex flex-col">
+                            <span class="uppercase tracking-wider font-bold text-purple-500">Año 2000</span>
+                            <span class="text-white font-bold text-xs">$20,600</span>
+                        </div>
+                        <div class="flex flex-col text-right">
+                            <span class="uppercase tracking-wider font-bold text-slate-400">Proy. 2025</span>
+                            <span class="text-white font-bold text-xs">$139,400</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 2. CAJA: AUDITORÍA PETROLERA (NUEVO) -->
                 <a href="https://araujome.github.io/visualizaciones/petroleoacuba/" class="glass-card card-petroleo rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -173,7 +190,7 @@
                     </div>
                 </a>
 
-                <!-- 2. CAJA: PIB PER CÁPITA -->
+                <!-- 3. CAJA: PIB PER CÁPITA -->
                 <a href="https://araujome.github.io/visualizaciones/pibpercapitappa/" class="glass-card card-pib rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -200,7 +217,7 @@
                     </div>
                 </a>
 
-                <!-- 3. CAJA: MORTALIDAD CÁNCER INFANTIL -->
+                <!-- 4. CAJA: MORTALIDAD CÁNCER INFANTIL -->
                 <a href="https://araujome.github.io/visualizaciones/defunciones-oncologico/" class="glass-card card-mortalidad rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -227,7 +244,7 @@
                     </div>
                 </a>
 
-                <!-- 4. CAJA: REPORTE ONCOLÓGICO -->
+                <!-- 5. CAJA: REPORTE ONCOLÓGICO -->
                 <a href="./oncologicos/" class="glass-card card-reporte rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
