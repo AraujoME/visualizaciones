@@ -48,12 +48,16 @@ Este endeudamiento masivo inyecta dinero artificial en la economía, creando una
 
 ---
 
-# Bibliografía
+## Bibliografía
 
-Secretaría de Hacienda y Crédito Público (SHCP). (2000-2025). *Informes sobre la Situación Económica, las Finanzas Públicas y la Deuda Pública*. Ciudad de México: Gobierno de México.
+- Secretaría de Hacienda y Crédito Público. (2025). *Informes sobre la situación económica, las finanzas públicas y la deuda pública al cuarto trimestre de 2024*. Ciudad de México: Gobierno de México. Recuperado de https://www.finanzaspublicas.hacienda.gob.mx/
 
-Consejo Nacional de Población (CONAPO). (2024). *Proyecciones de la Población de México 2020-2070*.
+- Secretaría de Hacienda y Crédito Público. (2025, 30 de diciembre). *Comunicado No. 71: Finanzas públicas y deuda pública a noviembre de 2025*. Ciudad de México: Gobierno de México.
 
-Rothbard, M. N. (1962). *Man, Economy, and State*. Ludwig von Mises Institute.
+- Consejo Nacional de Población. (2024). *Proyecciones de la población de México 2020-2070*. Ciudad de México: Gobierno de México. Recuperado de https://conapo.segob.gob.mx/work/models/CONAPO/pry23/PP/index.html
 
-Centro de Estudios Económicos del Sector Privado (CEESP). (2025). *Análisis del Paquete Económico 2025: Riesgos de la deuda soberana*.
+- Consejo Nacional de Población. (2019). *Conciliación demográfica de México 1950-2019*. Ciudad de México: Gobierno de México.
+
+- Centro de Estudios de las Finanzas Públicas. (2025). *Análisis de los Informes sobre la situación económica, las finanzas públicas y la deuda pública, cuarto trimestre 2024* (Documento CEFP/005/2025). Ciudad de México: Cámara de Diputados.
+
+- Rothbard, M. N. (2009). *Man, Economy, and State with Power and Market*. Auburn, AL: Ludwig von Mises Institute.
