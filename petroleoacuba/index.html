@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocioNomics Lab - Envíos de Petróleo México-Cuba</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; color: #1e293b; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .chart-container { position: relative; height: 500px; width: 100%; }
+        @media (max-width: 640px) { .chart-container { height: 350px; } }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div id="capture-area" class="max-w-6xl mx-auto bg-white shadow-2xl border border-slate-200 overflow-hidden rounded-sm">
+        
+        <!-- Header Lab Style -->
+        <header class="p-6 md:p-10 border-b border-slate-100">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                <div>
+                    <p class="text-blue-600 font-bold text-xs uppercase tracking-widest mb-1">Global Economic Audit • Intelligence Report</p>
+                    <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Evolución de Envíos de Petróleo</h1>
+                    <p class="text-xl text-slate-500 font-medium">México → Cuba (2012 - 2025)</p>
+                </div>
+                <div class="text-right">
+                    <p class="text-slate-900 font-bold text-lg mono">@SocioNomicsLab</p>
+                    <p class="text-slate-400 text-xs tracking-tighter">Reporte ID: MX-CU-OIL-AUDIT</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6 border-t border-slate-50">
+                <div class="flex items-center gap-3">
+                    <div class="w-2 h-10 bg-blue-600"></div>
+                    <div>
+                        <p class="text-[10px] text-slate-400 uppercase font-bold">Elaborado por</p>
+                        <p class="text-sm font-bold text-slate-700 italic">Eric Araujo Martínez</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-2 h-10 bg-slate-800"></div>
+                    <div>
+                        <p class="text-[10px] text-slate-400 uppercase font-bold">Métrica</p>
+                        <p class="text-sm font-bold text-slate-700">Barriles por Día (BPD) Promedio</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-2 h-10 bg-orange-500"></div>
+                    <div>
+                        <p class="text-[10px] text-slate-400 uppercase font-bold">Estatus</p>
+                        <p class="text-sm font-bold text-slate-700">Auditoría Energética 2025</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Chart Section -->
+        <main class="p-6 md:p-10">
+            <div class="chart-container">
+                <canvas id="oilChart"></canvas>
+            </div>
+
+            <!-- Impact Highlight Section (Sheinbaum Admin) -->
+            <div class="mt-10 bg-amber-50 border-y-2 border-amber-200 p-6 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-4">
+                    <div class="bg-amber-500 p-3 rounded-full">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <h3 class="text-amber-900 font-extrabold text-sm uppercase tracking-wider">Impacto Financiero: Adm. Claudia Sheinbaum</h3>
+                        <p class="text-amber-800 text-xs">Basado en volumen proyectado y precio promedio de la mezcla mexicana (WTI/Maya).</p>
+                    </div>
+                </div>
+                <div class="text-center md:text-right">
+                    <p class="text-[10px] text-amber-600 font-bold uppercase mb-1 tracking-tighter">Equivalente Estimado por Mes</p>
+                    <p class="text-3xl md:text-4xl font-black text-amber-900 mono">$76,650,000 <span class="text-lg">USD</span></p>
+                </div>
+            </div>
+
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8 text-sm leading-relaxed text-slate-500">
+                <div class="border-l-4 border-slate-200 pl-4">
+                    <h4 class="font-bold text-slate-800 mb-1 uppercase text-[10px] tracking-wider">Nota Metodológica</h4>
+                    <p>Estimaciones basadas en manifiestos de carga, datos de la Secretaría de Energía y monitoreo de tráfico marítimo internacional. El volumen incluye crudo ligero y derivados destinados a generación eléctrica.</p>
+                </div>
+                <div class="border-l-4 border-blue-500 pl-4">
+                    <h4 class="font-bold text-slate-800 mb-1 uppercase text-[10px] tracking-wider">Análisis de Tendencia</h4>
+                    <p>Se observa un cambio de paradigma en el suministro a partir de 2023, alcanzando máximos históricos que superan significativamente la media de la década anterior.</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer Section (CC BY-NC & MIT License) -->
+        <footer class="bg-slate-50 p-6 md:p-10 border-t border-slate-200">
+            <div class="flex flex-col md:flex-row gap-8 items-start">
+                
+                <!-- CC License Section (BY-NC) -->
+                <div class="flex-1">
+                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Licencia de Contenido</h4>
+                    <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+                        <!-- Enlace actualizado a fuente más estable -->
+                        <img src="https://licensebuttons.net/l/by-nc/4.0/88x31.png" 
+                             alt="CC BY-NC" 
+                             style="width: 88px; height: 31px;"
+                             class="shadow-sm">
+                        <div class="text-[11px] text-slate-500 leading-snug">
+                            Esta obra visual está bajo una <span class="text-blue-600 font-bold text-nowrap">Licencia CC BY-NC 4.0 Internacional</span>.<br>
+                            Debe otorgar crédito a: <span class="font-bold text-slate-800">Eric Araujo Martínez (@SocioNomicsLab)</span>. 
+                            Prohibido el uso comercial.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vertical Divider (Desktop) -->
+                <div class="hidden md:block w-px bg-slate-200 self-stretch"></div>
+
+                <!-- MIT License Section -->
+                <div class="flex-1">
+                    <h4 class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Licencia de Software</h4>
+                    <div class="bg-white p-4 border border-slate-200 rounded shadow-sm relative overflow-hidden">
+                        <div class="flex items-center gap-3 mb-2">
+                            <svg class="w-5 h-5 text-slate-800" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.823 1.102.823 2.222 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                            <span class="text-[13px] font-bold text-slate-800">MIT License</span>
+                        </div>
+                        <p class="text-[10px] text-slate-400 leading-tight mb-2">Copyright © 2026 Eric Araujo Martínez. Permission is hereby granted, free of charge...</p>
+                        <a href="https://opensource.org/license/MIT" target="_blank" class="text-blue-600 text-[11px] font-bold hover:underline">Ver Licencia Completa</a>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Export Button -->
+    <div class="max-w-6xl mx-auto mt-6 flex justify-center md:justify-end">
+        <button onclick="exportToImage()" class="bg-slate-900 text-white px-6 py-3 rounded-sm shadow-xl hover:bg-slate-800 transition active:scale-95 flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            <span class="text-sm font-bold uppercase tracking-widest">Exportar Reporte</span>
+        </button>
+    </div>
+
+    <script>
+        // Data Configuration
+        const labels = ['2012', '2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025*'];
+        const values = [2500, 3100, 1800, 4200, 3800, 2100, 1500, 2200, 4500, 6800, 11000, 24500, 32000, 36500];
+
+        window.onload = function() {
+            const ctx = document.getElementById('oilChart').getContext('2d');
+            
+            const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+            gradient.addColorStop(0, 'rgba(37, 99, 235, 0.4)');
+            gradient.addColorStop(1, 'rgba(37, 99, 235, 0.01)');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Barriles por Día',
+                        data: values,
+                        borderColor: '#2563eb',
+                        borderWidth: 3,
+                        backgroundColor: gradient,
+                        fill: true,
+                        tension: 0.35,
+                        pointBackgroundColor: '#ffffff',
+                        pointBorderColor: '#2563eb',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#0f172a',
+                            titleFont: { family: 'Inter', size: 14, weight: 'bold' },
+                            bodyFont: { family: 'Inter', size: 12 },
+                            padding: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: (item) => `Suministro: ${item.formattedValue} BPD`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(226, 232, 240, 0.6)' },
+                            ticks: { font: { family: 'Inter', size: 10 } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { family: 'Inter', size: 11, weight: 'bold' } }
+                        }
+                    }
+                }
+            });
+        };
+
+        function exportToImage() {
+            const area = document.getElementById('capture-area');
+            html2canvas(area, {
+                scale: 3,
+                useCORS: true,
+                backgroundColor: "#ffffff"
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `SocioNomics_Oil_Audit_Sheinbaum.png`;
+                link.href = canvas.toDataURL("image/png");
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
