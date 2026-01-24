@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tu Deuda: Herencia Sexenal</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js 4.x -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Plugin Datalabels -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <!-- Librería para capturar pantalla -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <style>
+        @media print {
+            body { background-color: white; }
+            .no-print { display: none !important; }
+            .shadow-2xl { box-shadow: none !important; }
+            .border { border: none !important; }
+            #social-card { margin: 0; width: 100%; box-shadow: none; border: none; }
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen p-4">
+
+    <!-- BARRA DE HERRAMIENTAS -->
+    <div class="w-full max-w-4xl mb-4 flex justify-end gap-3 no-print">
+        <button onclick="downloadImage()" class="flex items-center px-6 py-3 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 font-bold transition-all transform hover:scale-105 text-sm md:text-base">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            Guardar
+        </button>
+    </div>
+
+    <!-- SOCIAL MEDIA CARD (Responsive & Pulcro) -->
+    <div id="social-card" class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden border border-gray-100 relative">
+        
+        <!-- HEADER DE ALTO IMPACTO -->
+        <div class="bg-slate-900 p-8 md:p-12 text-center relative overflow-hidden">
+            <div class="relative z-10">
+                <p class="text-indigo-400 font-bold text-xs uppercase tracking-widest mb-2">@SocioNomicsLab</p>
+                <h1 class="text-4xl md:text-6xl font-black text-white mb-2 leading-tight tracking-tight">
+                    ¿CUÁNTO DEBES TÚ?
+                </h1>
+                <p class="text-slate-300 text-lg md:text-2xl font-light mt-2">
+                    Deuda pública por cada mexicano
+                </p>
+            </div>
+            <!-- Fondo abstracto -->
+            <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 opacity-100"></div>
+            <div class="absolute -bottom-20 -right-20 w-80 h-80 bg-indigo-600 rounded-full mix-blend-overlay filter blur-[100px] opacity-40"></div>
+            <div class="absolute -top-20 -left-20 w-80 h-80 bg-pink-600 rounded-full mix-blend-overlay filter blur-[100px] opacity-20"></div>
+        </div>
+
+        <!-- CUERPO VISUAL -->
+        <div class="p-6 md:p-10 bg-white relative">
+            
+            <!-- ALERTA DE ACELERACIÓN -->
+            <div class="mb-8 flex justify-center">
+                <div class="bg-red-50 text-red-800 px-5 py-3 rounded-full border border-red-100 text-sm md:text-base font-bold flex items-center shadow-sm">
+                    <span class="text-xl mr-2">⚠️</span>
+                    Dato 2025: Incluye nuevo techo de endeudamiento aprobado (+1.5 Billones)
+                </div>
+            </div>
+
+            <!-- GRÁFICA (Altura Aumentada para "Aire") -->
+            <div class="relative w-full h-[500px] md:h-[600px]">
+                <canvas id="debtChart"></canvas>
+            </div>
+
+            <!-- COMPARATIVA FINAL -->
+            <div class="mt-8 grid grid-cols-2 gap-6 border-t border-gray-100 pt-8">
+                <div class="text-center border-r border-gray-100">
+                    <p class="text-gray-400 text-xs md:text-sm font-bold uppercase mb-1">Inicio Siglo (2000)</p>
+                    <p class="text-2xl md:text-4xl font-black text-gray-500">$20,600</p>
+                </div>
+                <div class="text-center">
+                    <p class="text-indigo-600 text-xs md:text-sm font-bold uppercase mb-1">Hoy (Proy. 2025)</p>
+                    <p class="text-3xl md:text-5xl font-black text-indigo-700">$139,400</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- LICENCIAS Y CRÉDITOS (Expandido) -->
+        <div class="bg-slate-50 px-8 py-8 border-t border-gray-200">
+            <!-- Nota Metodológica -->
+            <div class="mb-6">
+                <h4 class="text-xs font-bold text-slate-700 uppercase mb-2">Nota Metodológica</h4>
+                <p class="text-xs md:text-sm text-slate-500 leading-relaxed text-justify">
+                    <strong>1. Fuente de Deuda:</strong> Se utiliza el <em>Saldo Histórico de los Requerimientos Financieros del Sector Público (SHRFSP)</em> reportado por la Secretaría de Hacienda (SHCP). Esta es la medida más amplia de la deuda.
+                    <br><strong>2. Eje Temporal Real:</strong> La gráfica respeta la distancia real en años. Observa cómo el último segmento (2024-2025) es casi vertical, indicando un ritmo de endeudamiento mucho más agresivo por unidad de tiempo que en sexenios pasados.
+                    <br><strong>3. Cálculo Per Cápita:</strong> Saldo total nominal dividido entre la población estimada por CONAPO para cada año.
+                </p>
+            </div>
+            
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 pt-6 border-t border-slate-200">
+                
+                <!-- Tarjeta de Licencia (CC BY-NC 4.0 Actualizada) -->
+                <div class="flex items-center gap-4 bg-white p-3 pr-5 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="p-2 bg-slate-100 rounded-lg text-slate-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 leading-none mb-1">Licencia de uso</span>
+                        <div class="flex items-center gap-3">
+                            <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" class="opacity-80 hover:opacity-100 transition-opacity">
+                                <img alt="CC BY-NC 4.0" style="border-width:0" src="https://licensebuttons.net/l/by-nc/4.0/80x15.png" />
+                            </a>
+                            <span class="text-slate-300 text-xs">|</span>
+                            <a href="https://opensource.org/license/MIT" target="_blank" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 group transition-colors">
+                                MIT License
+                                <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-right">
+                    <p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Análisis y Diseño</p>
+                    <p class="text-sm font-bold text-slate-700">Eric Araujo Martínez <span class="text-indigo-500">(@SocioNomicsLab)</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Registrar plugin
+        Chart.register(ChartDataLabels);
+
+        // Detectar si es móvil para ajustar tamaños dinámicamente
+        const isMobile = window.innerWidth < 768;
+
+        const ctx = document.getElementById('debtChart').getContext('2d');
+
+        // DATOS EN COORDENADAS X,Y (TIEMPO REAL)
+        const dataPoints = [
+            { x: 2006, y: 29245, president: 'FOX' },
+            { x: 2012, y: 50427, president: 'CALDERÓN' },
+            { x: 2018, y: 85483, president: 'PEÑA' },
+            { x: 2024, y: 129770, president: 'AMLO' },
+            { x: 2025, y: 139400, president: 'SHEINBAUM' } 
+        ];
+
+        // Gradiente
+        const gradientFill = ctx.createLinearGradient(0, 0, 0, 600);
+        gradientFill.addColorStop(0, 'rgba(79, 70, 229, 0.8)'); // Indigo más fuerte arriba
+        gradientFill.addColorStop(1, 'rgba(79, 70, 229, 0.05)'); // Transparente abajo
+
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: 'Deuda por Persona',
+                    data: dataPoints,
+                    borderColor: '#4f46e5',
+                    borderWidth: 6,
+                    backgroundColor: gradientFill,
+                    fill: true,
+                    pointBackgroundColor: '#fff',
+                    pointBorderColor: '#4f46e5',
+                    pointBorderWidth: 4,
+                    pointRadius: 9,
+                    pointHoverRadius: 12,
+                    tension: 0.3 // Curva suave
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: { 
+                        top: 50, 
+                        right: 30, 
+                        left: 20, 
+                        bottom: 60 // Espacio extra para que no se corten los nombres
+                    } 
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }, // Desactivamos tooltip para usar etiquetas fijas
+                    datalabels: {
+                        align: 'top',
+                        offset: 10,
+                        color: '#1e1b4b', // Indigo 950
+                        font: { 
+                            family: 'Inter', 
+                            size: 20,
+                            weight: '900' 
+                        },
+                        formatter: function(value, context) {
+                            return '$' + new Intl.NumberFormat('es-MX', { notation: "compact", compactDisplay: "short" }).format(value.y);
+                        },
+                        rotation: 0 // SIN INCLINACIÓN
+                    }
+                },
+                scales: {
+                    x: {
+                        type: 'linear', 
+                        min: 2005, 
+                        max: 2026, 
+                        grid: { display: false },
+                        border: { display: true, color: '#94a3b8', width: 2 },
+                        ticks: {
+                            display: false 
+                        }
+                    },
+                    y: {
+                        display: false,
+                        suggestedMax: 170000 
+                    }
+                }
+            },
+            plugins: [{
+                id: 'customLabels',
+                afterDraw: (chart) => {
+                    const ctx = chart.ctx;
+                    const xAxis = chart.scales.x;
+                    const yAxis = chart.scales.y;
+                    
+                    dataPoints.forEach((point) => {
+                        const x = xAxis.getPixelForValue(point.x);
+                        const y = yAxis.getPixelForValue(point.y);
+                        
+                        // Dibujar ávatar
+                        ctx.save();
+                        ctx.font = '30px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText('👤', x, y + 45); 
+                        
+                        // Dibujar Nombre Presidente
+                        ctx.font = 'bold 11px Inter';
+                        ctx.fillStyle = '#64748b';
+                        
+                        let xOffset = 0;
+                        let yOffset = 75;
+                        
+                        // Ajustes finos para evitar encimado
+                        if (point.x === 2024) xOffset = -25; // Mover AMLO más a la izq
+                        if (point.x === 2025) { 
+                            xOffset = 25; // Mover Sheinbaum más a la derecha
+                            yOffset += 15; // Bajar más para diferenciar niveles
+                        }
+
+                        ctx.fillText(point.president, x + xOffset, y + yOffset);
+                        ctx.fillText(point.x, x + xOffset, y + yOffset + 14);
+                        
+                        ctx.restore();
+                    });
+                }
+            }]
+        });
+
+        function downloadImage() {
+            const container = document.getElementById('social-card');
+            html2canvas(container, {
+                scale: 2, 
+                useCORS: true,
+                backgroundColor: "#ffffff"
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'tu_deuda_personal_historica_real_2025.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
