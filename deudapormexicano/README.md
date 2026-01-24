@@ -32,8 +32,6 @@ La gráfica en tiempo real revela que la pendiente de endeudamiento se ha vuelto
 
 # Interpretación
 
-*Perspectiva de Gobierno Limitado / Escuela Austriaca*
-
 La gráfica es la evidencia visual de la expansión irresponsable del Estado a costa de la libertad financiera del individuo. Nuestro análisis revela tres realidades críticas:
 
 **Impuestos Diferidos**
