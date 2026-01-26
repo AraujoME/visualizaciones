@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Estratificación Social Global – PPA</title>
+
+  <!-- =========================
+       Código fuente: MIT License
+       ========================= -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- html2canvas -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  <!-- Font Awesome (íconos redes) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: #f4f6f8;
+      margin: 0;
+      padding: 40px;
+      color: #1f2933;
+    }
+
+    .card {
+      max-width: 980px;
+      margin: auto;
+      background: white;
+      border-radius: 14px;
+      padding: 32px 36px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.08);
+    }
+
+    header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 12px;
+    }
+
+    .social a {
+      color: #4f46e5;
+      margin-left: 14px;
+      font-size: 18px;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .social a:hover {
+      color: #312e81;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #4b5563;
+      font-size: 14px;
+      margin-bottom: 22px;
+    }
+
+    .explanation {
+      background: #f9fafb;
+      border-left: 4px solid #4f46e5;
+      padding: 14px 18px;
+      font-size: 14px;
+      color: #374151;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .controls {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    button {
+      background: #4f46e5;
+      border: none;
+      color: white;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 4px;
+    }
+
+    button.secondary {
+      background: #64748b;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    .methodology {
+      margin-top: 30px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #374151;
+    }
+
+    .methodology h2 {
+      font-size: 16px;
+      margin-top: 22px;
+      margin-bottom: 8px;
+    }
+
+    footer {
+      margin-top: 28px;
+      padding-top: 16px;
+      border-top: 1px solid #e5e7eb;
+      font-size: 12px;
+      color: #6b7280;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    footer a {
+      color: #4f46e5;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card" id="grafica-container">
+
+  <header>
+    <div class="social">
+      <a href="https://github.com/araujome" target="_blank"><i class="fab fa-github"></i></a>
+      <a href="https://x.com/SocioNomicsLab" target="_blank"><i class="fab fa-x-twitter"></i></a>
+      <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank"><i class="fab fa-linkedin"></i></a>
+    </div>
+  </header>
+
+  <h1>¿QUIÉN ES CLASE MEDIA?</h1>
+  <div class="subtitle">
+    Estratificación social comparada ajustada por Paridad de Poder Adquisitivo (PPA)<br>
+    USD constantes 2017 · World Bank · Pew Research Center
+  </div>
+
+  <div class="explanation">
+    La gráfica compara la distribución social entre países usando ingresos diarios
+    per cápita ajustados por PPA. El enfoque es estrictamente material: capacidad
+    de consumo, resiliencia ante choques y acceso sostenido a bienes y servicios.
+  </div>
+
+  <div class="controls">
+    <button onclick="toggleAltaAmpliada()">Activar / desactivar clase media alta ampliada</button>
+    <button class="secondary" onclick="descargarGrafica()">Descargar gráfica</button>
+  </div>
+
+  <canvas id="chart" height="160"></canvas>
+
+  <div class="explanation">
+    <strong>¿Qué cambia al activar la opción ampliada?</strong><br>
+    Se redistribuye internamente la clase media para separar un segmento con ingresos
+    cercanos a economías desarrolladas. No se modifica la población total ni se crean
+    nuevos estratos artificiales.
+  </div>
+
+  <div class="methodology">
+    <h2>Cómo leer la gráfica</h2>
+    <p>
+      Cada barra representa el 100% de la población del país. Los colores indican
+      estratos definidos por ingreso diario per cápita ajustado por PPA.
+      La comparación es transversal y no implica evolución temporal.
+    </p>
+
+    <h2>Definición de estratos (modo estándar)</h2>
+    <ul>
+      <li><strong>Pobreza:</strong> &lt; USD 10 PPA</li>
+      <li><strong>Clase vulnerable:</strong> USD 10–20 PPA</li>
+      <li><strong>Clase media:</strong> USD 20–50 PPA</li>
+      <li><strong>Media alta / alta:</strong> ≥ USD 50 PPA</li>
+    </ul>
+
+    <h2>Clase media alta ampliada</h2>
+    <p>
+      En el modo ampliado, la clase media se divide analíticamente para mostrar
+      heterogeneidad interna:
+    </p>
+    <ul>
+      <li><strong>Clase media núcleo:</strong> USD 20–35 PPA</li>
+      <li><strong>Clase media alta ampliada:</strong> USD 35–50 PPA</li>
+      <li><strong>Alta:</strong> ≥ USD 50 PPA</li>
+    </ul>
+    <p>
+      Esta partición es un supuesto analítico explícito, útil para comparaciones
+      internacionales y discusión de política pública.
+    </p>
+  </div>
+
+  <footer>
+    <div>
+      Contenido y visualización: <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank"><strong>CC BY-NC 4.0</strong></a> | Elaborado por Eric Araujo Martínez (@SocioNomicsLab)
+    </div>
+    <div>
+      Código fuente: <a href="https://opensource.org/license/MIT" target="_blank"><strong>MIT License</strong></a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+  const labels = ['EE. UU.', 'China', 'Argentina', 'México'];
+
+  const dataBase = [
+    { label: 'Pobreza', data: [12,28,52,54], color: '#cbd5e1' },
+    { label: 'Clase vulnerable', data: [28,52,36,35], color: '#34d399' },
+    { label: 'Clase media (20–50)', data: [35,15,10,9], color: '#3b82f6' },
+    { label: 'Media alta / alta (≥50)', data: [25,5,2,2], color: '#4f46e5' }
+  ];
+
+  const dataAmpliada = [
+    { label: 'Pobreza', data: [12,28,52,54], color: '#cbd5e1' },
+    { label: 'Clase vulnerable', data: [28,52,36,35], color: '#34d399' },
+    { label: 'Clase media núcleo (20–35)', data: [20,10,6,5], color: '#3b82f6' },
+    { label: 'Clase media alta ampliada (35–50)', data: [15,5,4,4], color: '#60a5fa' },
+    { label: 'Alta (≥50)', data: [25,5,2,2], color: '#4f46e5' }
+  ];
+
+  function buildDatasets(source) {
+    return source.map(d => ({
+      label: d.label,
+      data: d.data,
+      backgroundColor: d.color
+    }));
+  }
+
+  let modoAmpliado = false;
+
+  const chart = new Chart(document.getElementById('chart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: buildDatasets(dataBase)
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      scales: {
+        x: { stacked: true, max: 100, ticks: { callback: v => v + '%' } },
+        y: { stacked: true }
+      },
+      plugins: {
+        legend: { position: 'bottom' }
+      }
+    }
+  });
+
+  function toggleAltaAmpliada() {
+    modoAmpliado = !modoAmpliado;
+    chart.data.datasets = modoAmpliado
+      ? buildDatasets(dataAmpliada)
+      : buildDatasets(dataBase);
+    chart.update();
+  }
+
+  function descargarGrafica() {
+    html2canvas(document.getElementById('grafica-container'), { scale: 2 })
+      .then(canvas => {
+        const link = document.createElement('a');
+        link.download = 'estratificacion_social_PPA.png';
+        link.href = canvas.toDataURL();
+        link.click();
+      });
+  }
+</script>
+
+</body>
+</html>
