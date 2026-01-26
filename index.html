@@ -36,18 +36,20 @@
             box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
         }
 
-        /* Colores Temáticos por Categoría */
-        .glass-card.card-pib:hover { border-color: #10b981; }
-        .glass-card.card-mortalidad:hover { border-color: #f59e0b; }
-        .glass-card.card-reporte:hover { border-color: #6366f1; }
-        .glass-card.card-petroleo:hover { border-color: #3b82f6; }
-        .glass-card.card-deuda:hover { border-color: #a855f7; }
+        /* Colores Temáticos Hover */
+        .glass-card.card-clase-media:hover { border-color: #2dd4bf; } /* Teal */
+        .glass-card.card-pib:hover { border-color: #10b981; }         /* Esmeralda */
+        .glass-card.card-deuda:hover { border-color: #a855f7; }       /* Morado */
+        .glass-card.card-petroleo:hover { border-color: #3b82f6; }    /* Azul */
+        .glass-card.card-mortalidad:hover { border-color: #f59e0b; }  /* Ámbar */
+        .glass-card.card-reporte:hover { border-color: #6366f1; }     /* Indigo */
 
         .name-highlight {
             color: #818cf8;
             text-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
         }
 
+        /* Botones Sociales Responsivos */
         .social-btn {
             display: flex;
             align-items: center;
@@ -127,70 +129,40 @@
                 </div>
             </header>
 
-            <!-- GRID DE PROYECTOS -->
+            <!-- GRID DE PROYECTOS (6 ITEMS) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                
-                <!-- 1. CAJA: DEUDA PÚBLICA (NUEVO) -->
-                <a href="https://araujome.github.io/visualizaciones/deudapormexicano/" class="glass-card card-deuda rounded-[2.5rem] p-8 group">
+
+                <!-- 1. CAJA: CLASE MEDIA (NUEVO) -->
+                <a href="https://araujome.github.io/visualizaciones/clasemedia/" class="glass-card card-clase-media rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
-                        <div class="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-money-bill-trend-up text-white text-xl"></i>
+                        <div class="w-12 h-12 bg-teal-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-layer-group text-white text-xl"></i>
                         </div>
                         
                         <div>
                             <div class="flex items-center gap-2 mb-1">
-                                <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Deuda Personal</h3>
-                                <span class="bg-purple-500/20 text-purple-400 text-[9px] font-bold px-2 py-0.5 rounded border border-purple-500/30">NUEVO</span>
+                                <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Clase Media</h3>
+                                <span class="bg-teal-500/20 text-teal-400 text-[9px] font-bold px-2 py-0.5 rounded border border-teal-500/30">NUEVO</span>
                             </div>
                             <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Análisis del Saldo Histórico de Requerimientos del Sector Público por habitante (2000-2025).
+                                Análisis de estratificación social ajustada por PPA: ¿Quién pertenece realmente?
                             </p>
                         </div>
                     </div>
 
                     <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
                         <div class="flex flex-col">
-                            <span class="uppercase tracking-wider font-bold text-purple-500">Año 2000</span>
-                            <span class="text-white font-bold text-xs">$20,600</span>
+                            <span class="uppercase tracking-wider font-bold text-teal-500">México</span>
+                            <span class="text-white font-bold text-xs">Vulnerable</span>
                         </div>
                         <div class="flex flex-col text-right">
-                            <span class="uppercase tracking-wider font-bold text-slate-400">Proy. 2025</span>
-                            <span class="text-white font-bold text-xs">$139,400</span>
+                            <span class="uppercase tracking-wider font-bold text-slate-400">Datos</span>
+                            <span class="text-white font-bold text-xs">BM / PEW</span>
                         </div>
                     </div>
                 </a>
 
-                <!-- 2. CAJA: AUDITORÍA PETROLERA (NUEVO) -->
-                <a href="https://araujome.github.io/visualizaciones/petroleoacuba/" class="glass-card card-petroleo rounded-[2.5rem] p-8 group">
-                    <div class="space-y-5">
-                        <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-ship text-white text-xl"></i>
-                        </div>
-                        
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Auditoría Petrolera</h3>
-                                <span class="bg-blue-500/20 text-blue-400 text-[9px] font-bold px-2 py-0.5 rounded border border-blue-500/30">NUEVO</span>
-                            </div>
-                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Análisis de flujos energéticos México → Cuba e impacto financiero estimado (2012-2025).
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
-                        <div class="flex flex-col">
-                            <span class="uppercase tracking-wider font-bold text-blue-500">Suministro</span>
-                            <span class="text-white font-bold text-xs">36.5K BPD</span>
-                        </div>
-                        <div class="flex flex-col text-right">
-                            <span class="uppercase tracking-wider font-bold text-slate-400">Impacto</span>
-                            <span class="text-white font-bold text-xs">$76.6M USD/mes</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- 3. CAJA: PIB PER CÁPITA -->
+                <!-- 2. CAJA: PIB PER CÁPITA -->
                 <a href="https://araujome.github.io/visualizaciones/pibpercapitappa/" class="glass-card card-pib rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -200,7 +172,7 @@
                         <div>
                             <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">PIB Global</h3>
                             <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Comparación del PIB per cápita: China, Rusia, EEUU y México bajo paridad de poder adquisitivo.
+                                Comparación de poder adquisitivo: China, Rusia, EEUU y México.
                             </p>
                         </div>
                     </div>
@@ -210,14 +182,49 @@
                             <span class="uppercase tracking-wider font-bold text-emerald-500">Enfoque</span>
                             <span class="text-white font-bold text-xs">Geopolítica</span>
                         </div>
-                        <div class="flex flex-col text-right">
-                            <span class="uppercase tracking-wider font-bold text-slate-400">Datos</span>
-                            <span class="text-white font-bold text-xs">BM / FMI</span>
+                    </div>
+                </a>
+                
+                <!-- 3. CAJA: DEUDA PÚBLICA -->
+                <a href="https://araujome.github.io/visualizaciones/deudapormexicano/" class="glass-card card-deuda rounded-[2.5rem] p-8 group">
+                    <div class="space-y-5">
+                        <div class="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-money-bill-trend-up text-white text-xl"></i>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Deuda Personal</h3>
+                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
+                                Análisis de la deuda pública por habitante (2000-2025).
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
+                        <div class="flex flex-col">
+                            <span class="uppercase tracking-wider font-bold text-purple-500">2025</span>
+                            <span class="text-white font-bold text-xs">$139k/hab</span>
                         </div>
                     </div>
                 </a>
 
-                <!-- 4. CAJA: MORTALIDAD CÁNCER INFANTIL -->
+                <!-- 4. CAJA: AUDITORÍA PETROLERA -->
+                <a href="https://araujome.github.io/visualizaciones/petroleoacuba/" class="glass-card card-petroleo rounded-[2.5rem] p-8 group">
+                    <div class="space-y-5">
+                        <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-ship text-white text-xl"></i>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Auditoría Petrolera</h3>
+                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
+                                Análisis de flujos energéticos México → Cuba (2012-2025).
+                            </p>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 5. CAJA: MORTALIDAD CÁNCER INFANTIL -->
                 <a href="https://araujome.github.io/visualizaciones/defunciones-oncologico/" class="glass-card card-mortalidad rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -227,24 +234,13 @@
                         <div>
                             <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Crisis de Mortalidad</h3>
                             <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Brecha generacional en defunciones por cáncer: Menores vs. Adultos (2012-2025).
+                                Brecha generacional en defunciones por cáncer (2012-2025).
                             </p>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
-                        <div class="flex flex-col">
-                            <span class="uppercase tracking-wider font-bold text-amber-500">Menores</span>
-                            <span class="text-white font-bold text-xs">+12.9%</span>
-                        </div>
-                        <div class="flex flex-col text-right">
-                            <span class="uppercase tracking-wider font-bold text-slate-400">Adultos</span>
-                            <span class="text-white font-bold text-xs">+18.0%</span>
                         </div>
                     </div>
                 </a>
 
-                <!-- 5. CAJA: REPORTE ONCOLÓGICO -->
+                <!-- 6. CAJA: REPORTE ONCOLÓGICO -->
                 <a href="./oncologicos/" class="glass-card card-reporte rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -254,7 +250,7 @@
                         <div>
                             <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Reporte Oncológico</h3>
                             <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Auditoría de precios y desabasto de quimioterapias en México (2012-2025).
+                                Auditoría de precios y desabasto de quimioterapias.
                             </p>
                         </div>
                     </div>
@@ -276,4 +272,3 @@
     </div>
 </body>
 </html>
-
