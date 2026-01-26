@@ -7,6 +7,9 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- FontAwesome para íconos sociales -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <!-- Chart.js 4.x -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Plugin Datalabels -->
@@ -46,9 +49,22 @@
                 <h1 class="text-4xl md:text-6xl font-black text-white mb-2 leading-tight tracking-tight">
                     ¿CUÁNTO DEBES TÚ?
                 </h1>
-                <p class="text-slate-300 text-lg md:text-2xl font-light mt-2">
+                <p class="text-slate-300 text-lg md:text-2xl font-light mt-2 mb-6">
                     Deuda pública por cada mexicano
                 </p>
+
+                <!-- ÍCONOS SOCIALES AÑADIDOS -->
+                <div class="flex justify-center gap-6">
+                    <a href="https://github.com/araujome" target="_blank" class="text-slate-400 hover:text-white hover:scale-110 transition-all duration-300">
+                        <i class="fab fa-github text-2xl"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="text-slate-400 hover:text-white hover:scale-110 transition-all duration-300">
+                        <i class="fab fa-linkedin-in text-2xl"></i>
+                    </a>
+                    <a href="https://x.com/SocioNomicsLab" target="_blank" class="text-slate-400 hover:text-white hover:scale-110 transition-all duration-300">
+                        <i class="fab fa-x-twitter text-2xl"></i>
+                    </a>
+                </div>
             </div>
             <!-- Fondo abstracto -->
             <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900 opacity-100"></div>
@@ -132,9 +148,6 @@
         // Registrar plugin
         Chart.register(ChartDataLabels);
 
-        // Detectar si es móvil para ajustar tamaños dinámicamente
-        const isMobile = window.innerWidth < 768;
-
         const ctx = document.getElementById('debtChart').getContext('2d');
 
         // DATOS EN COORDENADAS X,Y (TIEMPO REAL)
@@ -177,7 +190,7 @@
                         top: 50, 
                         right: 30, 
                         left: 20, 
-                        bottom: 60 // Espacio extra para que no se corten los nombres
+                        bottom: 60 
                     } 
                 },
                 plugins: {
