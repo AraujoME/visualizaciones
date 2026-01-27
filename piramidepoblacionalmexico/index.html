@@ -1,168 +1,464 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>La Metamorfosis de México</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- D3.js -->
-  <script src="https://d3js.org/d3.v7.min.js"></script>
-
-  <style>
-    body {
-      background: #f8fafc;
-    }
-    .slider {
-      width: 100%;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolución Demográfica de México</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js 4.x -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Plugin Datalabels -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <!-- Librería para capturar pantalla -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Estilo para el slider */
+        input[type=range] {
+            -webkit-appearance: none; 
+            background: transparent; 
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 28px;
+            width: 28px;
+            border-radius: 50%;
+            background: #4f46e5;
+            cursor: pointer;
+            margin-top: -12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            border: 2px solid white;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+    </style>
 </head>
+<body class="bg-stone-50 min-h-screen flex flex-col items-center py-8 px-4">
 
-<body class="text-slate-800">
+    <!-- BARRA DE HERRAMIENTAS -->
+    <div class="w-full max-w-6xl mb-6 flex flex-col sm:flex-row justify-between gap-3 no-print">
+        
+        <!-- BOTÓN NAVEGACIÓN -->
+        <a href="https://araujome.github.io/visualizaciones/" class="flex items-center justify-center px-6 py-3 bg-white text-indigo-600 rounded-full shadow-sm hover:shadow-md border border-indigo-100 font-bold transition-all transform hover:scale-105">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Más Estudios
+        </a>
 
-<!-- HEADER -->
-<header class="bg-gradient-to-r from-slate-900 to-slate-800 text-white py-10">
-  <div class="max-w-6xl mx-auto text-center">
-    <div class="text-sm tracking-widest text-indigo-400 mb-2">@SocioNomicsLab</div>
-    <h1 class="text-4xl font-extrabold mb-2">La Metamorfosis de México</h1>
-    <p class="text-slate-300">
-      Evolución de la estructura poblacional (1960–2050)
-    </p>
-  </div>
-</header>
+        <!-- BOTÓN DESCARGA -->
+        <button onclick="downloadImage()" class="flex items-center justify-center px-6 py-3 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 font-bold transition-all transform hover:scale-105">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            Descargar Gráfica
+        </button>
+    </div>
 
-<!-- CONTROLES -->
-<section class="max-w-5xl mx-auto px-6 mt-10">
-  <input
-    id="yearSlider"
-    type="range"
-    min="1960"
-    max="2050"
-    step="10"
-    value="2020"
-    class="slider"
-  />
-  <div class="text-center mt-6">
-    <span id="yearLabel" class="text-5xl font-bold text-indigo-600">2020</span>
-  </div>
-</section>
+    <!-- CONTENEDOR PRINCIPAL -->
+    <div id="dashboard-container" class="w-full max-w-6xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-stone-200">
+        
+        <!-- HEADER -->
+        <div class="bg-slate-900 p-8 md:p-12 text-center relative overflow-hidden">
+            <div class="relative z-10">
+                <p class="text-indigo-400 font-bold text-sm uppercase tracking-[0.2em] mb-2">@SocioNomicsLab</p>
+                <h1 class="text-4xl md:text-6xl font-black text-white mb-4 tracking-tight">
+                    La Metamorfosis de México
+                </h1>
+                <p class="text-slate-300 text-xl font-light mb-8">
+                    Evolución de la estructura poblacional (1960 - 2050)
+                </p>
 
-<!-- CONTENIDO -->
-<section class="max-w-6xl mx-auto px-6 mt-12 grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- ÍCONOS SOCIALES -->
+                <div class="flex justify-center gap-8">
+                    <a href="https://github.com/araujome" target="_blank" class="text-slate-400 hover:text-white hover:scale-110 transition-all duration-300">
+                        <i class="fab fa-github text-3xl"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="text-slate-400 hover:text-white hover:scale-110 transition-all duration-300">
+                        <i class="fab fa-linkedin-in text-3xl"></i>
+                    </a>
+                    <a href="https://x.com/SocioNomicsLab" target="_blank" class="text-slate-400 hover:text-white hover:scale-110 transition-all duration-300">
+                        <i class="fab fa-x-twitter text-3xl"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="absolute top-0 right-0 w-96 h-96 bg-indigo-600 rounded-full mix-blend-overlay filter blur-[100px] opacity-30 transform translate-x-1/2 -translate-y-1/2"></div>
+        </div>
 
-  <!-- INDICADORES -->
-  <div class="bg-indigo-50 rounded-xl p-6">
-    <h3 class="font-bold mb-4">Indicadores demográficos</h3>
-    <p><strong>Fecundidad (TGF aprox.):</strong> <span id="tfr"></span></p>
-    <p><strong>65+ (%):</strong> <span id="elderly"></span></p>
-    <p>
-      <strong>Índice de dependencia:</strong>
-      <span id="dependency"></span>
-    </p>
-  </div>
+        <div class="p-6 md:p-12">
+            
+            <!-- CONTROL DE TIEMPO (SLIDER) -->
+            <div class="mb-12 px-4 max-w-4xl mx-auto">
+                <div class="flex justify-between text-sm font-bold text-slate-400 mb-4 uppercase tracking-wider">
+                    <span>1960</span>
+                    <span>1980</span>
+                    <span>2000</span>
+                    <span>2020</span>
+                    <span>2040</span>
+                </div>
+                <input type="range" id="yearSlider" min="0" max="9" value="6" step="1" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                <div class="text-center mt-6">
+                    <span id="yearDisplay" class="text-6xl font-black text-indigo-700 tracking-tighter">2020</span>
+                </div>
+            </div>
 
-  <!-- GRÁFICA -->
-  <div class="lg:col-span-2 bg-white rounded-xl shadow p-4">
-    <svg id="pyramid" width="100%" height="420"></svg>
-  </div>
+            <!-- CONTENEDOR DE GRÁFICA Y ANÁLISIS -->
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+                
+                <!-- COLUMNA IZQUIERDA: ANÁLISIS DINÁMICO (35%) -->
+                <div class="lg:col-span-4 flex flex-col justify-center">
+                    <div id="analysisBox" class="bg-indigo-50 p-8 rounded-3xl border-l-8 border-indigo-500 shadow-sm transition-all duration-500">
+                        <h3 id="analysisTitle" class="text-3xl font-black text-indigo-900 mb-4 leading-tight">El Bono Demográfico</h3>
+                        <p id="analysisText" class="text-lg text-slate-700 leading-relaxed font-medium">
+                            La base de la pirámide comienza a estrecharse. Hay menos niños que en décadas anteriores, pero la población en edad laboral (15-64 años) es la más grande de la historia. Es la oportunidad económica dorada del país.
+                        </p>
+                        <div class="mt-8 pt-6 border-t border-indigo-200">
+                            <div class="flex items-center gap-4">
+                                <div class="bg-white p-3 rounded-full shadow-sm">
+                                    <span class="text-3xl">👶</span>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-indigo-400 font-bold uppercase tracking-wider">Tasa de Natalidad</p>
+                                    <p id="fertilityText" class="text-xl font-bold text-slate-800">Baja (1.9 hijos)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-</section>
+                <!-- COLUMNA DERECHA: PIRÁMIDE (65%) -->
+                <div class="lg:col-span-8 flex flex-col gap-6">
+                    <div class="relative h-[600px] bg-white rounded-2xl">
+                        <canvas id="pyramidChart"></canvas>
+                    </div>
 
-<!-- NOTA METODOLÓGICA -->
-<section class="max-w-6xl mx-auto px-6 mt-12 text-sm text-slate-600">
-  <h4 class="font-bold mb-2">Nota metodológica</h4>
-  <p>
-    Los datos 1960–2020 corresponden a censos y estimaciones oficiales.
-    Las cifras 2030–2050 son proyecciones demográficas basadas en escenarios
-    medios ONU/CONAPO, interpoladas por cohorte quinquenal.
-    La fecundidad se expresa como Tasa Global de Fecundidad aproximada.
-    El índice de dependencia se calcula como:
-    (0–14 + 65+) / (15–64).
-  </p>
-</section>
+                    <!-- NUEVO: PANEL DE TOTALES DINÁMICOS -->
+                    <div class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col md:flex-row justify-between items-center shadow-sm gap-4">
+                        <div class="text-center md:text-left">
+                            <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mb-1">Población Total Estimada</p>
+                            <p class="text-4xl font-black text-slate-800" id="totalPop">126.0 M</p>
+                        </div>
+                        
+                        <div class="flex gap-8">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold border border-indigo-100">H</div>
+                                <div>
+                                    <p class="text-[10px] text-indigo-400 font-bold uppercase">Hombres</p>
+                                    <p class="text-lg font-bold text-indigo-700" id="malePop">61.5 M</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-rose-50 flex items-center justify-center text-rose-600 font-bold border border-rose-100">M</div>
+                                <div>
+                                    <p class="text-[10px] text-rose-400 font-bold uppercase">Mujeres</p>
+                                    <p class="text-lg font-bold text-rose-700" id="femalePop">64.5 M</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", () => {
+        </div>
 
-  /* =======================
-     DATA SIMPLIFICADO
-     ======================= */
+        <!-- SECCIÓN DE METODOLOGÍA (Texto Completo) -->
+        <div class="bg-stone-50 px-8 py-10 md:px-12 md:py-12 border-t border-stone-200">
+            <div class="max-w-4xl mx-auto space-y-8">
+                
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800 mb-3 border-l-4 border-indigo-500 pl-4">Metodología</h3>
+                    <p class="text-sm md:text-base text-slate-600 leading-relaxed text-justify">
+                        La visualización reconstruye la estructura demográfica de México utilizando datos históricos de los <strong>Censos de Población y Vivienda</strong> del INEGI (1960-2020) y las <strong>Proyecciones de la Población de México</strong> (2030-2050) elaboradas por el Consejo Nacional de Población (CONAPO). 
+                        Se segmentó la población en grupos quinquenales de edad, separando por sexo biológico. Los valores negativos en el eje de los hombres se utilizan únicamente con fines de representación visual para generar el efecto de espejo ("mariposa"), pero representan valores absolutos en millones de habitantes.
+                    </p>
+                </div>
 
-  const data = {
-    1960: { tfr: 6.8, elderly: 3.4, dep: 1.02, pyramid: genPyramid(1.2) },
-    1980: { tfr: 4.5, elderly: 4.2, dep: 0.86, pyramid: genPyramid(1.0) },
-    2000: { tfr: 2.9, elderly: 5.8, dep: 0.63, pyramid: genPyramid(0.8) },
-    2020: { tfr: 2.1, elderly: 7.6, dep: 0.56, pyramid: genPyramid(0.6) },
-    2030: { tfr: 1.9, elderly: 10.1, dep: 0.61, pyramid: genPyramid(0.5) },
-    2040: { tfr: 1.8, elderly: 13.9, dep: 0.72, pyramid: genPyramid(0.4) },
-    2050: { tfr: 1.7, elderly: 18.8, dep: 0.83, pyramid: genPyramid(0.35) }
-  };
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-3 border-l-4 border-emerald-500 pl-4">Resultados</h3>
+                        <ul class="list-disc list-inside text-sm md:text-base text-slate-600 space-y-2">
+                            <li><strong>1960-1980:</strong> Base ancha expansiva. Alta natalidad y reducción de mortalidad infantil.</li>
+                            <li><strong>1990-2010:</strong> Transición. La base se estabiliza y comienza el engrosamiento del centro (fuerza laboral).</li>
+                            <li><strong>2020-2050:</strong> Inversión. La base se contrae drásticamente (baja natalidad) y la cúspide se ensancha (envejecimiento), transformando la pirámide en una urna.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-slate-800 mb-3 border-l-4 border-orange-500 pl-4">Análisis y Conclusiones</h3>
+                        <p class="text-sm md:text-base text-slate-600 leading-relaxed text-justify">
+                            México atraviesa la etapa final de su <strong>Bono Demográfico</strong>. La oportunidad histórica de tener una mayoría de población en edad productiva con pocos dependientes (niños/ancianos) se está cerrando. Hacia 2050, el país enfrentará un reto fiscal y sanitario mayor: una fuerza laboral decreciente deberá sostener sistemas de pensiones y salud para una población de adultos mayores inédita en la historia nacional.
+                        </p>
+                    </div>
+                </div>
 
-  function genPyramid(scale) {
-    const ages = d3.range(0, 85, 5);
-    return ages.map(a => ({
-      age: a,
-      male: -Math.round((85 - a) * scale * 10),
-      female: Math.round((85 - a) * scale * 10)
-    }));
-  }
+                <div>
+                    <h3 class="text-xl font-bold text-slate-800 mb-3 border-l-4 border-slate-500 pl-4">Bibliografía</h3>
+                    <div class="bg-white p-4 rounded-lg border border-stone-200 text-xs text-slate-500 font-mono space-y-2">
+                        <p class="pl-4 -indent-4">Consejo Nacional de Población (CONAPO). (2023). <em>Proyecciones de la Población de México y de las Entidades Federativas, 2016-2050</em>. Gobierno de México.</p>
+                        <p class="pl-4 -indent-4">Instituto Nacional de Estadística y Geografía (INEGI). (1960-2020). <em>Censos de Población y Vivienda</em>. Recuperado de www.inegi.org.mx.</p>
+                        <p class="pl-4 -indent-4">Welti-Chanes, C. (2014). <em>La demografía de México: Cambios y permanencias</em>. Papeles de Población, 20(82).</p>
+                    </div>
+                </div>
 
-  /* =======================
-     SVG SETUP
-     ======================= */
+            </div>
+        </div>
 
-  const svg = d3.select("#pyramid");
-  const width = svg.node().getBoundingClientRect().width;
-  const height = +svg.attr("height");
+        <!-- FOOTER / LICENCIAS -->
+        <div class="bg-white px-8 py-6 border-t border-stone-200">
+            <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+                
+                <!-- Tarjeta de Licencia -->
+                <div class="flex items-center gap-4 bg-stone-50 p-3 pr-5 rounded-xl border border-stone-200 shadow-sm">
+                    <div class="p-2 bg-white rounded-lg text-slate-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 leading-none mb-1">Licencia de uso</span>
+                        <div class="flex items-center gap-3">
+                            <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" class="opacity-80 hover:opacity-100 transition-opacity">
+                                <img alt="CC BY-NC 4.0" style="border-width:0" src="https://licensebuttons.net/l/by-nc/4.0/80x15.png" />
+                            </a>
+                            <span class="text-slate-300 text-xs">|</span>
+                            <a href="https://opensource.org/license/MIT" target="_blank" class="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1 group transition-colors">
+                                MIT License
+                                <svg class="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
 
-  const x = d3.scaleLinear().range([0, width]).domain([-1000, 1000]);
-  const y = d3.scaleBand().range([height, 0]).padding(0.1);
+                <div class="text-right">
+                    <p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Análisis y Diseño</p>
+                    <p class="text-sm font-bold text-slate-700">Eric Araujo Martínez <span class="text-indigo-500">(@SocioNomicsLab)</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-  const g = svg.append("g");
+    <script>
+        // --- DATOS DEMOGRÁFICOS ---
+        const ageGroups = ['85+', '80-84', '75-79', '70-74', '65-69', '60-64', '55-59', '50-54', '45-49', '40-44', '35-39', '30-34', '25-29', '20-24', '15-19', '10-14', '5-9', '0-4'];
 
-  function render(year) {
-    const d = data[year];
-    if (!d) return;
+        const database = [
+            {
+                year: 1960,
+                title: "La Explosión Demográfica",
+                desc: "México es un país de niños. La tasa de fecundidad es de casi 7 hijos por mujer. La pirámide tiene una base muy ancha, indicando un crecimiento poblacional acelerado.",
+                fertility: "Muy Alta (6.8 hijos)",
+                male: [-0.01, -0.02, -0.05, -0.1, -0.1, -0.2, -0.3, -0.4, -0.5, -0.6, -0.8, -0.9, -1.1, -1.3, -1.5, -1.8, -2.2, -2.6],
+                female: [0.02, 0.03, 0.06, 0.1, 0.2, 0.3, 0.3, 0.4, 0.5, 0.6, 0.8, 0.9, 1.1, 1.4, 1.6, 1.8, 2.1, 2.5]
+            },
+            {
+                year: 1970,
+                title: "Juventud Predominante",
+                desc: "El crecimiento sigue siendo alto. La salud pública mejora, permitiendo que más niños sobrevivan, ensanchando aún más la base.",
+                fertility: "Alta (6.5 hijos)",
+                male: [-0.02, -0.05, -0.1, -0.1, -0.2, -0.3, -0.4, -0.5, -0.7, -0.8, -1.0, -1.2, -1.4, -1.7, -2.1, -2.6, -3.1, -3.6],
+                female: [0.03, 0.06, 0.1, 0.2, 0.3, 0.3, 0.4, 0.6, 0.7, 0.9, 1.0, 1.2, 1.5, 1.8, 2.2, 2.5, 3.0, 3.5]
+            },
+            {
+                year: 1980,
+                title: "Inicio de la Planificación",
+                desc: "Comienzan las campañas de planificación familiar. La base deja de crecer exponencialmente, aunque sigue siendo muy joven.",
+                fertility: "Descendiendo (4.5 hijos)",
+                male: [-0.05, -0.1, -0.1, -0.2, -0.3, -0.4, -0.6, -0.7, -0.9, -1.1, -1.3, -1.6, -2.0, -2.6, -3.1, -3.6, -4.0, -4.2],
+                female: [0.06, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.8, 0.9, 1.1, 1.4, 1.7, 2.1, 2.7, 3.2, 3.5, 3.9, 4.1]
+            },
+            {
+                year: 1990,
+                title: "Transición Demográfica",
+                desc: "La base se estabiliza. Los niños nacidos en los 60s y 70s ahora son adultos jóvenes.",
+                fertility: "Moderada (3.4 hijos)",
+                male: [-0.05, -0.1, -0.2, -0.3, -0.4, -0.6, -0.8, -1.0, -1.2, -1.5, -1.9, -2.3, -2.9, -3.4, -3.8, -4.1, -4.3, -4.4],
+                female: [0.1, 0.2, 0.3, 0.4, 0.5, 0.7, 0.9, 1.1, 1.3, 1.6, 2.0, 2.5, 3.1, 3.6, 3.9, 4.0, 4.2, 4.3]
+            },
+            {
+                year: 2000,
+                title: "El Bono Demográfico (Inicio)",
+                desc: "Se reduce notablemente el nacimiento de niños. La mayor parte de la población está entrando a la edad productiva.",
+                fertility: "Baja (2.6 hijos)",
+                male: [-0.1, -0.1, -0.2, -0.4, -0.5, -0.7, -0.9, -1.2, -1.6, -2.0, -2.5, -3.0, -3.5, -3.9, -4.2, -4.4, -4.5, -4.6],
+                female: [0.1, 0.2, 0.3, 0.5, 0.7, 0.9, 1.1, 1.4, 1.8, 2.2, 2.8, 3.3, 3.8, 4.1, 4.3, 4.3, 4.4, 4.4]
+            },
+            {
+                year: 2010,
+                title: "Estabilización",
+                desc: "La base de la pirámide se hace más angosta que el centro. La población en edad escolar y laboral predomina.",
+                fertility: "Reemplazo (2.3 hijos)",
+                male: [-0.1, -0.2, -0.3, -0.5, -0.7, -1.0, -1.3, -1.7, -2.2, -2.7, -3.2, -3.6, -3.9, -4.3, -4.6, -4.6, -4.5, -4.4],
+                female: [0.2, 0.3, 0.4, 0.6, 0.9, 1.1, 1.5, 1.9, 2.4, 3.0, 3.6, 3.9, 4.2, 4.5, 4.6, 4.5, 4.4, 4.2]
+            },
+            {
+                year: 2020,
+                title: "Madurez Poblacional",
+                desc: "La base se contrae claramente. El grueso de la población tiene entre 15 y 40 años.",
+                fertility: "Baja (1.9 hijos)",
+                male: [-0.2, -0.2, -0.4, -0.6, -0.9, -1.3, -1.7, -2.1, -2.6, -3.1, -3.5, -3.8, -4.1, -4.4, -4.5, -4.5, -4.3, -4.1],
+                female: [0.3, 0.3, 0.5, 0.8, 1.1, 1.5, 1.9, 2.4, 3.0, 3.5, 3.9, 4.2, 4.4, 4.5, 4.5, 4.4, 4.2, 3.9]
+            },
+            {
+                year: 2030,
+                title: "Envejecimiento Acelerado",
+                desc: "El bono demográfico empieza a agotarse. Aumenta significativamente la población mayor de 60 años.",
+                fertility: "Muy Baja (1.7 hijos)",
+                male: [-0.3, -0.3, -0.6, -0.9, -1.2, -1.6, -2.1, -2.6, -3.1, -3.5, -3.8, -4.1, -4.3, -4.4, -4.4, -4.2, -3.9, -3.5],
+                female: [0.4, 0.4, 0.7, 1.0, 1.4, 2.0, 2.5, 3.0, 3.5, 3.9, 4.2, 4.4, 4.5, 4.4, 4.3, 4.1, 3.8, 3.3]
+            },
+            {
+                year: 2040,
+                title: "Invierno Demográfico",
+                desc: "La pirámide pierde su forma y parece una urna. México enfrenta el reto de pensiones y salud geriátrica.",
+                fertility: "Crítica (1.6 hijos)",
+                male: [-0.4, -0.5, -0.8, -1.1, -1.5, -2.0, -2.5, -3.0, -3.5, -3.8, -4.1, -4.3, -4.3, -4.3, -4.1, -3.8, -3.4, -3.0],
+                female: [0.6, 0.6, 1.0, 1.4, 1.9, 2.4, 3.0, 3.5, 3.9, 4.2, 4.4, 4.5, 4.4, 4.3, 4.0, 3.7, 3.2, 2.9]
+            },
+            {
+                year: 2050,
+                title: "La Urna Invertida",
+                desc: "México es un país de adultos mayores. La fuerza laboral se contrae.",
+                fertility: "Estancada (1.6 hijos)",
+                male: [-0.6, -0.7, -1.0, -1.4, -1.9, -2.5, -3.0, -3.4, -3.7, -4.0, -4.2, -4.3, -4.3, -4.0, -3.7, -3.3, -2.9, -2.8],
+                female: [0.9, 0.9, 1.3, 1.8, 2.4, 2.9, 3.4, 3.9, 4.2, 4.4, 4.5, 4.4, 4.2, 4.0, 3.6, 3.1, 2.8, 2.7]
+            }
+        ];
 
-    document.getElementById("yearLabel").textContent = year;
-    document.getElementById("tfr").textContent = d.tfr;
-    document.getElementById("elderly").textContent = d.elderly + "%";
-    document.getElementById("dependency").textContent = d.dep;
+        // --- CONFIGURACIÓN DE CHART.JS ---
+        
+        const ctx = document.getElementById('pyramidChart').getContext('2d');
+        const slider = document.getElementById('yearSlider');
+        const yearDisplay = document.getElementById('yearDisplay');
+        const analysisTitle = document.getElementById('analysisTitle');
+        const analysisText = document.getElementById('analysisText');
+        const fertilityText = document.getElementById('fertilityText');
+        const analysisBox = document.getElementById('analysisBox');
+        
+        // Elementos para el panel de totales
+        const totalPopDisplay = document.getElementById('totalPop');
+        const malePopDisplay = document.getElementById('malePop');
+        const femalePopDisplay = document.getElementById('femalePop');
 
-    y.domain(d.pyramid.map(p => p.age));
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ageGroups,
+                datasets: [
+                    {
+                        label: 'Hombres',
+                        data: [],
+                        backgroundColor: '#4f46e5', // Indigo 600
+                        borderRadius: { topLeft: 4, bottomLeft: 4 },
+                        barPercentage: 0.9,
+                        order: 1 // Orden visual
+                    },
+                    {
+                        label: 'Mujeres',
+                        data: [],
+                        backgroundColor: '#e11d48', // Rose 600
+                        borderRadius: { topRight: 4, bottomRight: 4 },
+                        barPercentage: 0.9,
+                        order: 2
+                    }
+                ]
+            },
+            options: {
+                indexAxis: 'y', // Barras horizontales
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        stacked: true,
+                        min: -6, 
+                        max: 6,
+                        grid: { color: '#f1f5f9' },
+                        ticks: {
+                            callback: function(value) {
+                                return Math.abs(value) + 'M'; 
+                            },
+                            font: { family: 'Inter', weight: 'bold' }
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        grid: { display: false },
+                        ticks: { font: { family: 'Inter', size: 11, weight: 'bold' } },
+                        reverse: false // 85+ arriba
+                    }
+                },
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                const value = Math.abs(context.raw);
+                                return label + ': ' + value.toFixed(1) + ' Millones';
+                            }
+                        }
+                    }
+                }
+            }
+        });
 
-    g.selectAll("*").remove();
+        // --- FUNCIÓN DE ACTUALIZACIÓN ---
+        function updateDashboard(index) {
+            const data = database[index];
+            
+            // 1. Actualizar textos descriptivos
+            yearDisplay.textContent = data.year;
+            analysisTitle.textContent = data.title;
+            analysisText.textContent = data.desc;
+            fertilityText.textContent = data.fertility;
 
-    g.selectAll(".male")
-      .data(d.pyramid)
-      .enter()
-      .append("rect")
-      .attr("x", p => x(p.male))
-      .attr("y", p => y(p.age))
-      .attr("width", p => Math.abs(x(p.male) - x(0)))
-      .attr("height", y.bandwidth())
-      .attr("fill", "#3b82f6");
+            // 2. Animación visual del cuadro de texto
+            analysisBox.classList.remove('border-indigo-500');
+            void analysisBox.offsetWidth;
+            analysisBox.classList.add('border-indigo-500');
 
-    g.selectAll(".female")
-      .data(d.pyramid)
-      .enter()
-      .append("rect")
-      .attr("x", x(0))
-      .attr("y", p => y(p.age))
-      .attr("width", p => Math.abs(x(p.female) - x(0)))
-      .attr("height", y.bandwidth())
-      .attr("fill", "#ec4899");
-  }
+            // 3. Actualizar Gráfica
+            chart.data.datasets[0].data = data.male;
+            chart.data.datasets[1].data = data.female;
+            chart.update();
 
-  render(2020);
+            // 4. Calcular y Actualizar Totales
+            // Suma absoluta de hombres y suma normal de mujeres
+            const totalMale = data.male.reduce((acc, curr) => acc + Math.abs(curr), 0);
+            const totalFemale = data.female.reduce((acc, curr) => acc + curr, 0);
+            const totalPopulation = totalMale + totalFemale;
 
-  document.getElementById("yearSlider")
-    .addEventListener("input", e => render(e.target.value));
-});
-</script>
+            // Actualizar DOM del panel
+            totalPopDisplay.textContent = totalPopulation.toFixed(1) + ' M';
+            malePopDisplay.textContent = totalMale.toFixed(1) + ' M';
+            femalePopDisplay.textContent = totalFemale.toFixed(1) + ' M';
+        }
 
+        // Listener del Slider
+        slider.addEventListener('input', (e) => {
+            updateDashboard(e.target.value);
+        });
+
+        // Inicializar
+        updateDashboard(6); // 2020
+
+        // Función de descarga
+        function downloadImage() {
+            const container = document.getElementById('dashboard-container');
+            html2canvas(container, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: "#ffffff"
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `piramide_poblacion_mexico_${yearDisplay.textContent}.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+    </script>
 </body>
 </html>
