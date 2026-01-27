@@ -139,7 +139,7 @@
                         <canvas id="pyramidChart"></canvas>
                     </div>
 
-                    <!-- NUEVO: PANEL DE TOTALES DINÁMICOS -->
+                    <!-- PANEL DE TOTALES DINÁMICOS -->
                     <div class="bg-white rounded-2xl border border-slate-200 p-6 flex flex-col md:flex-row justify-between items-center shadow-sm gap-4">
                         <div class="text-center md:text-left">
                             <p class="text-xs text-slate-400 font-bold uppercase tracking-widest mb-1">Población Total Estimada</p>
@@ -243,6 +243,7 @@
 
     <script>
         // --- DATOS DEMOGRÁFICOS ---
+        // Orden Invertido para que 0-4 salga abajo y 85+ arriba en gráfica horizontal
         const ageGroups = ['85+', '80-84', '75-79', '70-74', '65-69', '60-64', '55-59', '50-54', '45-49', '40-44', '35-39', '30-34', '25-29', '20-24', '15-19', '10-14', '5-9', '0-4'];
 
         const database = [
@@ -354,7 +355,7 @@
                         backgroundColor: '#4f46e5', // Indigo 600
                         borderRadius: { topLeft: 4, bottomLeft: 4 },
                         barPercentage: 0.9,
-                        order: 1 // Orden visual
+                        order: 1
                     },
                     {
                         label: 'Mujeres',
@@ -387,7 +388,7 @@
                         stacked: true,
                         grid: { display: false },
                         ticks: { font: { family: 'Inter', size: 11, weight: 'bold' } },
-                        reverse: false // 85+ arriba
+                        reverse: false // Invertido: 85+ arriba
                     }
                 },
                 plugins: {
@@ -426,12 +427,10 @@
             chart.update();
 
             // 4. Calcular y Actualizar Totales
-            // Suma absoluta de hombres y suma normal de mujeres
             const totalMale = data.male.reduce((acc, curr) => acc + Math.abs(curr), 0);
             const totalFemale = data.female.reduce((acc, curr) => acc + curr, 0);
             const totalPopulation = totalMale + totalFemale;
 
-            // Actualizar DOM del panel
             totalPopDisplay.textContent = totalPopulation.toFixed(1) + ' M';
             malePopDisplay.textContent = totalMale.toFixed(1) + ' M';
             femalePopDisplay.textContent = totalFemale.toFixed(1) + ' M';
