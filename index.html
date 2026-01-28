@@ -37,6 +37,7 @@
         }
 
         /* Colores Temáticos Hover */
+        .glass-card.card-piramide:hover { border-color: #f43f5e; }    /* Rosa */
         .glass-card.card-clase-media:hover { border-color: #2dd4bf; } /* Teal */
         .glass-card.card-pib:hover { border-color: #10b981; }         /* Esmeralda */
         .glass-card.card-deuda:hover { border-color: #a855f7; }       /* Morado */
@@ -129,10 +130,40 @@
                 </div>
             </header>
 
-            <!-- GRID DE PROYECTOS (6 ITEMS) -->
+            <!-- GRID DE PROYECTOS -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                <!-- 1. CAJA: CLASE MEDIA (NUEVO) -->
+                <!-- 1. CAJA: PIRÁMIDE POBLACIONAL (NUEVO) -->
+                <a href="https://araujome.github.io/visualizaciones/piramidepoblacionalmexico/" class="glass-card card-piramide rounded-[2.5rem] p-8 group">
+                    <div class="space-y-5">
+                        <div class="w-12 h-12 bg-rose-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-people-roof text-white text-xl"></i>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Pirámide Poblacional</h3>
+                                <span class="bg-rose-500/20 text-rose-400 text-[9px] font-bold px-2 py-0.5 rounded border border-rose-500/30">NUEVO</span>
+                            </div>
+                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
+                                Evolución demográfica de México (1950-2050): Bono demográfico y envejecimiento.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
+                        <div class="flex flex-col">
+                            <span class="uppercase tracking-wider font-bold text-rose-500">Demografía</span>
+                            <span class="text-white font-bold text-xs">México</span>
+                        </div>
+                        <div class="flex flex-col text-right">
+                            <span class="uppercase tracking-wider font-bold text-slate-400">Datos</span>
+                            <span class="text-white font-bold text-xs">INEGI / CONAPO</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 2. CAJA: CLASE MEDIA (ANTERIOR NUEVO) -->
                 <a href="https://araujome.github.io/visualizaciones/clasemedia/" class="glass-card card-clase-media rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-teal-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -140,10 +171,7 @@
                         </div>
                         
                         <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Clase Media</h3>
-                                <span class="bg-teal-500/20 text-teal-400 text-[9px] font-bold px-2 py-0.5 rounded border border-teal-500/30">NUEVO</span>
-                            </div>
+                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Clase Media</h3>
                             <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
                                 Análisis de estratificación social ajustada por PPA: ¿Quién pertenece realmente?
                             </p>
@@ -162,7 +190,7 @@
                     </div>
                 </a>
 
-                <!-- 2. CAJA: PIB PER CÁPITA -->
+                <!-- 3. CAJA: PIB PER CÁPITA -->
                 <a href="https://araujome.github.io/visualizaciones/pibpercapitappa/" class="glass-card card-pib rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -185,7 +213,7 @@
                     </div>
                 </a>
                 
-                <!-- 3. CAJA: DEUDA PÚBLICA -->
+                <!-- 4. CAJA: DEUDA PÚBLICA -->
                 <a href="https://araujome.github.io/visualizaciones/deudapormexicano/" class="glass-card card-deuda rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -208,7 +236,7 @@
                     </div>
                 </a>
 
-                <!-- 4. CAJA: AUDITORÍA PETROLERA -->
+                <!-- 5. CAJA: AUDITORÍA PETROLERA -->
                 <a href="https://araujome.github.io/visualizaciones/petroleoacuba/" class="glass-card card-petroleo rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -224,7 +252,7 @@
                     </div>
                 </a>
 
-                <!-- 5. CAJA: MORTALIDAD CÁNCER INFANTIL -->
+                <!-- 6. CAJA: MORTALIDAD CÁNCER INFANTIL -->
                 <a href="https://araujome.github.io/visualizaciones/defunciones-oncologico/" class="glass-card card-mortalidad rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -240,8 +268,8 @@
                     </div>
                 </a>
 
-                <!-- 6. CAJA: REPORTE ONCOLÓGICO -->
-                <a href="./oncologicos/" class="glass-card card-reporte rounded-[2.5rem] p-8 group">
+                <!-- 7. CAJA: REPORTE ONCOLÓGICO -->
+                <a href="https://araujome.github.io/visualizaciones/oncologicos/" class="glass-card card-reporte rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                             <i class="fa-solid fa-pills text-white text-xl"></i>
@@ -250,7 +278,7 @@
                         <div>
                             <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Reporte Oncológico</h3>
                             <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Auditoría de precios y desabasto de quimioterapias.
+                                Evolución de los precios de medicamentos contra el cáncer.
                             </p>
                         </div>
                     </div>
