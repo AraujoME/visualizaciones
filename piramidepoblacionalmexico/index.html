@@ -222,12 +222,12 @@
                     <div>
                         <h3 class="text-xl font-bold text-slate-800 mb-3 border-l-4 border-orange-500 pl-4">Proyecciones CONAPO</h3>
                         <p class="text-sm md:text-base text-slate-600 leading-relaxed text-justify mb-4">
-                            Las proyecciones 2030-2050 se basan en el <strong>escenario medio</strong> de las "Proyecciones de la Población de México 2016-2050" de CONAPO. Este escenario prevé que México alcanzará <strong>138 millones de habitantes en 2030</strong> y aproximadamente <strong>148 millones en 2050</strong>, con un crecimiento del 0.1% anual hacia mediados de siglo.
+                            Las proyecciones 2030-2050 se basan en el <strong>escenario medio</strong> de las "Proyecciones de la Población de México 2016-2050" de CONAPO. Este escenario prevé que México alcanzará <strong>138 millones de habitantes en 2030</strong> (con tasa de crecimiento de 0.62% anual) y <strong>148.2 millones en 2050</strong> (con crecimiento de 0.1% anual hacia mediados de siglo).
                         </p>
                         <ul class="list-none text-sm text-slate-600 space-y-2">
-                            <li><span class="font-bold text-orange-600">■</span> <strong>2030:</strong> ~138 Millones (proyección)</li>
-                            <li><span class="font-bold text-orange-600">■</span> <strong>2040:</strong> ~145 Millones (proyección)</li>
-                            <li><span class="font-bold text-orange-600">■</span> <strong>2050:</strong> ~148 Millones (proyección)</li>
+                            <li><span class="font-bold text-orange-600">■</span> <strong>2030:</strong> 138.1 Millones (proyección oficial)</li>
+                            <li><span class="font-bold text-orange-600">■</span> <strong>2040:</strong> 143.1 Millones (interpolación)</li>
+                            <li><span class="font-bold text-orange-600">■</span> <strong>2050:</strong> 148.2 Millones (proyección oficial)</li>
                         </ul>
                     </div>
                 </div>
@@ -397,35 +397,35 @@
                 {
                     year: 2030,
                     title: "Envejecimiento Acelerado",
-                    desc: "Proyección CONAPO: 138M habitantes. La población continúa creciendo pero a ritmo muy reducido (0.6% anual). Inicia envejecimiento acelerado.",
-                    fertility: "Muy baja (1.9 hijos/mujer)",
+                    desc: "Proyección CONAPO: 138M habitantes. La población continúa creciendo pero a ritmo muy reducido (0.62% anual). Inicia envejecimiento acelerado.",
+                    fertility: "Muy baja (1.88 hijos/mujer)",
                     source: "Proyección CONAPO 2016-2050 (Escenario Medio)",
                     dataType: "proyeccion",
                     // Proyección Oficial CONAPO: 138,070,271 habitantes
-                    male: [-0.80, -1.05, -1.45, -1.95, -2.55, -3.15, -3.75, -4.25, -4.75, -5.05, -5.25, -5.30, -5.25, -5.15, -5.00, -4.80, -4.60, -4.35],
-                    female: [1.00, 1.30, 1.75, 2.30, 2.95, 3.55, 4.15, 4.65, 5.15, 5.45, 5.65, 5.70, 5.65, 5.55, 5.40, 5.20, 5.00, 4.75]
+                    male: [-0.77, -1.01, -1.39, -1.87, -2.45, -3.03, -3.61, -4.09, -4.57, -4.86, -5.05, -5.10, -5.05, -4.95, -4.81, -4.62, -4.42, -4.18],
+                    female: [0.96, 1.25, 1.68, 2.21, 2.84, 3.41, 3.99, 4.47, 4.95, 5.24, 5.43, 5.48, 5.43, 5.34, 5.19, 5.00, 4.81, 4.57]
                 },
                 {
                     year: 2040,
                     title: "Estructura Madura",
-                    desc: "Proyección CONAPO: ~145M habitantes. México se acerca al pico poblacional histórico. La pirámide adquiere forma de urna.",
-                    fertility: "Crítica (1.7 hijos/mujer)",
+                    desc: "Proyección CONAPO: 143M habitantes. México se acerca al pico poblacional histórico. La pirámide adquiere forma de urna.",
+                    fertility: "Baja (1.77 hijos/mujer)",
                     source: "Proyección CONAPO 2016-2050 (Escenario Medio)",
                     dataType: "proyeccion",
-                    // Proyección basada en tendencias CONAPO ~145M
-                    male: [-1.20, -1.55, -2.05, -2.65, -3.25, -3.85, -4.35, -4.85, -5.15, -5.35, -5.45, -5.45, -5.35, -5.20, -5.00, -4.75, -4.50, -4.20],
-                    female: [1.50, 1.95, 2.50, 3.15, 3.75, 4.35, 4.85, 5.35, 5.65, 5.85, 5.95, 5.95, 5.85, 5.70, 5.50, 5.25, 4.95, 4.60]
+                    // Proyección interpolada: ~143,140,000 habitantes
+                    male: [-1.10, -1.42, -1.87, -2.42, -2.97, -3.51, -3.97, -4.43, -4.70, -4.88, -4.98, -4.98, -4.88, -4.75, -4.56, -4.34, -4.11, -3.83],
+                    female: [1.37, 1.78, 2.28, 2.88, 3.42, 3.97, 4.43, 4.88, 5.16, 5.34, 5.43, 5.43, 5.34, 5.20, 5.02, 4.79, 4.52, 4.20]
                 },
                 {
                     year: 2050,
                     title: "Pirámide Invertida",
                     desc: "Proyección CONAPO: 148.2M habitantes. Estabilización demográfica y envejecimiento masivo. 1 de cada 4 mexicanos tendrá más de 60 años.",
-                    fertility: "Estancada (1.7 hijos/mujer)",
+                    fertility: "Baja (1.72 hijos/mujer)",
                     source: "Proyección CONAPO 2016-2050 (Escenario Medio)",
                     dataType: "proyeccion",
                     // Proyección Oficial CONAPO: 148,209,594 habitantes
-                    male: [-1.80, -2.25, -2.85, -3.45, -4.05, -4.55, -4.95, -5.25, -5.45, -5.55, -5.55, -5.45, -5.30, -5.10, -4.85, -4.55, -4.25, -3.95],
-                    female: [2.20, 2.75, 3.45, 4.05, 4.65, 5.15, 5.55, 5.85, 6.05, 6.15, 6.15, 6.05, 5.90, 5.70, 5.45, 5.15, 4.85, 4.55]
+                    male: [-1.58, -1.98, -2.50, -3.03, -3.56, -4.00, -4.35, -4.61, -4.78, -4.87, -4.87, -4.78, -4.65, -4.48, -4.26, -3.99, -3.73, -3.47],
+                    female: [1.93, 2.41, 3.03, 3.56, 4.08, 4.52, 4.87, 5.13, 5.31, 5.40, 5.40, 5.31, 5.18, 5.00, 4.78, 4.52, 4.26, 4.00]
                 }
             ];
 
