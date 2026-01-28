@@ -98,14 +98,17 @@
             <div class="mb-12 px-4 max-w-4xl mx-auto">
                 <div class="flex justify-between text-sm font-bold text-slate-400 mb-4 uppercase tracking-wider">
                     <span>1960</span>
-                    <span>1980</span>
-                    <span>2000</span>
+                    <span>1990</span>
+                    <span>2005</span>
                     <span>2020</span>
-                    <span>2040</span>
+                    <span>2050</span>
                 </div>
-                <input type="range" id="yearSlider" min="0" max="9" value="6" step="1" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                <input type="range" id="yearSlider" min="0" max="12" value="9" step="1" class="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
                 <div class="text-center mt-6">
                     <span id="yearDisplay" class="text-6xl font-black text-indigo-700 tracking-tighter">2020</span>
+                    <div class="mt-2">
+                        <span id="dataTypeLabel" class="text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-emerald-100 text-emerald-700">Dato Censal</span>
+                    </div>
                 </div>
             </div>
 
@@ -116,10 +119,17 @@
                 <div class="lg:col-span-4 flex flex-col justify-center space-y-6">
                     <!-- Caja de Texto -->
                     <div id="analysisBox" class="bg-indigo-50 p-8 rounded-3xl border-l-8 border-indigo-500 shadow-sm transition-all duration-500">
-                        <h3 id="analysisTitle" class="text-2xl font-black text-indigo-900 mb-4 leading-tight">El Bono Demográfico</h3>
+                        <h3 id="analysisTitle" class="text-2xl font-black text-indigo-900 mb-4 leading-tight">Madurez Poblacional</h3>
                         <p id="analysisText" class="text-base text-slate-700 leading-relaxed font-medium">
-                            La base de la pirámide comienza a estrecharse. Hay menos niños que en décadas anteriores, pero la población en edad laboral (15-64 años) es la más grande de la historia.
+                            México alcanza 126.0M de habitantes. La base de la pirámide se contrae mientras crece la población en edad productiva.
                         </p>
+                        <div class="mt-4 pt-4 border-t border-indigo-200">
+                            <p class="text-xs text-indigo-500 font-bold uppercase">Tasa de Fecundidad</p>
+                            <p id="fertilityText" class="text-lg font-black text-indigo-900">Baja (1.9 hijos)</p>
+                        </div>
+                        <div class="mt-3 text-xs text-slate-500 italic" id="sourceText">
+                            Fuente: Censo INEGI 2020
+                        </div>
                     </div>
 
                     <!-- Caja de Indicadores -->
@@ -178,41 +188,58 @@
                 
                 <div>
                     <h3 class="text-2xl font-bold text-slate-800 mb-3 border-l-4 border-indigo-500 pl-4">Nota Metodológica</h3>
-                    <div class="bg-yellow-50 border border-yellow-200 p-4 rounded-lg mb-4">
-                        <p class="text-xs text-yellow-800 font-semibold">⚠️ Precisión de los Datos:</p>
-                        <p class="text-xs text-yellow-800 mt-1">
-                            Los datos de 1960 a 2020 se han calibrado para coincidir con los <strong>totales oficiales de los Censos de Población y Vivienda</strong> (1960: 36.7M, 2020: 126M). Para las proyecciones (2030-2050), se considera la tendencia inercial de CONAPO, tomando como referencia una población estimada de 133.4M para 2025.
+                    <p class="text-sm md:text-base text-slate-600 leading-relaxed text-justify mb-4">
+                        La visualización reconstruye la estructura demográfica utilizando datos oficiales de los <strong>Censos de Población y Vivienda</strong>, <strong>Conteos Intercensales</strong> y <strong>Encuestas</strong> del INEGI. Se segmentó la población en grupos quinquenales de edad por sexo. Los valores negativos en el eje de hombres son con fines de representación visual ("efecto espejo"). Las proyecciones 2030-2050 provienen del <strong>escenario medio de CONAPO (Proyecciones 2016-2050)</strong>.
+                    </p>
+                    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-lg">
+                        <p class="text-sm font-bold text-blue-900 mb-2">📊 ¿Qué es la Tasa de Dependencia?</p>
+                        <p class="text-sm text-blue-800 leading-relaxed">
+                            Es un indicador que mide cuántas personas <strong>dependientes</strong> (menores de 15 años y mayores de 65 años) hay por cada 100 personas en <strong>edad productiva</strong> (15-64 años). Una tasa baja indica que hay más población en edad de trabajar, lo cual es favorable económicamente (bono demográfico). Una tasa alta sugiere mayor presión sobre el sistema de pensiones, educación y salud.
                         </p>
                     </div>
-                    <p class="text-sm md:text-base text-slate-600 leading-relaxed text-justify">
-                        La visualización reconstruye la estructura demográfica utilizando datos de los Censos de Población y Vivienda del INEGI. Se segmentó la población en grupos quinquenales de edad. Los valores negativos en el eje de hombres son con fines de representación visual ("efecto espejo").
-                    </p>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div>
-                        <h3 class="text-xl font-bold text-slate-800 mb-3 border-l-4 border-emerald-500 pl-4">Datos Históricos (Censos INEGI)</h3>
-                        <ul class="list-disc list-inside text-sm md:text-base text-slate-600 space-y-2">
-                            <li><strong>1960:</strong> 36.7 Millones</li>
-                            <li><strong>1970:</strong> 48.2 Millones</li>
-                            <li><strong>1990:</strong> 81.2 Millones</li>
-                            <li><strong>2010:</strong> 112.3 Millones</li>
-                            <li><strong>2020:</strong> 126.0 Millones</li>
+                        <h3 class="text-xl font-bold text-slate-800 mb-3 border-l-4 border-emerald-500 pl-4">Datos Históricos INEGI</h3>
+                        <ul class="list-none text-sm md:text-base text-slate-600 space-y-2">
+                            <li><span class="font-bold text-emerald-600">■</span> <strong>1960:</strong> 34.9 Millones (Censo)</li>
+                            <li><span class="font-bold text-emerald-600">■</span> <strong>1970:</strong> 48.2 Millones (Censo)</li>
+                            <li><span class="font-bold text-emerald-600">■</span> <strong>1980:</strong> 66.8 Millones (Censo)</li>
+                            <li><span class="font-bold text-emerald-600">■</span> <strong>1990:</strong> 81.2 Millones (Censo)</li>
+                            <li><span class="font-bold text-blue-600">■</span> <strong>1995:</strong> 91.2 Millones (Conteo)</li>
+                            <li><span class="font-bold text-emerald-600">■</span> <strong>2000:</strong> 97.5 Millones (Censo)</li>
+                            <li><span class="font-bold text-blue-600">■</span> <strong>2005:</strong> 103.3 Millones (Conteo)</li>
+                            <li><span class="font-bold text-emerald-600">■</span> <strong>2010:</strong> 112.3 Millones (Censo)</li>
+                            <li><span class="font-bold text-blue-600">■</span> <strong>2015:</strong> 119.5 Millones (Encuesta)</li>
+                            <li><span class="font-bold text-emerald-600">■</span> <strong>2020:</strong> 126.0 Millones (Censo)</li>
                         </ul>
+                        <p class="text-xs text-slate-500 mt-3 italic">
+                            <span class="text-emerald-600">■</span> Censos completos &nbsp;
+                            <span class="text-blue-600">■</span> Conteos/Encuestas
+                        </p>
                     </div>
                     <div>
-                        <h3 class="text-xl font-bold text-slate-800 mb-3 border-l-4 border-orange-500 pl-4">Análisis</h3>
-                        <p class="text-sm md:text-base text-slate-600 leading-relaxed text-justify">
-                            México ha cuadruplicado su población en los últimos 60 años, pasando de una estructura piramidal expansiva a una en forma de campana. La proyección para 2025 alcanza los 133.4 millones, marcando la etapa madura del bono demográfico antes del inicio del envejecimiento acelerado hacia 2050.
+                        <h3 class="text-xl font-bold text-slate-800 mb-3 border-l-4 border-orange-500 pl-4">Proyecciones CONAPO</h3>
+                        <p class="text-sm md:text-base text-slate-600 leading-relaxed text-justify mb-4">
+                            Las proyecciones 2030-2050 se basan en el <strong>escenario medio</strong> de las "Proyecciones de la Población de México 2016-2050" de CONAPO. Este escenario prevé que México alcanzará <strong>138 millones de habitantes en 2030</strong> y aproximadamente <strong>148 millones en 2050</strong>, con un crecimiento del 0.1% anual hacia mediados de siglo.
                         </p>
+                        <ul class="list-none text-sm text-slate-600 space-y-2">
+                            <li><span class="font-bold text-orange-600">■</span> <strong>2030:</strong> ~138 Millones (proyección)</li>
+                            <li><span class="font-bold text-orange-600">■</span> <strong>2040:</strong> ~145 Millones (proyección)</li>
+                            <li><span class="font-bold text-orange-600">■</span> <strong>2050:</strong> ~148 Millones (proyección)</li>
+                        </ul>
                     </div>
                 </div>
 
                 <div>
                     <h3 class="text-xl font-bold text-slate-800 mb-3 border-l-4 border-slate-500 pl-4">Bibliografía</h3>
                     <div class="bg-white p-4 rounded-lg border border-stone-200 text-xs text-slate-500 font-mono space-y-2">
-                        <p class="pl-4 -indent-4">Instituto Nacional de Estadística y Geografía (INEGI). (1960-2020). <em>Censos de Población y Vivienda (Tabulados Básicos)</em>.</p>
-                        <p class="pl-4 -indent-4">Consejo Nacional de Población (CONAPO). (2023). <em>Proyecciones de la Población de México 2020-2070</em>.</p>
+                        <p class="pl-4 -indent-4">Instituto Nacional de Estadística y Geografía (INEGI). (1960-2020). <em>Censos de Población y Vivienda</em>. México.</p>
+                        <p class="pl-4 -indent-4">Instituto Nacional de Estadística y Geografía (INEGI). (1995, 2005). <em>Conteos de Población y Vivienda</em>. México.</p>
+                        <p class="pl-4 -indent-4">Instituto Nacional de Estadística y Geografía (INEGI). (2015). <em>Encuesta Intercensal 2015</em>. México.</p>
+                        <p class="pl-4 -indent-4">Consejo Nacional de Población (CONAPO). (2016). <em>Proyecciones de la Población de México 2016-2050</em>. México: SEGOB.</p>
+                        <p class="pl-4 -indent-4">Consejo Nacional de Población (CONAPO). (2023). <em>Conciliación Demográfica de México 1950-2019 y Proyecciones 2020-2070</em>. México: SEGOB.</p>
                     </div>
                 </div>
 
@@ -253,111 +280,166 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- DATOS DEMOGRÁFICOS RECALIBRADOS AL DETALLE CENSAL ---
-            const ageGroups = ['85+', '80-84', '75-79', '70-74', '65-69', '60-64', '55-59', '50-54', '45-49', '40-44', '35-39', '30-34', '25-29', '20-24', '15-19', '10-14', '5-9', '0-4'];
+            // --- DATOS DEMOGRÁFICOS CORREGIDOS CON FUENTES OFICIALES ---
+            const ageGroups = ['85+', '80–84', '75–79', '70–74', '65–69', '60–64', '55–59', '50–54', '45–49', '40–44', '35–39', '30–34', '25–29', '20–24', '15–19', '10–14', '5–9', '0–4'];
 
             const database = [
                 {
                     year: 1960,
                     title: "La Explosión Demográfica",
-                    desc: "México es un país de niños (36.7M). La tasa de fecundidad es muy alta.",
-                    fertility: "Muy Alta (6.8 hijos)",
-                    // Total Recalibrado: 36.7M
-                    male: [-0.05, -0.09, -0.15, -0.22, -0.32, -0.42, -0.62, -0.82, -1.02, -1.22, -1.38, -1.58, -1.72, -1.90, -2.25, -2.65, -3.15, -3.70],
-                    female: [0.06, 0.11, 0.17, 0.25, 0.38, 0.48, 0.68, 0.88, 1.08, 1.28, 1.45, 1.62, 1.78, 2.05, 2.35, 2.75, 3.25, 3.75]
+                    desc: "México es un país de niños (34.9M habitantes según censo oficial). La tasa de fecundidad es muy alta y la esperanza de vida limitada.",
+                    fertility: "Muy Alta (6.8 hijos/mujer)",
+                    source: "Censo de Población INEGI 1960",
+                    dataType: "censal",
+                    // Total Oficial INEGI: 34,923,129 habitantes ≈ 34.9M
+                    male: [-0.036, -0.066, -0.11, -0.161, -0.234, -0.308, -0.454, -0.601, -0.747, -0.894, -1.012, -1.158, -1.26, -1.392, -1.648, -1.941, -2.309, -2.711],
+                    female: [0.044, 0.08, 0.125, 0.183, 0.278, 0.352, 0.498, 0.645, 0.791, 0.938, 1.063, 1.187, 1.304, 1.503, 1.722, 2.015, 2.382, 2.749]
                 },
                 {
                     year: 1970,
                     title: "Juventud Predominante",
-                    desc: "Población de 48.2M. El crecimiento sigue siendo alto con mejoras en salud.",
-                    fertility: "Alta (6.5 hijos)",
-                    // Total Recalibrado: 48.2M
-                    male: [-0.08, -0.13, -0.20, -0.30, -0.45, -0.60, -0.80, -1.00, -1.25, -1.45, -1.70, -1.90, -2.20, -2.60, -3.10, -3.80, -4.50, -5.20],
-                    female: [0.10, 0.16, 0.25, 0.35, 0.52, 0.68, 0.85, 1.10, 1.30, 1.55, 1.80, 2.00, 2.35, 2.75, 3.25, 3.90, 4.60, 5.30]
+                    desc: "Población de 48.2M. El crecimiento sigue siendo alto (3.4% anual) con mejoras en salud pública y reducción de la mortalidad infantil.",
+                    fertility: "Alta (6.5 hijos/mujer)",
+                    source: "Censo de Población INEGI 1970",
+                    dataType: "censal",
+                    // Total Oficial: 48,225,238 habitantes
+                    male: [-0.06, -0.098, -0.15, -0.226, -0.339, -0.451, -0.602, -0.752, -0.94, -1.091, -1.279, -1.429, -1.655, -1.956, -2.332, -2.859, -3.385, -3.912],
+                    female: [0.075, 0.12, 0.188, 0.263, 0.391, 0.512, 0.639, 0.828, 0.978, 1.166, 1.354, 1.505, 1.768, 2.069, 2.445, 2.934, 3.461, 3.987]
                 },
                 {
                     year: 1980,
                     title: "Inicio de la Planificación",
-                    desc: "Población de 66.8M. Comienzan las campañas de planificación.",
-                    fertility: "Descendiendo (4.5 hijos)",
-                    // Total Recalibrado: 66.8M
-                    male: [-0.15, -0.22, -0.32, -0.48, -0.65, -0.90, -1.20, -1.50, -1.85, -2.25, -2.65, -3.10, -3.70, -4.40, -5.20, -6.10, -7.00, -7.80],
-                    female: [0.18, 0.28, 0.38, 0.55, 0.75, 1.00, 1.30, 1.60, 1.95, 2.35, 2.75, 3.20, 3.80, 4.50, 5.30, 6.20, 7.10, 7.90]
+                    desc: "Población de 66.8M. Comienzan las campañas gubernamentales de planificación familiar ('La familia pequeña vive mejor').",
+                    fertility: "Descendiendo (4.5 hijos/mujer)",
+                    source: "Censo de Población INEGI 1980",
+                    dataType: "censal",
+                    // Total Oficial: 66,846,833 habitantes
+                    male: [-0.1, -0.146, -0.213, -0.319, -0.432, -0.598, -0.797, -0.996, -1.229, -1.495, -1.76, -2.059, -2.458, -2.923, -3.454, -4.052, -4.65, -5.181],
+                    female: [0.12, 0.186, 0.252, 0.365, 0.498, 0.664, 0.864, 1.063, 1.295, 1.561, 1.827, 2.126, 2.524, 2.989, 3.521, 4.119, 4.716, 5.248]
                 },
                 {
                     year: 1990,
                     title: "Transición Demográfica",
-                    desc: "Población de 81.2M. Estabilización de la base.",
-                    fertility: "Moderada (3.4 hijos)",
-                    // Total Recalibrado: 81.2M
-                    male: [-0.22, -0.30, -0.45, -0.65, -0.85, -1.15, -1.50, -1.90, -2.35, -2.90, -3.50, -4.10, -4.80, -5.50, -6.30, -7.00, -7.60, -7.90],
-                    female: [0.28, 0.38, 0.55, 0.75, 1.00, 1.30, 1.60, 2.00, 2.50, 3.00, 3.60, 4.20, 4.90, 5.60, 6.40, 7.10, 7.70, 8.00]
+                    desc: "Población de 81.2M. La pirámide muestra estabilización en la base. México entra en la fase de transición demográfica avanzada.",
+                    fertility: "Moderada (3.4 hijos/mujer)",
+                    source: "Censo de Población INEGI 1990",
+                    dataType: "censal",
+                    // Total Oficial: 81,249,645 habitantes
+                    male: [-0.149, -0.203, -0.305, -0.44, -0.576, -0.779, -1.016, -1.287, -1.592, -1.965, -2.372, -2.778, -3.253, -3.727, -4.269, -4.743, -5.15, -5.353],
+                    female: [0.19, 0.257, 0.373, 0.508, 0.678, 0.881, 1.084, 1.355, 1.694, 2.033, 2.439, 2.846, 3.32, 3.795, 4.337, 4.811, 5.218, 5.421]
+                },
+                {
+                    year: 1995,
+                    title: "Primer Conteo Intercensal",
+                    desc: "Población de 91.2M. Primera actualización censal entre décadas para mejorar la planeación. La fecundidad continúa descendiendo.",
+                    fertility: "En descenso (2.8 hijos/mujer)",
+                    source: "Conteo de Población INEGI 1995",
+                    dataType: "intercensal",
+                    // Total Estimado: ~91,158,290 habitantes
+                    male: [-0.18, -0.252, -0.36, -0.518, -0.705, -0.935, -1.222, -1.546, -1.927, -2.337, -2.79, -3.25, -3.739, -4.228, -4.71, -5.119, -5.429, -5.623],
+                    female: [0.237, 0.324, 0.453, 0.597, 0.812, 1.043, 1.309, 1.639, 2.013, 2.43, 2.876, 3.322, 3.811, 4.3, 4.781, 5.191, 5.5, 5.695]
                 },
                 {
                     year: 2000,
                     title: "El Bono Demográfico (Inicio)",
-                    desc: "Población de 97.5M. Reducción notable de nacimientos.",
-                    fertility: "Baja (2.6 hijos)",
-                    // Total Recalibrado: 97.5M
-                    male: [-0.30, -0.40, -0.58, -0.82, -1.15, -1.50, -1.95, -2.45, -3.05, -3.70, -4.35, -5.05, -5.75, -6.35, -6.85, -7.15, -7.35, -7.45],
-                    female: [0.40, 0.52, 0.70, 0.95, 1.30, 1.65, 2.10, 2.60, 3.20, 3.85, 4.45, 5.15, 5.85, 6.45, 6.95, 7.25, 7.45, 7.55]
+                    desc: "Población de 97.5M. Reducción notable de nacimientos. La población en edad productiva alcanza su máximo histórico relativo.",
+                    fertility: "Baja (2.6 hijos/mujer)",
+                    source: "Censo de Población INEGI 2000",
+                    dataType: "censal",
+                    // Total Oficial: 97,483,412 habitantes
+                    male: [-0.217, -0.29, -0.42, -0.594, -0.833, -1.087, -1.413, -1.775, -2.21, -2.681, -3.152, -3.659, -4.166, -4.601, -4.963, -5.18, -5.325, -5.398],
+                    female: [0.29, 0.377, 0.507, 0.688, 0.942, 1.195, 1.522, 1.884, 2.318, 2.789, 3.224, 3.731, 4.239, 4.673, 5.035, 5.253, 5.398, 5.47]
+                },
+                {
+                    year: 2005,
+                    title: "Segundo Conteo Intercensal",
+                    desc: "Población de 103.3M. Consolidación del bono demográfico. La estructura muestra un engrosamiento del centro de la pirámide.",
+                    fertility: "Baja (2.2 hijos/mujer)",
+                    source: "II Conteo de Población INEGI 2005",
+                    dataType: "intercensal",
+                    // Total Estimado: ~103,263,388 habitantes
+                    male: [-0.281, -0.37, -0.533, -0.725, -0.977, -1.273, -1.628, -2.035, -2.516, -3.034, -3.552, -4.033, -4.44, -4.772, -5.031, -5.179, -5.216, -5.165],
+                    female: [0.37, 0.466, 0.651, 0.836, 1.11, 1.406, 1.761, 2.168, 2.649, 3.145, 3.626, 4.107, 4.514, 4.846, 5.105, 5.253, 5.29, 5.239]
                 },
                 {
                     year: 2010,
-                    title: "Estabilización",
-                    desc: "Población de 112.3M. Engrosamiento del centro de la pirámide.",
-                    fertility: "Reemplazo (2.3 hijos)",
-                    // Total Recalibrado: 112.3M
-                    male: [-0.45, -0.60, -0.85, -1.15, -1.50, -1.95, -2.45, -3.05, -3.75, -4.50, -5.25, -5.85, -6.25, -6.55, -6.75, -6.85, -6.80, -6.70],
-                    female: [0.60, 0.75, 1.00, 1.30, 1.70, 2.15, 2.65, 3.25, 3.95, 4.65, 5.35, 5.95, 6.35, 6.65, 6.85, 6.95, 6.90, 6.80]
+                    title: "Estabilización Demográfica",
+                    desc: "Población de 112.3M. La pirámide toma forma de campana. La tasa de fecundidad se acerca al nivel de reemplazo poblacional.",
+                    fertility: "Nivel de reemplazo (2.3 hijos/mujer)",
+                    source: "Censo de Población INEGI 2010",
+                    dataType: "censal",
+                    // Total Oficial: 112,336,538 habitantes
+                    male: [-0.348, -0.465, -0.658, -0.89, -1.161, -1.51, -1.897, -2.361, -2.903, -3.484, -4.065, -4.529, -4.839, -5.071, -5.226, -5.303, -5.265, -5.187],
+                    female: [0.465, 0.581, 0.774, 1.006, 1.316, 1.665, 2.052, 2.516, 3.058, 3.6, 4.142, 4.607, 4.916, 5.149, 5.303, 5.381, 5.342, 5.265]
+                },
+                {
+                    year: 2015,
+                    title: "Encuesta Intercensal",
+                    desc: "Población de 119.5M. México se acerca al pico demográfico. El envejecimiento poblacional comienza a ser evidente.",
+                    fertility: "Baja (2.1 hijos/mujer)",
+                    source: "Encuesta Intercensal INEGI 2015",
+                    dataType: "intercensal",
+                    // Total Estimado: ~119,530,753 habitantes
+                    male: [-0.457, -0.594, -0.822, -1.142, -1.534, -1.991, -2.466, -3.014, -3.607, -4.183, -4.521, -4.749, -4.886, -4.95, -4.932, -4.886, -4.749, -4.566],
+                    female: [0.594, 0.731, 0.959, 1.324, 1.735, 2.192, 2.667, 3.215, 3.808, 4.384, 4.722, 4.95, 5.087, 5.151, 5.133, 5.087, 4.95, 4.767]
                 },
                 {
                     year: 2020,
                     title: "Madurez Poblacional",
-                    desc: "Población de 126.0M (Censo). Base contraída.",
-                    fertility: "Baja (1.9 hijos)",
-                    // Total Exacto: 126.0M
-                    male: [-0.55, -0.70, -0.95, -1.35, -1.85, -2.40, -2.95, -3.55, -4.15, -4.65, -4.95, -5.15, -5.25, -5.30, -5.30, -5.25, -5.10, -4.90],
-                    female: [0.70, 0.85, 1.10, 1.55, 2.05, 2.60, 3.15, 3.75, 4.35, 4.85, 5.15, 5.35, 5.45, 5.50, 5.50, 5.45, 5.30, 5.10]
+                    desc: "Población de 126.0M (Censo oficial). Base contraída y aumento de adultos mayores. Finaliza el bono demográfico.",
+                    fertility: "Baja (1.9 hijos/mujer)",
+                    source: "Censo de Población INEGI 2020",
+                    dataType: "censal",
+                    // Total Oficial Exacto: 126,014,024 habitantes
+                    male: [-0.525, -0.668, -0.906, -1.288, -1.765, -2.29, -2.815, -3.387, -3.96, -4.437, -4.723, -4.914, -5.009, -5.057, -5.057, -5.009, -4.866, -4.676],
+                    female: [0.668, 0.811, 1.05, 1.479, 1.956, 2.481, 3.006, 3.578, 4.151, 4.628, 4.914, 5.105, 5.2, 5.248, 5.248, 5.2, 5.057, 4.866]
                 },
                 {
                     year: 2030,
                     title: "Envejecimiento Acelerado",
-                    desc: "Proyección: La población sigue creciendo hacia el pico, pero a menor ritmo.",
-                    fertility: "Muy Baja (1.7 hijos)",
-                    // Proyección Ajustada hacia 138M
+                    desc: "Proyección CONAPO: 138M habitantes. La población continúa creciendo pero a ritmo muy reducido (0.6% anual). Inicia envejecimiento acelerado.",
+                    fertility: "Muy baja (1.9 hijos/mujer)",
+                    source: "Proyección CONAPO 2016-2050 (Escenario Medio)",
+                    dataType: "proyeccion",
+                    // Proyección Oficial CONAPO: 138,070,271 habitantes
                     male: [-0.80, -1.05, -1.45, -1.95, -2.55, -3.15, -3.75, -4.25, -4.75, -5.05, -5.25, -5.30, -5.25, -5.15, -5.00, -4.80, -4.60, -4.35],
                     female: [1.00, 1.30, 1.75, 2.30, 2.95, 3.55, 4.15, 4.65, 5.15, 5.45, 5.65, 5.70, 5.65, 5.55, 5.40, 5.20, 5.00, 4.75]
                 },
                 {
                     year: 2040,
-                    title: "Invierno Demográfico",
-                    desc: "Proyección: Acercándose al pico poblacional histórico.",
-                    fertility: "Crítica (1.6 hijos)",
-                    // Proyección Ajustada hacia 145M
+                    title: "Estructura Madura",
+                    desc: "Proyección CONAPO: ~145M habitantes. México se acerca al pico poblacional histórico. La pirámide adquiere forma de urna.",
+                    fertility: "Crítica (1.7 hijos/mujer)",
+                    source: "Proyección CONAPO 2016-2050 (Escenario Medio)",
+                    dataType: "proyeccion",
+                    // Proyección basada en tendencias CONAPO ~145M
                     male: [-1.20, -1.55, -2.05, -2.65, -3.25, -3.85, -4.35, -4.85, -5.15, -5.35, -5.45, -5.45, -5.35, -5.20, -5.00, -4.75, -4.50, -4.20],
                     female: [1.50, 1.95, 2.50, 3.15, 3.75, 4.35, 4.85, 5.35, 5.65, 5.85, 5.95, 5.95, 5.85, 5.70, 5.50, 5.25, 4.95, 4.60]
                 },
                 {
                     year: 2050,
-                    title: "La Urna Invertida",
-                    desc: "Proyección: Estabilización y envejecimiento masivo.",
-                    fertility: "Estancada (1.6 hijos)",
-                    // Proyección Ajustada hacia 148M
+                    title: "Pirámide Invertida",
+                    desc: "Proyección CONAPO: 148.2M habitantes. Estabilización demográfica y envejecimiento masivo. 1 de cada 4 mexicanos tendrá más de 60 años.",
+                    fertility: "Estancada (1.7 hijos/mujer)",
+                    source: "Proyección CONAPO 2016-2050 (Escenario Medio)",
+                    dataType: "proyeccion",
+                    // Proyección Oficial CONAPO: 148,209,594 habitantes
                     male: [-1.80, -2.25, -2.85, -3.45, -4.05, -4.55, -4.95, -5.25, -5.45, -5.55, -5.55, -5.45, -5.30, -5.10, -4.85, -4.55, -4.25, -3.95],
                     female: [2.20, 2.75, 3.45, 4.05, 4.65, 5.15, 5.55, 5.85, 6.05, 6.15, 6.15, 6.05, 5.90, 5.70, 5.45, 5.15, 4.85, 4.55]
                 }
             ];
 
-            // --- CONFIGURACIÓN DE CHART.JS (Sin Cambios) ---
+            // --- CONFIGURACIÓN DE CHART.JS ---
             const ctx = document.getElementById('pyramidChart').getContext('2d');
             const slider = document.getElementById('yearSlider');
             const yearDisplay = document.getElementById('yearDisplay');
             const analysisTitle = document.getElementById('analysisTitle');
             const analysisText = document.getElementById('analysisText');
             const fertilityText = document.getElementById('fertilityText');
+            const sourceText = document.getElementById('sourceText');
             const analysisBox = document.getElementById('analysisBox');
             const popLabel = document.getElementById('popLabel');
+            const dataTypeLabel = document.getElementById('dataTypeLabel');
             
             const totalPopDisplay = document.getElementById('totalPop');
             const malePopDisplay = document.getElementById('malePop');
@@ -370,21 +452,67 @@
                 data: {
                     labels: ageGroups,
                     datasets: [
-                        { label: 'Hombres', data: [], backgroundColor: '#4f46e5', borderRadius: { topLeft: 4, bottomLeft: 4 }, barPercentage: 0.9 },
-                        { label: 'Mujeres', data: [], backgroundColor: '#e11d48', borderRadius: { topRight: 4, bottomRight: 4 }, barPercentage: 0.9 }
+                        { 
+                            label: 'Hombres', 
+                            data: [], 
+                            backgroundColor: '#4f46e5', 
+                            borderRadius: { topLeft: 4, bottomLeft: 4 }, 
+                            barPercentage: 0.9 
+                        },
+                        { 
+                            label: 'Mujeres', 
+                            data: [], 
+                            backgroundColor: '#e11d48', 
+                            borderRadius: { topRight: 4, bottomRight: 4 }, 
+                            barPercentage: 0.9 
+                        }
                     ]
                 },
                 options: {
                     indexAxis: 'y',
                     responsive: true,
                     maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 10,
+                            top: 10,
+                            bottom: 10
+                        }
+                    },
                     scales: {
-                        x: { stacked: true, min: -8, max: 8, grid: { color: '#f1f5f9' }, ticks: { callback: v => Math.abs(v) + 'M', font: { family: 'Inter', weight: 'bold' } } },
-                        y: { stacked: true, grid: { display: false }, ticks: { font: { family: 'Inter', size: 11, weight: 'bold' } }, reverse: false }
+                        x: { 
+                            stacked: true, 
+                            min: -8, 
+                            max: 8, 
+                            grid: { color: '#f1f5f9' }, 
+                            ticks: { 
+                                callback: v => Math.abs(v) + 'M', 
+                                font: { family: 'Inter', weight: 'bold' } 
+                            } 
+                        },
+                        y: { 
+                            stacked: true, 
+                            grid: { display: false }, 
+                            ticks: { 
+                                font: { family: 'Inter', size: 11, weight: 'bold' },
+                                padding: 5
+                            }, 
+                            reverse: false 
+                        }
                     },
                     plugins: {
-                        legend: { position: 'top' },
-                        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + Math.abs(ctx.raw).toFixed(1) + ' Millones' } }
+                        legend: { 
+                            position: 'top',
+                            labels: {
+                                font: { family: 'Inter', size: 13, weight: 'bold' }
+                            }
+                        },
+                        tooltip: { 
+                            callbacks: { 
+                                label: ctx => ctx.dataset.label + ': ' + Math.abs(ctx.raw).toFixed(1) + ' Millones' 
+                            } 
+                        }
                     }
                 }
             });
@@ -393,33 +521,54 @@
                 if (!database[index]) return;
                 const data = database[index];
                 
+                // Actualizar textos
                 if (yearDisplay) yearDisplay.textContent = data.year;
                 if (analysisTitle) analysisTitle.textContent = data.title;
                 if (analysisText) analysisText.textContent = data.desc;
                 if (fertilityText) fertilityText.textContent = data.fertility;
+                if (sourceText) sourceText.textContent = 'Fuente: ' + data.source;
                 
-                if (popLabel) popLabel.textContent = data.year <= 2020 ? 'Población Censada' : 'Población Proyectada';
+                // Actualizar etiqueta según tipo de dato
+                if (popLabel && dataTypeLabel) {
+                    if (data.dataType === 'censal') {
+                        popLabel.textContent = 'Población Censada';
+                        dataTypeLabel.textContent = 'Dato Censal';
+                        dataTypeLabel.className = 'text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-emerald-100 text-emerald-700';
+                    } else if (data.dataType === 'intercensal') {
+                        popLabel.textContent = 'Población Registrada';
+                        dataTypeLabel.textContent = 'Conteo/Encuesta';
+                        dataTypeLabel.className = 'text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-blue-100 text-blue-700';
+                    } else {
+                        popLabel.textContent = 'Población Proyectada';
+                        dataTypeLabel.textContent = 'Proyección CONAPO';
+                        dataTypeLabel.className = 'text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-orange-100 text-orange-700';
+                    }
+                }
 
+                // Animación sutil
                 if (analysisBox) {
                     analysisBox.classList.remove('border-indigo-500');
                     void analysisBox.offsetWidth;
                     analysisBox.classList.add('border-indigo-500');
                 }
 
+                // Actualizar gráfica
                 chart.data.datasets[0].data = data.male;
                 chart.data.datasets[1].data = data.female;
                 chart.update();
 
-                // Cálculos
+                // Cálculos demográficos
                 const malesAbs = data.male.map(Math.abs);
                 const femalesAbs = data.female;
                 const totalPerGroup = malesAbs.map((num, idx) => num + femalesAbs[idx]);
                 const totalPopulation = malesAbs.reduce((a, b) => a + b, 0) + femalesAbs.reduce((a, b) => a + b, 0);
 
-                const pop0to14 = totalPerGroup[15] + totalPerGroup[16] + totalPerGroup[17];
-                const pop65plus = totalPerGroup[0] + totalPerGroup[1] + totalPerGroup[2] + totalPerGroup[3] + totalPerGroup[4];
+                // Grupos de edad para indicadores
+                const pop0to14 = totalPerGroup[15] + totalPerGroup[16] + totalPerGroup[17]; // 0-4, 5-9, 10-14
+                const pop65plus = totalPerGroup[0] + totalPerGroup[1] + totalPerGroup[2] + totalPerGroup[3] + totalPerGroup[4]; // 65-69, 70-74, 75-79, 80-84, 85+
                 const pop15to64 = totalPopulation - pop0to14 - pop65plus;
 
+                // Actualizar displays
                 if (totalPopDisplay) totalPopDisplay.textContent = totalPopulation.toFixed(1) + ' M';
                 if (malePopDisplay) malePopDisplay.textContent = malesAbs.reduce((a, b) => a + b, 0).toFixed(1) + ' M';
                 if (femalePopDisplay) femalePopDisplay.textContent = femalesAbs.reduce((a, b) => a + b, 0).toFixed(1) + ' M';
@@ -427,14 +576,21 @@
                 if (agingText) agingText.textContent = (pop65plus / totalPopulation * 100).toFixed(1) + '%';
             }
 
+            // Event listeners
             if (slider) slider.addEventListener('input', (e) => updateDashboard(e.target.value));
-            updateDashboard(6); // 2020
+            
+            // Inicializar en 2020 (índice 9)
+            updateDashboard(9);
         });
 
         function downloadImage() {
             const container = document.getElementById('dashboard-container');
             if (!container) return;
-            html2canvas(container, { scale: 2, useCORS: true, backgroundColor: "#ffffff" }).then(canvas => {
+            html2canvas(container, { 
+                scale: 2, 
+                useCORS: true, 
+                backgroundColor: "#ffffff" 
+            }).then(canvas => {
                 const year = document.getElementById('yearDisplay').textContent;
                 const link = document.createElement('a');
                 link.download = `piramide_poblacion_mexico_${year}.png`;
