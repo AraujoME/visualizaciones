@@ -1,10 +1,17 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/Estado-Activo-success" />
-  <img src="https://img.shields.io/badge/Datos-OCDE%20PISA-blue" />
-  <img src="https://img.shields.io/badge/Periodo-2012--2022-informational" />
-  <img src="https://img.shields.io/badge/Visualizaci%C3%B3n-Chart.js-orange" />
-  <img src="https://img.shields.io/badge/Licencia-MIT-green" />
+  <a href="https://araujome.github.io/visualizaciones/comparativapisamexico/">
+    <img src="https://img.shields.io/badge/Demo-GitHub%20Pages-blue?logo=github" />
+  </a>
+  <a href="https://araujome.github.io/visualizaciones/">
+    <img src="https://img.shields.io/badge/Portafolio-Visualizaciones-informational" />
+  </a>
+  <img src="https://img.shields.io/badge/Datos-OCDE%20PISA-lightgrey" />
+  <img src="https://img.shields.io/badge/Periodo-2012--2022-yellowgreen" />
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/Licencia-MIT-green" />
+  </a>
 </p>
+
 
 # 📊 La Carrera Educativa  
 ### Comparativa PISA: Latinoamérica vs Líder Global (2012–2022)
