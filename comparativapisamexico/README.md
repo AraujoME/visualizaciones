@@ -5,12 +5,15 @@
   <a href="https://araujome.github.io/visualizaciones/">
     <img src="https://img.shields.io/badge/Portafolio-Visualizaciones-informational" />
   </a>
-  <img src="https://img.shields.io/badge/Datos-OCDE%20PISA-lightgrey" />
+  <a href="https://www.oecd.org/pisa/">
+    <img src="https://img.shields.io/badge/Datos-OCDE%20PISA-lightgrey" />
+  </a>
   <img src="https://img.shields.io/badge/Periodo-2012--2022-yellowgreen" />
-  <a href="LICENSE">
+  <a href="https://opensource.org/license/MIT">
     <img src="https://img.shields.io/badge/Licencia-MIT-green" />
   </a>
 </p>
+
 
 
 # 📊 La Carrera Educativa  
