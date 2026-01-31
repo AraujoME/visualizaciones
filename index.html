@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="es">
 
 <head>
@@ -37,9 +37,10 @@
         }
 
         /* Colores Temáticos Hover */
-        .glass-card.card-pisa:hover { border-color: #8b5cf6; }        /* Violeta */
+        .glass-card.card-divergencia:hover { border-color: #f97316; } /* Naranja */
+        .glass-card.card-educacion:hover { border-color: #8b5cf6; }   /* Violeta */
+        .glass-card.card-clase:hover { border-color: #2dd4bf; }       /* Teal */
         .glass-card.card-piramide:hover { border-color: #f43f5e; }    /* Rosa */
-        .glass-card.card-clase-media:hover { border-color: #2dd4bf; } /* Teal */
         .glass-card.card-pib:hover { border-color: #10b981; }         /* Esmeralda */
         .glass-card.card-deuda:hover { border-color: #a855f7; }       /* Morado */
         .glass-card.card-petroleo:hover { border-color: #3b82f6; }    /* Azul */
@@ -134,8 +135,39 @@
             <!-- GRID DE PROYECTOS -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                <!-- 1. CAJA: COMPARATIVA PISA (NUEVO) -->
-                <a href="https://araujome.github.io/visualizaciones/comparativapisamexico/" class="glass-card card-pisa rounded-[2.5rem] p-8 group">
+                <!-- 1. CAJA: LA GRAN DIVERGENCIA (NUEVO) -->
+                <!-- FIX: URL Actualizado -->
+                <a href="https://araujome.github.io/visualizaciones/precios-mercado-vs-estado/" class="glass-card card-divergencia rounded-[2.5rem] p-8 group">
+                    <div class="space-y-5">
+                        <div class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-bolt text-white text-xl"></i>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center gap-2 mb-1">
+                                <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">La Gran Divergencia</h3>
+                                <span class="bg-orange-500/20 text-orange-400 text-[9px] font-bold px-2 py-0.5 rounded border border-orange-500/30">NUEVO</span>
+                            </div>
+                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
+                                Comparativa de Precios: Deflación tecnológica (Mercado) vs. Inflación energética (Estado).
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
+                        <div class="flex flex-col">
+                            <span class="uppercase tracking-wider font-bold text-orange-500">Economía</span>
+                            <span class="text-white font-bold text-xs">México</span>
+                        </div>
+                        <div class="flex flex-col text-right">
+                            <span class="uppercase tracking-wider font-bold text-slate-400">Datos</span>
+                            <span class="text-white font-bold text-xs">CFE / IFT</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 2. CAJA: LA CARRERA EDUCATIVA -->
+                <a href="https://araujome.github.io/visualizaciones/comparativapisamexico/" class="glass-card card-educacion rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-violet-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                             <i class="fa-solid fa-graduation-cap text-white text-xl"></i>
@@ -143,11 +175,10 @@
                         
                         <div>
                             <div class="flex items-center gap-2 mb-1">
-                                <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Comparativa PISA</h3>
-                                <span class="bg-violet-500/20 text-violet-400 text-[9px] font-bold px-2 py-0.5 rounded border border-violet-500/30">NUEVO</span>
+                                <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">La Carrera Educativa</h3>
                             </div>
                             <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                México vs LatAm vs Líder Global (2012-2022): Brecha educativa y contexto.
+                                Análisis PISA (2012-2022): La brecha estructural entre Latinoamérica y el líder global.
                             </p>
                         </div>
                     </div>
@@ -155,7 +186,7 @@
                     <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
                         <div class="flex flex-col">
                             <span class="uppercase tracking-wider font-bold text-violet-500">Educación</span>
-                            <span class="text-white font-bold text-xs">México</span>
+                            <span class="text-white font-bold text-xs">LatAm vs Singapur</span>
                         </div>
                         <div class="flex flex-col text-right">
                             <span class="uppercase tracking-wider font-bold text-slate-400">Datos</span>
@@ -164,7 +195,34 @@
                     </div>
                 </a>
 
-                <!-- 2. CAJA: PIRÁMIDE POBLACIONAL -->
+                <!-- 3. CAJA: CLASE MEDIA GLOBAL -->
+                <a href="https://araujome.github.io/visualizaciones/clasemedia/" class="glass-card card-clase rounded-[2.5rem] p-8 group">
+                    <div class="space-y-5">
+                        <div class="w-12 h-12 bg-teal-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                            <i class="fa-solid fa-layer-group text-white text-xl"></i>
+                        </div>
+                        
+                        <div>
+                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Clase Media Global</h3>
+                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
+                                Análisis de estratificación social ajustada por PPA: ¿Quién pertenece realmente?
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
+                        <div class="flex flex-col">
+                            <span class="uppercase tracking-wider font-bold text-teal-500">Sociología</span>
+                            <span class="text-white font-bold text-xs">Vulnerable</span>
+                        </div>
+                        <div class="flex flex-col text-right">
+                            <span class="uppercase tracking-wider font-bold text-slate-400">Datos</span>
+                            <span class="text-white font-bold text-xs">BM / PEW</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- 4. CAJA: PIRÁMIDE POBLACIONAL -->
                 <a href="https://araujome.github.io/visualizaciones/piramidepoblacionalmexico/" class="glass-card card-piramide rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-rose-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -193,34 +251,7 @@
                     </div>
                 </a>
 
-                <!-- 3. CAJA: CLASE MEDIA -->
-                <a href="https://araujome.github.io/visualizaciones/clasemedia/" class="glass-card card-clase-media rounded-[2.5rem] p-8 group">
-                    <div class="space-y-5">
-                        <div class="w-12 h-12 bg-teal-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-layer-group text-white text-xl"></i>
-                        </div>
-                        
-                        <div>
-                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Clase Media</h3>
-                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Análisis de estratificación social ajustada por PPA: ¿Quién pertenece realmente?
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
-                        <div class="flex flex-col">
-                            <span class="uppercase tracking-wider font-bold text-teal-500">México</span>
-                            <span class="text-white font-bold text-xs">Vulnerable</span>
-                        </div>
-                        <div class="flex flex-col text-right">
-                            <span class="uppercase tracking-wider font-bold text-slate-400">Datos</span>
-                            <span class="text-white font-bold text-xs">BM / PEW</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- 4. CAJA: PIB PER CÁPITA -->
+                <!-- 5. CAJA: PIB GLOBAL (PPA) -->
                 <a href="https://araujome.github.io/visualizaciones/pibpercapitappa/" class="glass-card card-pib rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -228,22 +259,26 @@
                         </div>
                         
                         <div>
-                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">PIB Global</h3>
+                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">PIB Global (PPA)</h3>
                             <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Comparación de poder adquisitivo: China, Rusia, EEUU y México.
+                                Geopolítica económica: Comparativa de poder adquisitivo (China, Rusia, EEUU, México).
                             </p>
                         </div>
                     </div>
 
                     <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
                         <div class="flex flex-col">
-                            <span class="uppercase tracking-wider font-bold text-emerald-500">Enfoque</span>
-                            <span class="text-white font-bold text-xs">Geopolítica</span>
+                            <span class="uppercase tracking-wider font-bold text-emerald-500">Geopolítica</span>
+                            <span class="text-white font-bold text-xs">Macroeconomía</span>
+                        </div>
+                        <div class="flex flex-col text-right">
+                            <span class="uppercase tracking-wider font-bold text-slate-400">Datos</span>
+                            <span class="text-white font-bold text-xs">FMI</span>
                         </div>
                     </div>
                 </a>
                 
-                <!-- 5. CAJA: DEUDA PÚBLICA -->
+                <!-- 6. CAJA: TU DEUDA PERSONAL -->
                 <a href="https://araujome.github.io/visualizaciones/deudapormexicano/" class="glass-card card-deuda rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -251,22 +286,22 @@
                         </div>
                         
                         <div>
-                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Deuda Personal</h3>
+                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Tu Deuda Personal</h3>
                             <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Análisis de la deuda pública por habitante (2000-2025).
+                                Evolución histórica y proyección (2000-2025) de la deuda pública por habitante.
                             </p>
                         </div>
                     </div>
 
                     <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
                         <div class="flex flex-col">
-                            <span class="uppercase tracking-wider font-bold text-purple-500">2025</span>
+                            <span class="uppercase tracking-wider font-bold text-purple-500">Finanzas</span>
                             <span class="text-white font-bold text-xs">$139k/hab</span>
                         </div>
                     </div>
                 </a>
 
-                <!-- 6. CAJA: AUDITORÍA PETROLERA -->
+                <!-- 7. CAJA: DIPLOMACIA DEL CRUDO -->
                 <a href="https://araujome.github.io/visualizaciones/petroleoacuba/" class="glass-card card-petroleo rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -274,15 +309,26 @@
                         </div>
                         
                         <div>
-                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Auditoría Petrolera</h3>
+                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Diplomacia del Crudo</h3>
                             <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Análisis de flujos energéticos México → Cuba (2012-2025).
+                                Auditoría visual de los flujos energéticos México → Cuba (2012-2025).
                             </p>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
+                        <div class="flex flex-col">
+                            <span class="uppercase tracking-wider font-bold text-blue-500">Energía</span>
+                            <span class="text-white font-bold text-xs">Pemex</span>
+                        </div>
+                        <div class="flex flex-col text-right">
+                            <span class="uppercase tracking-wider font-bold text-slate-400">Datos</span>
+                            <span class="text-white font-bold text-xs">OSINT</span>
                         </div>
                     </div>
                 </a>
 
-                <!-- 7. CAJA: MORTALIDAD CÁNCER INFANTIL -->
+                <!-- 8. CAJA: CRISIS DE MORTALIDAD -->
                 <a href="https://araujome.github.io/visualizaciones/defunciones-oncologico/" class="glass-card card-mortalidad rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -292,13 +338,20 @@
                         <div>
                             <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Crisis de Mortalidad</h3>
                             <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Brecha generacional en defunciones por cáncer (2012-2025).
+                                Brecha generacional en defunciones por cáncer (Menores vs Adultos).
                             </p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
+                        <div class="flex flex-col">
+                            <span class="uppercase tracking-wider font-bold text-amber-500">Salud</span>
+                            <span class="text-white font-bold text-xs">Inequidad</span>
                         </div>
                     </div>
                 </a>
 
-                <!-- 8. CAJA: REPORTE ONCOLÓGICO -->
+                <!-- 9. CAJA: REPORTE ONCOLÓGICO -->
                 <a href="https://araujome.github.io/visualizaciones/oncologicos/" class="glass-card card-reporte rounded-[2.5rem] p-8 group">
                     <div class="space-y-5">
                         <div class="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
@@ -308,7 +361,7 @@
                         <div>
                             <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Reporte Oncológico</h3>
                             <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Auditoría de precios y desabasto de quimioterapias.
+                                Monitor de precios y desabasto de quimioterapias en mercado privado.
                             </p>
                         </div>
                     </div>
