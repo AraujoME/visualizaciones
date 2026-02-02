@@ -47,7 +47,7 @@ un segmento cuyo nivel de consumo depende del **apalancamiento** y se vuelve alt
 
 ## 🧠 Interpretación estructural
 
-Durante años se afirmó que México tenía *“más clase media que nunca”*.  
+Para la época en que se hizo este estudio se afirmó que México tenía *“más clase media que nunca”*.  
 Este estudio sugiere que esa afirmación **pierde fuerza** cuando se introduce una comparación funcional:
 
 - No basta con observar ingreso o acceso al crédito  
