@@ -1,27 +1,29 @@
-
+<!DOCTYPE html>
 <html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SocioNomicsLab | Portafolio Eric Araujo</title>
+    <title>SocioNomics Lab | Intelligence Unit</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap');
+        /* Usamos Inter para replicar el estilo limpio y fuerte de las imágenes */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,600;0,900;1,900&display=swap');
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #020617;
-            color: #94a3b8;
+            background-color: #020617; /* Slate 950 - Fondo muy oscuro */
+            color: #94a3b8; /* Slate 400 - Texto base */
         }
 
+        /* Estilo de Tarjetas Glassmorphism */
         .glass-card {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(99, 102, 241, 0.1);
-            transition: all 0.3s ease;
+            background: rgba(15, 23, 42, 0.6); /* Slate 900 con transparencia */
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
             height: 100%;
@@ -31,355 +33,323 @@
         }
 
         .glass-card:hover {
-            transform: translateY(-5px);
-            background: rgba(30, 41, 59, 0.9);
-            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            transform: translateY(-8px);
+            background: rgba(30, 41, 59, 0.8);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
-        /* Colores Temáticos Hover */
-        .glass-card.card-divergencia:hover { border-color: #f97316; } /* Naranja */
-        .glass-card.card-educacion:hover { border-color: #8b5cf6; }   /* Violeta */
-        .glass-card.card-clase:hover { border-color: #2dd4bf; }       /* Teal */
-        .glass-card.card-piramide:hover { border-color: #f43f5e; }    /* Rosa */
-        .glass-card.card-pib:hover { border-color: #10b981; }         /* Esmeralda */
-        .glass-card.card-deuda:hover { border-color: #a855f7; }       /* Morado */
-        .glass-card.card-petroleo:hover { border-color: #3b82f6; }    /* Azul */
-        .glass-card.card-mortalidad:hover { border-color: #f59e0b; }  /* Ámbar */
-        .glass-card.card-reporte:hover { border-color: #6366f1; }     /* Indigo */
-
-        .name-highlight {
-            color: #818cf8;
-            text-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+        /* Efecto de borde de color al hacer hover según categoría */
+        .glass-card:hover::after {
+            opacity: 1;
         }
 
-        /* Botones Sociales Responsivos */
-        .social-btn {
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            border: 1px solid transparent;
+            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        /* Definición de colores hover */
+        .card-resaca:hover { border-color: #ef4444; }      /* Rojo */
+        .card-mercado:hover { border-color: #f97316; }     /* Naranja */
+        .card-pisa:hover { border-color: #3b82f6; }        /* Azul */
+        .card-clase:hover { border-color: #14b8a6; }       /* Teal */
+        .card-piramide:hover { border-color: #be185d; }    /* Rosa */
+        .card-pib:hover { border-color: #10b981; }         /* Esmeralda */
+        .card-deuda:hover { border-color: #a855f7; }       /* Morado */
+        .card-petroleo:hover { border-color: #0ea5e9; }    /* Sky */
+        .card-mortalidad:hover { border-color: #eab308; }  /* Ámbar */
+        .card-oncologico:hover { border-color: #6366f1; }  /* Indigo */
+
+        /* Tipografía del Título Principal (Estilo de la imagen adjunta) */
+        .brand-title {
+            background: linear-gradient(135deg, #a78bfa 0%, #c084fc 50%, #818cf8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            /* Padding para evitar cortes en la fuente itálica */
+            padding-right: 0.1em; 
+            padding-bottom: 0.1em;
+            filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.15));
+        }
+
+        /* Botones Sociales */
+        .social-link {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 0.75rem;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
             color: #64748b;
-            width: 3.5rem;
-            height: 3.5rem;
-            font-size: 1.5rem;
         }
 
-        @media (min-width: 768px) {
-            .social-btn {
-                width: 2.5rem;
-                height: 2.5rem;
-                font-size: 1rem;
-            }
-        }
-
-        .social-btn:hover {
-            background: #6366f1;
-            color: white;
+        .social-link:hover {
+            background: #2e1065;
+            color: #a78bfa;
+            border-color: #a78bfa;
             transform: scale(1.1);
         }
 
-        .hero-bg {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-            opacity: 0.2;
-            filter: contrast(110%) brightness(40%);
-        }
-
-        .vignette-overlay {
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at center, transparent 20%, #020617 100%);
-            z-index: 1;
+        /* Fondo */
+        .bg-gradient-radial {
+            background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #020617 60%);
         }
     </style>
 </head>
 
-<body class="selection:bg-indigo-500/30">
+<body class="selection:bg-indigo-500/30 min-h-screen relative">
 
-    <div id="capture-root" class="relative min-h-screen bg-[#020617] overflow-hidden p-8 md:p-20">
-        
-        <!-- IMAGEN DE FONDO -->
-        <img src="./visualizacionesportada1.png" class="hero-bg w-full h-full object-cover" alt="" onerror="this.style.opacity='0'">
-        <div class="vignette-overlay"></div>
+    <!-- IMAGEN DE FONDO (Opcional, con fallback al gradiente si no carga) -->
+    <div class="fixed inset-0 z-0 bg-gradient-radial"></div>
+    <img src="./visualizacionesportada1.png" class="fixed inset-0 w-full h-full object-cover z-0 opacity-40 mix-blend-overlay pointer-events-none" alt="" onerror="this.style.display='none'">
+    
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="relative z-10 max-w-7xl mx-auto px-6 py-16 md:px-12 md:py-24">
 
-        <div class="relative z-10 max-w-6xl mx-auto">
-            
-            <header class="mb-20 space-y-6">
-                <div class="inline-flex items-center gap-3 bg-indigo-500/10 border border-indigo-500/20 px-4 py-1.5 rounded-full">
-                    <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse"></span>
-                    <span class="text-[9px] font-black uppercase tracking-[0.4em] text-indigo-400 italic">SocioNomics Intelligence Unit</span>
+        <!-- HEADER / IDENTIDAD -->
+        <header class="mb-24 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 border-b border-white/5 pb-12">
+            <div class="space-y-6">
+                <!-- Badge Superior -->
+                <div class="inline-flex items-center gap-3 bg-indigo-500/10 border border-indigo-500/20 px-4 py-1.5 rounded-full backdrop-blur-md">
+                    <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
+                    <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-indigo-200">Intelligence Unit</span>
                 </div>
-                
-                <div class="flex flex-col md:flex-row justify-between items-start gap-10">
-                    <div>
-                        <h1 class="text-6xl md:text-9xl font-black tracking-tighter leading-none name-highlight uppercase italic">
-                            Eric Araujo <br> Martínez
-                        </h1>
-                        <p class="text-xl md:text-3xl font-light text-slate-500 mt-6 max-w-2xl leading-tight italic">
-                            Auditoría de datos y <span class="text-indigo-400 font-bold">visualización estratégica</span> para el análisis de impacto social.
+
+                <!-- Título Marca (Igual a la imagen) -->
+                <div>
+                    <h1 class="text-7xl md:text-9xl font-black italic tracking-tighter leading-[0.85] brand-title mb-4">
+                        SOCIONOMICS<br>LAB
+                    </h1>
+                    <div class="flex items-center gap-4 mt-2">
+                        <div class="h-0.5 w-12 bg-slate-700"></div>
+                        <p class="text-lg md:text-xl font-medium text-slate-300">
+                            Dirigido por <strong class="text-white">Eric Araujo Martínez</strong>
                         </p>
                     </div>
-
-                    <div class="flex md:flex-col gap-3">
-                        <a href="https://github.com/araujome" target="_blank" class="social-btn"><i class="fab fa-github"></i></a>
-                        <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="social-btn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="https://x.com/SocioNomicsLab" target="_blank" class="social-btn"><i class="fab fa-x-twitter"></i></a>
-                    </div>
                 </div>
-            </header>
 
-            <!-- GRID DE PROYECTOS -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                <!-- 1. CAJA: LA GRAN DIVERGENCIA (NUEVO) -->
-                <!-- FIX: URL Actualizado -->
-                <a href="https://araujome.github.io/visualizaciones/precios-mercado-vs-estado/" class="glass-card card-divergencia rounded-[2.5rem] p-8 group">
-                    <div class="space-y-5">
-                        <div class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-bolt text-white text-xl"></i>
-                        </div>
-                        
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">La Gran Divergencia</h3>
-                                <span class="bg-orange-500/20 text-orange-400 text-[9px] font-bold px-2 py-0.5 rounded border border-orange-500/30">NUEVO</span>
-                            </div>
-                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Comparativa de Precios: Deflación tecnológica (Mercado) vs. Inflación energética (Estado).
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
-                        <div class="flex flex-col">
-                            <span class="uppercase tracking-wider font-bold text-orange-500">Economía</span>
-                            <span class="text-white font-bold text-xs">México</span>
-                        </div>
-                        <div class="flex flex-col text-right">
-                            <span class="uppercase tracking-wider font-bold text-slate-400">Datos</span>
-                            <span class="text-white font-bold text-xs">CFE / IFT</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- 2. CAJA: LA CARRERA EDUCATIVA -->
-                <a href="https://araujome.github.io/visualizaciones/comparativapisamexico/" class="glass-card card-educacion rounded-[2.5rem] p-8 group">
-                    <div class="space-y-5">
-                        <div class="w-12 h-12 bg-violet-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-graduation-cap text-white text-xl"></i>
-                        </div>
-                        
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">La Carrera Educativa</h3>
-                            </div>
-                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Análisis PISA (2012-2022): La brecha estructural entre Latinoamérica y el líder global.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
-                        <div class="flex flex-col">
-                            <span class="uppercase tracking-wider font-bold text-violet-500">Educación</span>
-                            <span class="text-white font-bold text-xs">LatAm vs Singapur</span>
-                        </div>
-                        <div class="flex flex-col text-right">
-                            <span class="uppercase tracking-wider font-bold text-slate-400">Datos</span>
-                            <span class="text-white font-bold text-xs">OCDE</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- 3. CAJA: CLASE MEDIA GLOBAL -->
-                <a href="https://araujome.github.io/visualizaciones/clasemedia/" class="glass-card card-clase rounded-[2.5rem] p-8 group">
-                    <div class="space-y-5">
-                        <div class="w-12 h-12 bg-teal-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-layer-group text-white text-xl"></i>
-                        </div>
-                        
-                        <div>
-                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Clase Media Global</h3>
-                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Análisis de estratificación social ajustada por PPA: ¿Quién pertenece realmente?
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
-                        <div class="flex flex-col">
-                            <span class="uppercase tracking-wider font-bold text-teal-500">Sociología</span>
-                            <span class="text-white font-bold text-xs">Vulnerable</span>
-                        </div>
-                        <div class="flex flex-col text-right">
-                            <span class="uppercase tracking-wider font-bold text-slate-400">Datos</span>
-                            <span class="text-white font-bold text-xs">BM / PEW</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- 4. CAJA: PIRÁMIDE POBLACIONAL -->
-                <a href="https://araujome.github.io/visualizaciones/piramidepoblacionalmexico/" class="glass-card card-piramide rounded-[2.5rem] p-8 group">
-                    <div class="space-y-5">
-                        <div class="w-12 h-12 bg-rose-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-people-roof text-white text-xl"></i>
-                        </div>
-                        
-                        <div>
-                            <div class="flex items-center gap-2 mb-1">
-                                <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Pirámide Poblacional</h3>
-                            </div>
-                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Evolución demográfica de México (1950-2050): Bono demográfico y envejecimiento.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
-                        <div class="flex flex-col">
-                            <span class="uppercase tracking-wider font-bold text-rose-500">Demografía</span>
-                            <span class="text-white font-bold text-xs">México</span>
-                        </div>
-                        <div class="flex flex-col text-right">
-                            <span class="uppercase tracking-wider font-bold text-slate-400">Datos</span>
-                            <span class="text-white font-bold text-xs">INEGI / CONAPO</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- 5. CAJA: PIB GLOBAL (PPA) -->
-                <a href="https://araujome.github.io/visualizaciones/pibpercapitappa/" class="glass-card card-pib rounded-[2.5rem] p-8 group">
-                    <div class="space-y-5">
-                        <div class="w-12 h-12 bg-emerald-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-earth-americas text-white text-xl"></i>
-                        </div>
-                        
-                        <div>
-                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">PIB Global (PPA)</h3>
-                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Geopolítica económica: Comparativa de poder adquisitivo (China, Rusia, EEUU, México).
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
-                        <div class="flex flex-col">
-                            <span class="uppercase tracking-wider font-bold text-emerald-500">Geopolítica</span>
-                            <span class="text-white font-bold text-xs">Macroeconomía</span>
-                        </div>
-                        <div class="flex flex-col text-right">
-                            <span class="uppercase tracking-wider font-bold text-slate-400">Datos</span>
-                            <span class="text-white font-bold text-xs">FMI</span>
-                        </div>
-                    </div>
-                </a>
-                
-                <!-- 6. CAJA: TU DEUDA PERSONAL -->
-                <a href="https://araujome.github.io/visualizaciones/deudapormexicano/" class="glass-card card-deuda rounded-[2.5rem] p-8 group">
-                    <div class="space-y-5">
-                        <div class="w-12 h-12 bg-purple-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-money-bill-trend-up text-white text-xl"></i>
-                        </div>
-                        
-                        <div>
-                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Tu Deuda Personal</h3>
-                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Evolución histórica y proyección (2000-2025) de la deuda pública por habitante.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
-                        <div class="flex flex-col">
-                            <span class="uppercase tracking-wider font-bold text-purple-500">Finanzas</span>
-                            <span class="text-white font-bold text-xs">$139k/hab</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- 7. CAJA: DIPLOMACIA DEL CRUDO -->
-                <a href="https://araujome.github.io/visualizaciones/petroleoacuba/" class="glass-card card-petroleo rounded-[2.5rem] p-8 group">
-                    <div class="space-y-5">
-                        <div class="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-ship text-white text-xl"></i>
-                        </div>
-                        
-                        <div>
-                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Diplomacia del Crudo</h3>
-                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Auditoría visual de los flujos energéticos México → Cuba (2012-2025).
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
-                        <div class="flex flex-col">
-                            <span class="uppercase tracking-wider font-bold text-blue-500">Energía</span>
-                            <span class="text-white font-bold text-xs">Pemex</span>
-                        </div>
-                        <div class="flex flex-col text-right">
-                            <span class="uppercase tracking-wider font-bold text-slate-400">Datos</span>
-                            <span class="text-white font-bold text-xs">OSINT</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- 8. CAJA: CRISIS DE MORTALIDAD -->
-                <a href="https://araujome.github.io/visualizaciones/defunciones-oncologico/" class="glass-card card-mortalidad rounded-[2.5rem] p-8 group">
-                    <div class="space-y-5">
-                        <div class="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-child-reaching text-white text-xl"></i>
-                        </div>
-                        
-                        <div>
-                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Crisis de Mortalidad</h3>
-                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Brecha generacional en defunciones por cáncer (Menores vs Adultos).
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-6 flex items-center justify-between text-[10px] text-slate-500 border-t border-slate-700/50 pt-4">
-                        <div class="flex flex-col">
-                            <span class="uppercase tracking-wider font-bold text-amber-500">Salud</span>
-                            <span class="text-white font-bold text-xs">Inequidad</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- 9. CAJA: REPORTE ONCOLÓGICO -->
-                <a href="https://araujome.github.io/visualizaciones/oncologicos/" class="glass-card card-reporte rounded-[2.5rem] p-8 group">
-                    <div class="space-y-5">
-                        <div class="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
-                            <i class="fa-solid fa-pills text-white text-xl"></i>
-                        </div>
-                        
-                        <div>
-                            <h3 class="text-lg font-black text-white italic uppercase tracking-tighter">Reporte Oncológico</h3>
-                            <p class="text-[11px] text-slate-300 mt-2 leading-relaxed font-medium">
-                                Monitor de precios y desabasto de quimioterapias en mercado privado.
-                            </p>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-6 pt-4 border-t border-slate-700/50">
-                        <span class="text-[10px] text-indigo-400 font-bold uppercase tracking-wider">Proyecto Activo</span>
-                    </div>
-                </a>
-
+                <p class="text-slate-500 max-w-2xl text-sm md:text-base leading-relaxed font-light">
+                    Auditoría de datos, econometría y visualización estratégica para el análisis de impacto social, financiero y político en México y Latinoamérica.
+                </p>
             </div>
 
-            <footer class="mt-32 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-                <div>
-                    <p class="text-4xl font-black text-indigo-500 tracking-tighter italic uppercase leading-none">@SocioNomicsLab</p>
-                    <p class="text-[9px] font-black text-slate-600 uppercase tracking-[0.4em] mt-3">Intelligence for Social Action • 2026</p>
+            <!-- Redes Sociales -->
+            <div class="flex gap-4">
+                <a href="https://github.com/araujome" target="_blank" class="social-link" aria-label="GitHub">
+                    <i class="fab fa-github text-xl"></i>
+                </a>
+                <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="social-link" aria-label="LinkedIn">
+                    <i class="fab fa-linkedin-in text-xl"></i>
+                </a>
+                <a href="https://x.com/SocioNomicsLab" target="_blank" class="social-link" aria-label="X (Twitter)">
+                    <i class="fab fa-x-twitter text-xl"></i>
+                </a>
+            </div>
+        </header>
+
+        <!-- GRID DE ESTUDIOS (10 Items) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+
+            <!-- 1. RESACA DEL CRÉDITO (NUEVO) -->
+            <a href="https://araujome.github.io/visualizaciones/resaca-del-credito/" class="glass-card card-resaca rounded-3xl p-6 group">
+                <div class="space-y-4">
+                    <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-900/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-credit-card text-white"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <h3 class="text-base font-black text-white italic uppercase tracking-tight">La Resaca del Crédito</h3>
+                            <span class="bg-red-500/20 text-red-400 text-[9px] font-bold px-2 py-0.5 rounded border border-red-500/30 animate-pulse">NUEVO</span>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">Monitor de morosidad (IMOR) en retail: Liverpool, Sanborns y Palacio (2023-2025).</p>
+                    </div>
                 </div>
-            </footer>
+                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
+                    <span class="text-red-400">FINANZAS</span>
+                    <span>BMV</span>
+                </div>
+            </a>
+
+            <!-- 2. LA GRAN DIVERGENCIA -->
+            <a href="https://araujome.github.io/visualizaciones/precios-mercado-vs-estado/" class="glass-card card-mercado rounded-3xl p-6 group">
+                <div class="space-y-4">
+                    <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-orange-900/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-bolt text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">La Gran Divergencia</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Comparativa de precios: Inflación energética (Estado) vs. Deflación tecnológica (Mercado).</p>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
+                    <span class="text-orange-400">ECONOMÍA</span>
+                    <span>CFE / IFT</span>
+                </div>
+            </a>
+
+            <!-- 3. LA CARRERA EDUCATIVA -->
+            <a href="https://araujome.github.io/visualizaciones/comparativapisamexico/" class="glass-card card-pisa rounded-3xl p-6 group">
+                <div class="space-y-4">
+                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-graduation-cap text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">La Carrera Educativa</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Análisis PISA (2012-2022): La brecha estructural entre Latinoamérica y el líder global.</p>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
+                    <span class="text-blue-400">EDUCACIÓN</span>
+                    <span>OCDE</span>
+                </div>
+            </a>
+
+            <!-- 4. CLASE MEDIA GLOBAL -->
+            <a href="https://araujome.github.io/visualizaciones/clasemedia/" class="glass-card card-clase rounded-3xl p-6 group">
+                <div class="space-y-4">
+                    <div class="w-10 h-10 bg-teal-500 rounded-xl flex items-center justify-center shadow-lg shadow-teal-900/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-layer-group text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">Clase Media Global</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Estratificación social comparada ajustada por PPA: ¿Quién pertenece realmente?</p>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
+                    <span class="text-teal-400">SOCIOLOGÍA</span>
+                    <span>BM / PEW</span>
+                </div>
+            </a>
+
+            <!-- 5. PIRÁMIDE POBLACIONAL -->
+            <a href="https://araujome.github.io/visualizaciones/piramidepoblacionalmexico/" class="glass-card card-piramide rounded-3xl p-6 group">
+                <div class="space-y-4">
+                    <div class="w-10 h-10 bg-pink-600 rounded-xl flex items-center justify-center shadow-lg shadow-pink-900/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-people-group text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">Pirámide Poblacional</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Simulador interactivo de la transición demográfica de México (1960-2050).</p>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
+                    <span class="text-pink-400">DEMOGRAFÍA</span>
+                    <span>CONAPO</span>
+                </div>
+            </a>
+
+            <!-- 6. PIB GLOBAL -->
+            <a href="https://araujome.github.io/visualizaciones/pibpercapitappa/" class="glass-card card-pib rounded-3xl p-6 group">
+                <div class="space-y-4">
+                    <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-900/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-earth-americas text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">PIB Global (PPA)</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Comparación de poder adquisitivo entre potencias mundiales y México.</p>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
+                    <span class="text-emerald-400">GEOPOLÍTICA</span>
+                    <span>FMI</span>
+                </div>
+            </a>
+
+            <!-- 7. TU DEUDA PERSONAL -->
+            <a href="https://araujome.github.io/visualizaciones/deudapormexicano/" class="glass-card card-deuda rounded-3xl p-6 group">
+                <div class="space-y-4">
+                    <div class="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-900/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-money-bill-trend-up text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">Tu Deuda Personal</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Análisis del SHRFSP por habitante (2000-2025) y su crecimiento nominal.</p>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
+                    <span class="text-purple-400">FINANZAS</span>
+                    <span>$139k/hab</span>
+                </div>
+            </a>
+
+            <!-- 8. DIPLOMACIA DEL CRUDO -->
+            <a href="https://araujome.github.io/visualizaciones/petroleoacuba/" class="glass-card card-petroleo rounded-3xl p-6 group">
+                <div class="space-y-4">
+                    <div class="w-10 h-10 bg-sky-600 rounded-xl flex items-center justify-center shadow-lg shadow-sky-900/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-ship text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">Diplomacia del Crudo</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Auditoría visual de los flujos energéticos México → Cuba e impacto financiero.</p>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
+                    <span class="text-sky-400">ENERGÍA</span>
+                    <span>OSINT</span>
+                </div>
+            </a>
+
+            <!-- 9. CRISIS DE MORTALIDAD -->
+            <a href="https://araujome.github.io/visualizaciones/defunciones-oncologico/" class="glass-card card-mortalidad rounded-3xl p-6 group">
+                <div class="space-y-4">
+                    <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center shadow-lg shadow-amber-900/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-child-reaching text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">Crisis de Mortalidad</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Brecha generacional en defunciones por cáncer (2012-2025).</p>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
+                    <span class="text-amber-400">SALUD</span>
+                    <span>INEGI</span>
+                </div>
+            </a>
+
+            <!-- 10. REPORTE ONCOLÓGICO -->
+            <a href="https://araujome.github.io/visualizaciones/oncologicos/" class="glass-card card-oncologico rounded-3xl p-6 group">
+                <div class="space-y-4">
+                    <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-900/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-pills text-white"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">Reporte Oncológico</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">Monitor de precios y desabasto de quimioterapias en mercado privado.</p>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
+                    <span class="text-indigo-400">INVESTIGACIÓN</span>
+                    <span>Precios</span>
+                </div>
+            </a>
+
         </div>
+
+        <!-- FOOTER -->
+        <footer class="mt-32 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-center md:text-left">
+            <div>
+                <p class="text-2xl font-black text-indigo-400 italic uppercase leading-none tracking-tighter">SocioNomics Lab</p>
+                <p class="text-[10px] font-bold text-slate-600 uppercase tracking-[0.2em] mt-2">© 2026 Intelligence for Social Action</p>
+            </div>
+            
+            <p class="text-xs text-slate-600 max-w-sm">
+                Diseñado con rigor estadístico y enfoque periodístico para democratizar el acceso a la información pública en México.
+            </p>
+        </footer>
+
     </div>
+
 </body>
 </html>
