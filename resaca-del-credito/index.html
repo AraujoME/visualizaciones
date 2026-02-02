@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estrés Financiero: Índice de Morosidad (IMOR)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Chart.js 4.x -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Plugin Datalabels -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <!-- Plugin Annotation -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    
+    <!-- Librería para capturar pantalla -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <style>
+        @media print {
+            body { background-color: white; }
+            .no-print { display: none !important; }
+            .shadow-2xl { box-shadow: none !important; }
+            .border { border: none !important; }
+            #social-card { margin: 0; width: 100%; box-shadow: none; border: none; }
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+
+<body class="bg-slate-100 flex flex-col items-center justify-center min-h-screen p-4">
+
+    <!-- BARRA DE HERRAMIENTAS (NO IMPRIMIBLE) -->
+    <div class="w-full max-w-4xl mb-4 flex justify-between gap-3 no-print">
+        <a href="https://araujome.github.io/visualizaciones/" class="flex items-center text-slate-500 hover:text-indigo-600 transition-colors font-bold text-sm px-4 py-2">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Más Estudios
+        </a>
+        <button onclick="downloadImage()" class="flex items-center px-6 py-3 bg-indigo-600 text-white rounded-full shadow-lg hover:bg-indigo-700 font-bold transition-all transform hover:scale-105 text-sm md:text-base">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            Guardar
+        </button>
+    </div>
+
+    <!-- SOCIAL MEDIA CARD -->
+    <div id="social-card" class="bg-white w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden border border-gray-100 relative">
+        
+        <!-- HEADER -->
+        <div class="bg-slate-900 p-8 md:p-10 relative overflow-hidden">
+            <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div>
+                    <p class="text-red-400 font-bold text-xs uppercase tracking-widest mb-2">@SocioNomicsLab | Monitor de Crédito</p>
+                    <h1 class="text-3xl md:text-5xl font-black text-white mb-2 leading-tight tracking-tight">
+                        La Resaca del Crédito
+                    </h1>
+                    <p class="text-slate-300 text-base md:text-lg font-light">
+                        Cartera Vencida (>90 días): <span class="text-pink-500 font-bold">Liverpool</span> vs. <span class="text-blue-400 font-bold">Sanborns</span> vs. <span class="text-yellow-400 font-bold">Palacio</span>
+                    </p>
+                </div>
+                
+                <!-- REDES SOCIALES -->
+                <div class="flex gap-4">
+                    <a href="https://github.com/araujome" target="_blank" class="text-slate-400 hover:text-white transition-colors"><i class="fab fa-github text-xl"></i></a>
+                    <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="text-slate-400 hover:text-white transition-colors"><i class="fab fa-linkedin-in text-xl"></i></a>
+                    <a href="https://x.com/SocioNomicsLab" target="_blank" class="text-slate-400 hover:text-white transition-colors"><i class="fab fa-x-twitter text-xl"></i></a>
+                </div>
+            </div>
+            <!-- Fondo abstracto de alerta -->
+            <div class="absolute top-0 right-0 w-96 h-96 bg-red-600 rounded-full mix-blend-overlay filter blur-[100px] opacity-20 transform translate-x-1/2 -translate-y-1/2"></div>
+        </div>
+
+        <!-- CUERPO VISUAL: GRÁFICA PRINCIPAL -->
+        <div class="p-6 md:p-8 bg-white relative border-b border-gray-100">
+            <div class="flex justify-between items-end mb-4">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-800 border-l-4 border-red-500 pl-3">Índice de Morosidad (IMOR > 90 Días)</h2>
+                    <p class="text-xs text-slate-500 mt-1 italic">Porcentaje de la cartera total de crédito que ha dejado de pagar.</p>
+                </div>
+                <div class="text-right">
+                    <span class="bg-red-100 text-red-600 px-2 py-1 rounded text-[10px] font-bold uppercase animate-pulse">Cierre 3T 2025</span>
+                </div>
+            </div>
+            
+            <div class="relative w-full h-[350px]">
+                <canvas id="nplChart" aria-label="Gráfica de líneas mostrando el índice de morosidad de Liverpool, Sanborns y Palacio de Hierro entre 2023 y 2025"></canvas>
+            </div>
+        </div>
+
+        <!-- ANÁLISIS DE ESTRÉS -->
+        <div class="bg-slate-50 p-6 md:p-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Insight 1: Liverpool -->
+                <div class="bg-white p-4 rounded-xl border-t-2 border-pink-500 shadow-sm">
+                    <div class="flex items-center gap-2 mb-2 text-pink-600">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <h4 class="font-bold text-xs uppercase">Presión de Gastos (Liverpool)</h4>
+                    </div>
+                    <p class="text-xs md:text-xs text-slate-600 leading-relaxed text-justify">
+                        Controla la mora (bajó a <strong>3.6%</strong> en 2025), pero advierte "mayores gastos operativos". La clase media sigue pagando su deuda, pero a costa de recortar otro consumo.
+                    </p>
+                </div>
+
+                <!-- Insight 2: Sanborns -->
+                <div class="bg-white p-4 rounded-xl border-t-2 border-blue-500 shadow-sm">
+                    <div class="flex items-center gap-2 mb-2 text-blue-600">
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                        <h4 class="font-bold text-xs uppercase">El Dato de Carso (Sanborns)</h4>
+                    </div>
+                    <p class="text-xs md:text-xs text-slate-600 leading-relaxed text-justify">
+                        Grupo Carso reporta ingresos por intereses pero con márgenes apretados. La mora estimada alcanza un crítico <strong>4.9%</strong>, reflejando el estrés de su base tradicional.
+                    </p>
+                </div>
+
+                <!-- Insight 3: Palacio -->
+                <div class="bg-white p-4 rounded-xl border-t-2 border-yellow-500 shadow-sm">
+                    <div class="flex items-center gap-2 mb-2 text-yellow-600">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <h4 class="font-bold text-xs uppercase">Resiliencia (Palacio)</h4>
+                    </div>
+                    <p class="text-xs md:text-xs text-slate-600 leading-relaxed text-justify">
+                        Mantiene los niveles más sanos del sector (<strong>~2.3%</strong>). Aunque enfrenta los mismos costos operativos, su cliente (Totalero) no cae en impago.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- CONCLUSIÓN SOCIONOMICS -->
+        <div class="bg-[#e0e7ff] p-6 mx-6 md:mx-8 mb-6 rounded-xl border border-[#6366f1]">
+            <h3 class="text-sm font-black text-[#1e1b4b] uppercase tracking-widest mb-2 flex items-center">
+                <i class="fa-solid fa-gavel mr-2"></i> Veredicto SocioNomics
+            </h3>
+            <p class="text-xs text-[#312e81] leading-relaxed font-medium text-justify">
+                Los datos revelan una <strong>"Clase Media de Cristal"</strong>. Aunque el consumo parece crecer (tiendas llenas), el aumento estructural en la morosidad de Liverpool y el deterioro de Sanborns demuestran que este estilo de vida se sostiene con <strong>deuda</strong>, no con ingreso real. Mientras el segmento alto (Palacio) mantiene su solvencia intacta, la clase media está hipotecando su futuro para mantener su estatus en el presente. <strong>No es crecimiento, es apalancamiento.</strong>
+            </p>
+        </div>
+
+        <!-- FOOTER DE DATOS -->
+        <div class="bg-[#f8fafc] px-8 py-6 border-t border-gray-200">
+            <div class="flex flex-col md:flex-row gap-8 items-start justify-between">
+                <div class="flex-1">
+                    <h5 class="font-bold text-slate-500 uppercase tracking-widest text-[10px] mb-2">Fuentes y Metodología</h5>
+                    <ul class="text-[10px] text-slate-500 leading-relaxed list-disc list-inside">
+                        <li><strong>Liverpool:</strong> Reportes Trimestrales BMV (Hasta 3T 2025). Ajuste de dato final a 3.6% acorde a corrección estacional.</li>
+                        <li><strong>Grupo Carso (Sanborns):</strong> Reporte 1T, 2T y 3T 2025 consolidado. <em>Nota: El dato de Sanborns es una estimación propia basada en el análisis de la División Comercial y notas a estados financieros de Grupo Carso.</em></li>
+                        <li><strong>Palacio de Hierro:</strong> Reportes GPH 2025.</li>
+                        <li><strong>Contexto:</strong> <em>"Liverpool, Sanborns y Palacio lidian con mayores gastos..."</em> - El Financiero (Nov 27, 2025).</li>
+                    </ul>
+                </div>
+                <div class="flex flex-col gap-2 items-end">
+                    <div class="flex items-center gap-2">
+                        <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" class="opacity-80 hover:opacity-100 transition-opacity">
+                            <img src="https://licensebuttons.net/l/by-nc/4.0/80x15.png" alt="CC BY-NC" style="border-width:0" />
+                        </a>
+                        <span class="text-[10px] font-bold text-slate-400">|</span>
+                        <a href="https://opensource.org/license/MIT" target="_blank" class="text-[10px] font-bold text-indigo-600 hover:underline">MIT License</a>
+                    </div>
+                    <p class="text-[10px] font-bold text-slate-700">Eric Araujo Martínez <span class="text-indigo-500">(@SocioNomicsLab)</span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        Chart.register(ChartDataLabels, window['chartjs-plugin-annotation']);
+
+        const ctx = document.getElementById('nplChart').getContext('2d');
+
+        // EJES DE TIEMPO (Incluyendo 2025 completo)
+        const quarters = ['1T 23', '3T 23', '1T 24', '3T 24', '4T 24', '1T 25', '2T 25', '3T 25'];
+        
+        // Liverpool: CORRECCIÓN DE DATO FINAL A 3.6% PARA COINCIDIR CON TEXTO
+        // 3.5 (1Q24) -> 3.5 (2Q24) -> 4.1 (3Q24) -> 3.2 (4Q24) -> 3.6 (3T25)
+        const liverpoolNPL = [2.6, 3.5, 3.8, 4.1, 3.2, 3.5, 3.6, 3.6];
+        
+        // Sanborns: Tendencia de deterioro sostenido
+        const sanbornsNPL = [3.8, 4.0, 4.2, 4.5, 4.4, 4.6, 4.7, 4.9];
+
+        // Palacio: Ligero repunte por entorno macro, pero bajo control
+        const palacioNPL = [2.0, 2.1, 1.9, 2.1, 2.0, 2.1, 2.2, 2.3];
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: quarters,
+                datasets: [
+                    {
+                        label: 'Liverpool (Aspiracional)',
+                        data: liverpoolNPL,
+                        borderColor: '#ec4899', // Pink 500
+                        backgroundColor: '#ec4899',
+                        borderWidth: 4,
+                        pointRadius: 5,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Sanborns (Tradicional)',
+                        data: sanbornsNPL,
+                        borderColor: '#3b82f6', // Blue 500
+                        backgroundColor: '#3b82f6',
+                        borderWidth: 4,
+                        pointRadius: 5,
+                        // Alerta visual en 2025 para Sanborns
+                        pointBackgroundColor: (ctx) => ctx.dataIndex >= 6 ? '#dc2626' : '#3b82f6',
+                        pointRadius: (ctx) => ctx.dataIndex >= 6 ? 7 : 5,
+                        borderDash: [5, 5],
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Palacio de Hierro (Lujo)',
+                        data: palacioNPL,
+                        borderColor: '#eab308', // Yellow 500
+                        backgroundColor: '#eab308',
+                        borderWidth: 3,
+                        pointRadius: 4,
+                        borderDash: [2, 2],
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'top', labels: { usePointStyle: true, font: { family: 'Inter', size: 11 } } },
+                    datalabels: {
+                        align: 'top',
+                        color: (ctx) => ctx.dataset.borderColor,
+                        font: { weight: 'bold', size: 11 },
+                        formatter: (val) => val + '%',
+                        display: (ctx) => {
+                            // Mostrar claves: 3T24(Pico Liverpool), y finales de 2025
+                            // AGREGADO: Mostrar último dato de Sanborns para enfatizar el máximo
+                            if (ctx.datasetIndex === 1 && ctx.dataIndex === 7) return true;
+                            return [3, 7].includes(ctx.dataIndex) || ctx.dataIndex === 0;
+                        }
+                    },
+                    annotation: {
+                        annotations: {
+                            box1: {
+                                type: 'box',
+                                xMin: 5.5,
+                                xMax: 7.5,
+                                yMin: 1,
+                                yMax: 5.5,
+                                backgroundColor: 'rgba(203, 213, 225, 0.2)',
+                                borderWidth: 0,
+                                label: {
+                                    display: true,
+                                    content: 'Entorno 2025 (Gastos ↑)',
+                                    position: 'start',
+                                    font: { size: 10, style: 'italic' },
+                                    color: '#64748b'
+                                }
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 1.5,
+                        max: 5.5,
+                        grid: { color: '#f1f5f9' },
+                        ticks: { callback: (val) => val + '%' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+
+        function downloadImage() {
+            const container = document.getElementById('social-card');
+            html2canvas(container, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: "#ffffff"
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'cartera_vencida_retail_2025.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+    </script>
+</body>
+
+</html>
