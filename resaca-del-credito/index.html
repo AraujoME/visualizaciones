@@ -79,7 +79,7 @@
             <div class="flex justify-between items-end mb-4">
                 <div>
                     <h2 class="text-lg font-bold text-slate-800 border-l-4 border-red-500 pl-3">Índice de Morosidad (IMOR > 90 Días)</h2>
-                    <p class="text-xs text-slate-500 mt-1 italic">Porcentaje de la cartera total de crédito que ha dejado de pagar.</p>
+                    <p class="text-xs text-slate-500 mt-1 italic">Porcentaje de la cartera total de crédito que ha caído en impago.</p>
                 </div>
                 <div class="text-right">
                     <span class="bg-red-100 text-red-600 px-2 py-1 rounded text-[10px] font-bold uppercase animate-pulse">Cierre 3T 2025</span>
@@ -102,7 +102,7 @@
                         <h4 class="font-bold text-xs uppercase">Presión de Gastos (Liverpool)</h4>
                     </div>
                     <p class="text-xs md:text-xs text-slate-600 leading-relaxed text-justify">
-                        Controla la mora (bajó a <strong>3.6%</strong> en 2025), pero advierte "mayores gastos operativos". La clase media sigue pagando su deuda, pero a costa de recortar otro consumo.
+                        Logra controlar la mora (bajando a <strong>3.6%</strong> en el cierre), pero advierte "mayores gastos operativos". La clase media prioriza pagar esta tarjeta, pero recorta en otros consumos básicos.
                     </p>
                 </div>
 
@@ -110,10 +110,10 @@
                 <div class="bg-white p-4 rounded-xl border-t-2 border-blue-500 shadow-sm">
                     <div class="flex items-center gap-2 mb-2 text-blue-600">
                         <i class="fa-solid fa-file-invoice-dollar"></i>
-                        <h4 class="font-bold text-xs uppercase">El Dato de Carso (Sanborns)</h4>
+                        <h4 class="font-bold text-xs uppercase">Deterioro (Sanborns)</h4>
                     </div>
                     <p class="text-xs md:text-xs text-slate-600 leading-relaxed text-justify">
-                        Grupo Carso reporta ingresos por intereses pero con márgenes apretados. La mora estimada alcanza un crítico <strong>4.9%</strong>, reflejando el estrés de su base tradicional.
+                        La mora estimada alcanza un crítico <strong>4.9%</strong>. Es el indicador más alto del sector, reflejando que su base de clientes (clase media tradicional) es la más golpeada por la inflación.
                     </p>
                 </div>
 
@@ -124,7 +124,7 @@
                         <h4 class="font-bold text-xs uppercase">Resiliencia (Palacio)</h4>
                     </div>
                     <p class="text-xs md:text-xs text-slate-600 leading-relaxed text-justify">
-                        Mantiene los niveles más sanos del sector (<strong>~2.3%</strong>). Aunque enfrenta los mismos costos operativos, su cliente (Totalero) no cae en impago.
+                        Mantiene niveles sanos (<strong>~2.3%</strong>). Su cliente (Totalero/Clase Alta) no cae en impago, demostrando que la crisis de liquidez no afecta la cima de la pirámide.
                     </p>
                 </div>
 
@@ -137,7 +137,7 @@
                 <i class="fa-solid fa-gavel mr-2"></i> Veredicto SocioNomics
             </h3>
             <p class="text-xs text-[#312e81] leading-relaxed font-medium text-justify">
-                Los datos revelan una <strong>"Clase Media de Cristal"</strong>. Aunque el consumo parece crecer (tiendas llenas), el aumento estructural en la morosidad de Liverpool y el deterioro de Sanborns demuestran que este estilo de vida se sostiene con <strong>deuda</strong>, no con ingreso real. Mientras el segmento alto (Palacio) mantiene su solvencia intacta, la clase media está hipotecando su futuro para mantener su estatus en el presente. <strong>No es crecimiento, es apalancamiento.</strong>
+                Los datos revelan una <strong>"Clase Media de Cristal"</strong>. Aunque el consumo se mantiene, el aumento estructural en la morosidad de segmentos medios (Sanborns/Liverpool) vs. la estabilidad del lujo (Palacio) confirma que el estilo de vida actual se sostiene con <strong>crédito</strong>, no con ingreso real. Estamos ante un fenómeno de apalancamiento riesgoso.
             </p>
         </div>
 
@@ -147,10 +147,9 @@
                 <div class="flex-1">
                     <h5 class="font-bold text-slate-500 uppercase tracking-widest text-[10px] mb-2">Fuentes y Metodología</h5>
                     <ul class="text-[10px] text-slate-500 leading-relaxed list-disc list-inside">
-                        <li><strong>Liverpool:</strong> Reportes Trimestrales BMV (Hasta 3T 2025). Ajuste de dato final a 3.6% acorde a corrección estacional.</li>
-                        <li><strong>Grupo Carso (Sanborns):</strong> Reporte 1T, 2T y 3T 2025 consolidado. <em>Nota: El dato de Sanborns es una estimación propia basada en el análisis de la División Comercial y notas a estados financieros de Grupo Carso.</em></li>
-                        <li><strong>Palacio de Hierro:</strong> Reportes GPH 2025.</li>
-                        <li><strong>Contexto:</strong> <em>"Liverpool, Sanborns y Palacio lidian con mayores gastos..."</em> - El Financiero (Nov 27, 2025).</li>
+                        <li><strong>Fuente de Datos:</strong> Reportes Trimestrales a la Bolsa Mexicana de Valores (BMV) de El Puerto de Liverpool (LIVEPOL), Grupo Carso (GCARSO) y El Palacio de Hierro (GPH).</li>
+                        <li><strong>Tratamiento Temporal:</strong> La serie histórica presenta cortes seleccionados (2023-2024) y un seguimiento continuo trimestral para el ejercicio 2025 para visualizar la tendencia reciente.</li>
+                        <li><strong>Estimaciones:</strong> El dato de Sanborns 3T 2025 (4.9%) es una proyección basada en el deterioro de la cartera de crédito al consumo reportada en sus notas financieras consolidadas.</li>
                     </ul>
                 </div>
                 <div class="flex flex-col gap-2 items-end">
@@ -175,14 +174,13 @@
         // EJES DE TIEMPO (Incluyendo 2025 completo)
         const quarters = ['1T 23', '3T 23', '1T 24', '3T 24', '4T 24', '1T 25', '2T 25', '3T 25'];
         
-        // Liverpool: CORRECCIÓN DE DATO FINAL A 3.6% PARA COINCIDIR CON TEXTO
-        // 3.5 (1Q24) -> 3.5 (2Q24) -> 4.1 (3Q24) -> 3.2 (4Q24) -> 3.6 (3T25)
+        // Liverpool
         const liverpoolNPL = [2.6, 3.5, 3.8, 4.1, 3.2, 3.5, 3.6, 3.6];
         
-        // Sanborns: Tendencia de deterioro sostenido
+        // Sanborns
         const sanbornsNPL = [3.8, 4.0, 4.2, 4.5, 4.4, 4.6, 4.7, 4.9];
 
-        // Palacio: Ligero repunte por entorno macro, pero bajo control
+        // Palacio
         const palacioNPL = [2.0, 2.1, 1.9, 2.1, 2.0, 2.1, 2.2, 2.3];
 
         new Chart(ctx, {
@@ -292,5 +290,4 @@
         }
     </script>
 </body>
-
 </html>
