@@ -1,109 +1,109 @@
-<div align="center">
+# 📉 La Resaca del Crédito  
+### Monitor de Estrés Financiero en Retail (2023–2025)
 
-📉 La Resaca del Crédito
+[🔗 Ver visualización interactiva](https://araujome.github.io/visualizaciones/resaca-del-credito/) ·  
+[📄 Repositorio](https://github.com/araujome/visualizaciones) ·  
+[⚖️ Licencia CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)
 
-Monitor de Estrés Financiero en Retail (2023-2025)
+---
 
-<!-- CINTILLO DE NAVEGACIÓN -->
+## 🧐 Sobre el estudio
 
-</div>
+**La Resaca del Crédito** es un análisis financiero y sociológico que utiliza el  
+**Índice de Morosidad (IMOR)** de las tarjetas de crédito **no bancarias** de las principales cadenas departamentales de México como un **termómetro de estrés financiero por clase social**.
 
-🧐 Sobre el Estudio
+La hipótesis central es que la **cartera vencida (>90 días)** refleja, con rezago mínimo,  
+la fragilidad o resiliencia de los distintos estratos sociales frente a:
 
-"La Resaca del Crédito" es un análisis financiero y sociológico que monitorea el Índice de Morosidad (IMOR) en las tarjetas de crédito no bancarias de las principales cadenas departamentales de México.
+- Inflación persistente  
+- Tasas de interés elevadas  
+- Desaceleración del consumo (2024–2025)
 
-El objetivo es utilizar la cartera vencida (>90 días) como un termómetro del estrés financiero de las distintas clases sociales en México ante el entorno inflacionario y las tasas de interés de 2024-2025.
+---
 
-🔗 Ver Visualización Interactiva
+## 🎯 Objetivo analítico
 
-📊 Hallazgos Clave
+Evaluar si el discurso recurrente sobre la expansión de la *clase media* en México  
+se sostiene cuando se observa su **capacidad real de absorber choques financieros**,  
+en comparación con otros segmentos socioeconómicos.
 
-El análisis de los reportes trimestrales revela una divergencia clara en la capacidad de pago según el segmento socioeconómico:
+---
 
-Segmento
+## 📊 Hallazgos clave
 
-Cadena
+El análisis de los reportes trimestrales revela una **divergencia clara en la capacidad de pago**:
 
-Tendencia IMOR
+| Segmento | Cadena | IMOR aprox. | Interpretación |
+|--------|-------|------------|----------------|
+| **Lujo** | Palacio de Hierro | ~2.3 % | **Resiliencia**. Predominio de *totaleros*. Liquidez intacta; mínima sensibilidad a inflación o tasas. |
+| **Aspiracional** | Liverpool | ~3.6 % | **Estrés controlado**. La clase media-alta prioriza este crédito para sostener estatus y líneas disponibles. |
+| **Tradicional** | Sanborns (Carso) | ~4.9 % | **Deterioro**. La clase media tradicional muestra la mayor fragilidad financiera. |
 
-Interpretación SocioNomics
+**Veredicto:**  
+Los datos apuntan a la existencia de una **“clase media de cristal”**:  
+un segmento cuyo nivel de consumo depende del **apalancamiento** y se vuelve altamente vulnerable ante el encarecimiento del crédito.
 
-Lujo
+---
 
-🟡 Palacio de Hierro
+## 🧠 Interpretación estructural
 
-Estable (~2.3%)
+Durante años se afirmó que México tenía *“más clase media que nunca”*.  
+Este estudio sugiere que esa afirmación **pierde fuerza** cuando se introduce una comparación funcional:
 
-Resiliencia. El segmento alto (totaleros) no se ve afectado por la inflación o tasas altas. Su liquidez permanece intacta.
+- No basta con observar ingreso o acceso al crédito  
+- Es crucial analizar **capacidad de repago bajo estrés macroeconómico**  
 
-Aspiracional
+En términos comparables internacionalmente, una clase media robusta **absorbe choques**;  
+una clase media frágil **acumula morosidad**.
 
-🔴 Liverpool
+---
 
-Presión (3.6%)
+## 🛠️ Metodología (resumen)
 
-Estrés Controlado. La clase media-alta prioriza pagar esta tarjeta para mantener su estatus y línea de crédito, sacrificando otros consumos.
+- **Fuente primaria:**  
+  Reportes trimestrales enviados a la **BMV** por:
+  - El Puerto de Liverpool S.A.B. de C.V. (LIVEPOL)
+  - Grupo Carso S.A.B. de C.V. (GCARSO)
+  - El Palacio de Hierro S.A.B. de C.V. (GPH)
 
-Tradicional
+- **Indicador:**  
+  Índice de Morosidad (IMOR) de crédito al consumo propio, atraso >90 días.
 
-🔵 Sanborns (Carso)
+- **Cobertura temporal:**  
+  2023–2025 (con estimación para Sanborns en 2025 basada en tendencia reportada).
 
-Deterioro (4.9%)
+- **Supuesto clave:**  
+  La tarjeta departamental funciona como proxy del **consumo financiado por clase social**.
 
-Crisis. La clase media tradicional muestra el mayor índice de impago, reflejando una pérdida real de poder adquisitivo.
+---
 
-Veredicto: Los datos sugieren la existencia de una "Clase Media de Cristal": un segmento poblacional cuyo estilo de vida y consumo se sostiene principalmente mediante apalancamiento (deuda), volviéndose vulnerable ante cualquier ajuste en el costo del dinero.
+## 💻 Stack tecnológico
 
-🛠️ Metodología y Fuentes
+- **HTML5 + Tailwind CSS** — diseño responsivo y ligero  
+- **Chart.js 4.x** — visualización principal  
+- **chartjs-plugin-annotation** — contexto macroeconómico  
+- **html2canvas** — exportación de la gráfica a PNG  
+- **GitHub Pages** — despliegue estático, sin dependencias de servidor
 
-Este reporte se adhiere a estándares de transparencia de datos:
+---
 
-Fuente Primaria: Reportes Trimestrales de Resultados Financieros enviados a la Bolsa Mexicana de Valores (BMV) por:
+## ⚖️ Licencia
 
-El Puerto de Liverpool S.A.B. de C.V. (LIVEPOL)
+Este trabajo está bajo la licencia  
+**Creative Commons Atribución–NoComercial 4.0 Internacional (CC BY-NC 4.0)**  
+👉 https://creativecommons.org/licenses/by-nc/4.0/
 
-Grupo Carso S.A.B. de C.V. (GCARSO)
+**Puedes:**
+- Compartir y redistribuir el material
+- Adaptarlo con fines académicos o de divulgación
 
-El Palacio de Hierro S.A.B. de C.V. (GPH)
+**Bajo las condiciones:**
+- **Atribución:** Crédito a *Eric Araujo Martínez* (@SocioNomicsLab)
+- **No comercial:** Prohibido el uso con fines comerciales sin autorización expresa
 
-Indicador: Índice de Morosidad (IMOR) para cartera de crédito al consumo propia con atraso mayor a 90 días.
+---
 
-Proyección: El dato de cierre 2025 para Sanborns es una estimación basada en la tendencia de deterioro de la cartera de crédito reportada en notas a los estados financieros.
+## ✍️ Autor
 
-💻 Stack Tecnológico
-
-Visualización construida con arquitectura ligera para máxima portabilidad:
-
-HTML5 / Tailwind CSS: Diseño responsivo y estética "Clean UI".
-
-Chart.js 4.x: Motor de renderizado de gráficos.
-
-Chart.js Plugin Annotation: Para destacar contextos (ej. "Entorno 2025").
-
-HTML2Canvas: Funcionalidad nativa para exportar el reporte como imagen PNG.
-
-⚖️ Licencia y Uso
-
-<div align="left">
-<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Licencia Creative Commons" style="border-width:0" src="https://www.google.com/search?q=https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a>
-</div>
-
-Este análisis y sus gráficos están bajo una Licencia Creative Commons Atribución-NoComercial 4.0 Internacional.
-
-Libertad: Puedes compartir, copiar y redistribuir el material en cualquier medio o formato.
-
-Atribución: Debes dar crédito a Eric Araujo Martínez (@SocioNomicsLab) de manera adecuada y proporcionar un enlace a la licencia.
-
-No Comercial: No puedes utilizar el material para fines comerciales sin autorización expresa.
-
-<div align="center">
-
-Elaborado por Eric Araujo
-
-
-
-
-
-Intelligence for Social Action
-
-</div>
+**Eric Araujo Martínez**  
+*Intelligence for Social Action*  
