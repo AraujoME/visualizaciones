@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dinámica Laboral IMSS: Análisis Profundo 2025</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- LIBRERÍAS DE GRÁFICAS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        
+        /* Estilo para el Switch */
+        .toggle-checkbox:checked {
+            right: 0;
+            border-color: #68D391;
+        }
+        .toggle-checkbox:checked + .toggle-label {
+            background-color: #68D391;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 p-4 md:p-8 font-sans text-slate-800">
+
+    <!-- BARRA DE HERRAMIENTAS -->
+    <div class="max-w-6xl mx-auto mb-4 flex justify-between gap-3 no-print">
+        <a href="https://araujome.github.io/visualizaciones/" class="flex items-center text-slate-500 hover:text-teal-600 transition-colors font-bold text-sm px-4 py-2">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Más Estudios
+        </a>
+        <button onclick="downloadImage()" class="flex items-center px-4 py-2 bg-white text-slate-700 rounded-lg shadow-sm hover:shadow border border-slate-200 font-semibold transition-all">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            Guardar
+        </button>
+    </div>
+
+    <!-- REPORT CONTAINER -->
+    <div id="report-container" class="max-w-6xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden border border-slate-200">
+        
+        <!-- ENCABEZADO -->
+        <div class="bg-teal-900 p-8 text-white relative overflow-hidden">
+            <div class="relative z-10">
+                <p class="text-teal-400 font-bold text-xs uppercase tracking-widest mb-1">@SocioNomicsLab</p>
+                <h1 class="text-3xl md:text-4xl font-black mb-2 tracking-tight">La "Ilusión" del Empleo Formal</h1>
+                <p class="text-teal-100 text-lg font-medium">
+                    Desglose del impacto administrativo (Plataformas) vs. Realidad de las empresas (Bajas Patronales)
+                </p>
+            </div>
+            <div class="absolute top-0 right-0 w-96 h-96 bg-emerald-600 rounded-full mix-blend-overlay filter blur-[100px] opacity-20 transform translate-x-1/3 -translate-y-1/3"></div>
+        </div>
+
+        <!-- CONTROLES E INTERACTIVIDAD -->
+        <div class="bg-slate-50 border-b border-slate-200 p-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            
+            <!-- LEYENDA ESTÁTICA -->
+            <div class="flex gap-6 text-sm">
+                <div class="flex items-center"><span class="w-3 h-3 rounded bg-emerald-500 mr-2"></span>Orgánico</div>
+                <div class="flex items-center"><span class="w-3 h-3 rounded bg-purple-500 mr-2"></span>Plataformas</div>
+                <div class="flex items-center"><span class="w-3 h-3 rounded bg-rose-500 mr-2"></span>Bajas</div>
+            </div>
+
+            <!-- SWITCH INTERACTIVO -->
+            <div class="flex items-center bg-white p-3 rounded-lg border border-slate-200 shadow-sm">
+                <span class="mr-3 text-sm font-bold text-slate-600">Mostrar Efecto Plataformas:</span>
+                <div class="relative inline-block w-12 h-6 align-middle select-none transition duration-200 ease-in">
+                    <input type="checkbox" name="toggle" id="togglePlatforms" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer border-slate-300 checked:right-0 checked:border-purple-500 transition-all duration-300" checked/>
+                    <label for="togglePlatforms" class="toggle-label block overflow-hidden h-6 rounded-full bg-slate-300 cursor-pointer checked:bg-purple-500 transition-colors duration-300"></label>
+                </div>
+            </div>
+        </div>
+
+        <!-- GRÁFICA PRINCIPAL -->
+        <div class="p-8 relative h-[50vh] w-full bg-white">
+            <canvas id="imssChart"></canvas>
+        </div>
+
+        <!-- SECCIÓN DE CRUCE DE DATOS (PATRONES VS EMPLEO) -->
+        <div class="p-8 bg-slate-50 border-t border-slate-200">
+            <h3 class="text-lg font-bold text-slate-800 mb-6 flex items-center">
+                <i class="fa-solid fa-scale-unbalanced text-teal-600 mr-3"></i>
+                Dos Realidades Simultáneas (Cierre 2025)
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Tarjeta 1: La "Creación" Administrativa -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-purple-500 relative overflow-hidden">
+                    <div class="relative z-10">
+                        <p class="text-xs font-bold text-purple-600 uppercase mb-2">Noviembre 2025</p>
+                        <h4 class="text-2xl font-black text-slate-800 mb-2">+1,326,000 Empleos</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed text-justify">
+                            <strong>Formalización Administrativa.</strong> El 90% de este volumen proviene de la regularización de choferes y repartidores de apps que ya estaban activos. Es un avance legal, pero no creación de nuevas plazas productivas.
+                        </p>
+                    </div>
+                    <i class="fa-solid fa-file-signature absolute -bottom-4 -right-4 text-8xl text-purple-50 opacity-50"></i>
+                </div>
+
+                <!-- Tarjeta 2: La Destrucción Real (Patrones) -->
+                <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-red-500 relative overflow-hidden">
+                    <div class="relative z-10">
+                        <p class="text-xs font-bold text-red-600 uppercase mb-2">Acumulado Sexenal (15 Meses)</p>
+                        <h4 class="text-2xl font-black text-slate-800 mb-2">-34,748 Patrones</h4>
+                        <p class="text-sm text-slate-600 leading-relaxed text-justify">
+                            <strong>Cierre de Empresas Reales.</strong> Mientras el registro de empleo sube por decreto, el padrón de empleadores cae.
+                            <br>
+                            <span class="text-red-700 font-bold mt-2 block">
+                                <i class="fa-solid fa-calculator mr-1"></i> Estimación de impacto:
+                                ~139,000 empleos perdidos
+                            </span>
+                            <span class="text-[10px] text-slate-400 italic">*Cálculo basado en 4 empleados promedio por microempresa (ENAMIN/INEGI).</span>
+                        </p>
+                    </div>
+                    <i class="fa-solid fa-store-slash absolute -bottom-4 -right-4 text-8xl text-red-50 opacity-50"></i>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- FOOTER DE LICENCIAS (RESPONSIVE) -->
+        <div class="bg-[#f8fafc] px-8 py-6 border-t border-gray-200">
+            <div class="flex flex-col md:flex-row gap-8 items-start justify-between">
+                
+                <div class="flex-1">
+                    <h5 class="font-bold text-slate-500 uppercase tracking-widest text-[10px] mb-2">Nota Metodológica</h5>
+                    <p class="text-[10px] text-slate-500 leading-relaxed text-justify mb-4">
+                        <strong>Fuentes:</strong> IMSS (Comunicados Mensuales de Puestos de Trabajo y Patrones), TResearch, Banco Base. Datos al cierre de Diciembre 2025. <br>
+                        <strong>Estimación:</strong> El impacto en empleo por baja patronal se calculó utilizando el promedio de ocupación en micronegocios (3.8 a 4.2 personas) reportado en la Encuesta Nacional de Micronegocios (ENAMIN) del INEGI.
+                    </p>
+                    
+                    <h5 class="font-bold text-slate-500 uppercase tracking-widest text-[10px] mb-2">Licencia de Contenido</h5>
+                    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" class="inline-block mb-2">
+                        <img alt="Licencia Creative Commons" style="border-width:0" src="https://licensebuttons.net/l/by-nc/4.0/88x31.png" />
+                    </a>
+                    <p class="text-[10px] text-slate-500 leading-relaxed">
+                        Obra bajo licencia <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" class="text-teal-600 font-bold hover:underline">CC BY-NC 4.0</a>. 
+                        Uso libre con crédito al autor: <strong>Eric Araujo Martínez (@SocioNomicsLab)</strong>.
+                    </p>
+                </div>
+
+                <div class="flex flex-col gap-2 items-end w-full md:w-auto text-right">
+                    <div class="flex items-center justify-end gap-2">
+                        <i class="fab fa-github text-slate-600"></i>
+                        <span class="text-[10px] font-bold text-slate-400">|</span>
+                        <a href="https://opensource.org/license/MIT" target="_blank" class="text-[10px] font-bold text-teal-600 hover:underline">MIT License</a>
+                    </div>
+                    <p class="text-[10px] font-bold text-slate-700">Eric Araujo Martínez <span class="text-teal-500">(@SocioNomicsLab)</span></p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        Chart.register(ChartDataLabels, window['chartjs-plugin-annotation']);
+
+        const ctx = document.getElementById('imssChart').getContext('2d');
+        const toggle = document.getElementById('togglePlatforms');
+
+        // DATOS
+        const labels = ['Ene 23', 'Dic 23', 'Ene 24', 'Dic 24', 'Ene 25', 'Jun 25', 'Nov 25', 'Dic 25'];
+        
+        // Empleo Orgánico (Base)
+        const dataOrganic = [111699, -384882, 109021, -405259, 115000, 28000, 126000, -360000];
+        
+        // Efecto Plataformas (Solo Nov 25)
+        const dataPlatforms = [0, 0, 0, 0, 0, 0, 1200000, 0];
+
+        // Configuración Inicial
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Regularización Apps',
+                        data: dataPlatforms,
+                        backgroundColor: '#a855f7', // Purple-500
+                        borderRadius: 4,
+                        order: 1,
+                        stack: 'Stack 0',
+                        hidden: false // Visible por defecto
+                    },
+                    {
+                        label: 'Empleo Regular',
+                        data: dataOrganic,
+                        backgroundColor: (ctx) => ctx.raw >= 0 ? '#10b981' : '#f43f5e',
+                        borderRadius: 4,
+                        order: 2,
+                        stack: 'Stack 0'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 600
+                },
+                layout: { padding: { top: 50, bottom: 20 } },
+                scales: {
+                    x: {
+                        stacked: true,
+                        grid: { display: false },
+                        ticks: { font: { family: 'Inter', size: 12, weight: '600' }, color: '#64748b' }
+                    },
+                    y: {
+                        stacked: true,
+                        title: { display: true, text: 'Variación de Puestos', font: { weight: 'bold' } },
+                        grid: { color: '#f1f5f9' },
+                        ticks: { callback: (val) => new Intl.NumberFormat('es-MX', { notation: "compact" }).format(val) },
+                        border: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: '#0f172a',
+                        callbacks: {
+                            label: (ctx) => {
+                                let label = ctx.dataset.label;
+                                let val = new Intl.NumberFormat('es-MX').format(ctx.raw);
+                                if(ctx.dataset.label.includes('Apps') && ctx.raw === 0) return null;
+                                return `${label}: ${val}`;
+                            },
+                            footer: (items) => {
+                                let total = items.reduce((a, b) => a + b.parsed.y, 0);
+                                return 'Total Neto: ' + new Intl.NumberFormat('es-MX').format(total);
+                            }
+                        }
+                    },
+                    datalabels: {
+                        align: 'end',
+                        anchor: 'end',
+                        // Lógica de color y formato dinámica
+                        color: (ctx) => {
+                            if (ctx.dataset.label.includes('Apps')) return '#6b21a8';
+                            return ctx.dataset.data[ctx.dataIndex] >= 0 ? '#047857' : '#be123c';
+                        },
+                        font: { weight: 'bold', size: 11 },
+                        formatter: (val, ctx) => {
+                            // Mostrar solo si es significativo
+                            if (Math.abs(val) < 10000) return null;
+                            return new Intl.NumberFormat('es-MX', { notation: "compact" }).format(val);
+                        },
+                        display: function(context) {
+                            return true; 
+                        }
+                    },
+                    annotation: {
+                        annotations: {
+                            lineZero: {
+                                type: 'line',
+                                yMin: 0, yMax: 0, borderColor: '#cbd5e1', borderWidth: 1
+                            },
+                            labelReform: {
+                                type: 'label',
+                                xValue: 6, // Nov 25
+                                yValue: 1450000,
+                                content: ['Efecto', 'Reforma'],
+                                color: '#6b21a8',
+                                font: { size: 11, weight: 'bold' },
+                                backgroundColor: '#f3e8ff',
+                                borderRadius: 4,
+                                padding: 6,
+                                yAdjust: -10,
+                                // Esta anotación solo debe verse si el toggle está activo
+                                display: true 
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // LÓGICA DEL SWITCH
+        toggle.addEventListener('change', function() {
+            const isChecked = this.checked;
+            
+            // 1. Mostrar/Ocultar el dataset de Plataformas (Index 0)
+            if (isChecked) {
+                chart.show(0);
+            } else {
+                chart.hide(0);
+            }
+
+            // 2. Actualizar la Anotación de texto
+            chart.options.plugins.annotation.annotations.labelReform.display = isChecked;
+
+            // 3. Forzar actualización suave
+            chart.update();
+        });
+
+        function downloadImage() {
+            const container = document.getElementById('report-container');
+            html2canvas(container, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: "#ffffff"
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'analisis_empleo_patrones_2025.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
