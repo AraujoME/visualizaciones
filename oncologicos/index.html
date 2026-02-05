@@ -8,6 +8,9 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <!-- LIBRERÍAS DE GRÁFICAS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
@@ -44,7 +47,10 @@
 <body class="bg-stone-50 p-2 md:p-8 font-sans text-stone-800">
 
     <!-- BARRA DE HERRAMIENTAS -->
-    <div class="max-w-6xl mx-auto mb-4 flex justify-end gap-3 no-print">
+    <div class="max-w-6xl mx-auto mb-4 flex justify-between gap-3 no-print">
+        <a href="https://araujome.github.io/visualizaciones/" class="flex items-center text-slate-500 hover:text-purple-600 transition-colors font-bold text-sm px-4 py-2 bg-white rounded-full shadow-sm border border-slate-200">
+            <i class="fa-solid fa-arrow-left mr-2"></i> Más Estudios
+        </a>
         <button onclick="downloadImage()"
             class="flex items-center px-6 py-3 bg-slate-900 text-white rounded-2xl shadow-xl hover:bg-purple-700 font-black transition-all text-xs md:text-sm uppercase tracking-widest">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -139,44 +145,56 @@
                         </tr>
                         <tr class="bg-indigo-50 border-l-8 border-indigo-900 rounded-2xl shadow-md">
                             <td class="px-5 py-5 font-black text-indigo-950 italic rounded-l-2xl uppercase tracking-tight">Mitotano (100)</td>
-                            <td class="px-5 py-5 text-right font-bold text-indigo-300">$3,200</td>
+                            <td class="px-5 py-5 text-right font-bold text-indigo-300">$3,200*</td>
                             <td class="px-5 py-5 text-right text-rose-600 font-black">$12,500</td>
                             <td class="px-5 py-5 text-right font-black text-indigo-900">$18,000</td>
                             <td class="px-5 py-5 text-[10px] font-black text-indigo-600 italic text-center rounded-r-2xl uppercase tracking-tighter">Cáncer Adrenal</td>
+                        </tr>
+                        <!-- FILA AÑADIDA -->
+                        <tr class="bg-white rounded-2xl shadow-sm">
+                            <td class="px-5 py-5 font-black text-orange-700 italic border-l-8 border-orange-500 rounded-l-2xl uppercase tracking-tight">Hidroxiurea</td>
+                            <td class="px-5 py-5 text-right font-bold text-slate-400">$800</td>
+                            <td class="px-5 py-5 text-right text-rose-600 font-black">$1,400</td>
+                            <td class="px-5 py-5 text-right font-black text-slate-900">$1,950</td>
+                            <td class="px-5 py-5 text-[10px] font-black text-slate-400 italic text-center rounded-r-2xl uppercase">Leucemia Crónica</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <!-- FOOTER Y LICENCIAS -->
+            <!-- FOOTER Y LICENCIAS (ESTANDARIZADO) -->
             <div class="mt-10 pt-10 border-t-4 border-slate-200">
-                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12">
-                    <div class="max-w-xl space-y-6">
-                        <p class="text-[10px] md:text-[11px] text-slate-400 font-black italic leading-relaxed uppercase tracking-widest">
-                            *Nota: El Mitotano presenta el mayor incremento porcentual por falta de stock nacional. <br>
-                            Fuentes: Auditoría Directa SocioNomicsLab, Farmacias Especializadas y Reportes de ONGs.
+                <div class="flex flex-col md:flex-row gap-8 items-start justify-between">
+                    
+                    <div class="flex-1">
+                        <h5 class="font-black text-slate-500 uppercase tracking-widest text-[10px] mb-3">Nota Metodológica</h5>
+                        <p class="text-[10px] text-slate-500 leading-relaxed text-justify mb-4">
+                            <strong>Fuentes:</strong> Auditoría directa en farmacias especializadas, reportes de ONGs (Cero Desabasto, Nariz Roja) e investigaciones de mercado (INEFAM).<br>
+                            <strong>Contexto:</strong> Los precios 2012-2018 reflejan promedios de compra consolidada (referencia). A partir de 2019, se registra el <em>precio al público</em> (gasto de bolsillo) ante la ruptura de la cadena de suministro institucional.<br>
+                            <strong>* Mitotano 2012:</strong> Precio proxy de importación personal (mercado privado limitado en ese periodo).
                         </p>
                         
-                        <div class="inline-flex items-center gap-5 bg-white px-6 py-4 rounded-[1.5rem] border-2 border-slate-100 shadow-xl ring-4 ring-slate-50">
-                            <div class="flex gap-2 items-center">
-                                <div class="w-7 h-7 bg-blue-600 rounded-full flex items-center justify-center text-white text-[11px] font-black">CC</div>
-                                <div class="w-7 h-7 bg-slate-800 rounded-full flex items-center justify-center text-white text-[11px] font-black">BY</div>
-                                <div class="w-7 h-7 bg-slate-800 rounded-full flex items-center justify-center text-white text-[11px] font-black">NC</div>
-                            </div>
-                            <div class="flex flex-col leading-none">
-                                <span class="text-[10px] font-black text-slate-950 uppercase tracking-[0.2em]">Derechos de Atribución</span>
-                                <span class="text-[12px] font-black text-blue-600 tracking-tighter mt-1">CC BY-NC 4.0 International License</span>
-                            </div>
+                        <h5 class="font-black text-slate-500 uppercase tracking-widest text-[10px] mb-2">Licencia de Contenido</h5>
+                        <div class="flex items-center gap-3">
+                            <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" class="opacity-80 hover:opacity-100 transition-opacity">
+                                <img alt="Licencia Creative Commons" style="border-width:0; height: 20px;" src="https://licensebuttons.net/l/by-nc/4.0/88x31.png" />
+                            </a>
+                            <span class="text-[10px] text-slate-400">|</span>
+                            <p class="text-[10px] text-slate-500">
+                                <strong>CC BY-NC 4.0</strong> &bull; Uso libre con crédito a <strong>@SocioNomicsLab</strong>.
+                            </p>
                         </div>
                     </div>
-                    
-                    <div class="w-full lg:w-auto text-right space-y-3">
-                        <p class="text-3xl font-black text-purple-800 tracking-tighter italic leading-none uppercase">@SocioNomicsLab</p>
-                        <p class="text-[11px] font-black text-slate-300 uppercase tracking-[0.5em] leading-none">Data Intelligence by Eric Araujo M.</p>
-                        <div class="pt-2">
-                            <span class="px-4 py-1.5 bg-slate-950 text-white text-[10px] font-black rounded-xl uppercase tracking-widest italic border border-slate-800 shadow-lg">License: MIT (Software)</span>
+
+                    <div class="flex flex-col gap-2 items-end w-full md:w-auto text-right">
+                        <div class="flex items-center justify-end gap-2">
+                            <i class="fab fa-github text-slate-600"></i>
+                            <span class="text-[10px] font-bold text-slate-400">|</span>
+                            <a href="https://opensource.org/license/MIT" target="_blank" class="text-[10px] font-bold text-purple-600 hover:underline">MIT License</a>
                         </div>
+                        <p class="text-[10px] font-bold text-slate-700 mt-1">Eric Araujo Martínez <span class="text-purple-500">(@SocioNomicsLab)</span></p>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -185,6 +203,7 @@
     <script>
         Chart.register(ChartDataLabels, window['chartjs-plugin-annotation']);
 
+        const isMobile = window.innerWidth < 768;
         const ctx = document.getElementById('chemoChart').getContext('2d');
         const years = ['2012', '2014', '2016', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025'];
 
@@ -216,8 +235,8 @@
                     { 
                         label: 'Mitotano', data: dataMito, borderColor: '#1e1b4b', backgroundColor: '#1e1b4b', borderWidth: 5, pointRadius: 4, tension: 0.3,
                         datalabels: { 
-                            align: 'start', // Lo movemos a la izquierda para que no choque con el borde derecho
-                            offset: 15,
+                            align: window.innerWidth < 768 ? 'top' : 'start', 
+                            offset: window.innerWidth < 768 ? 5 : 15,
                             anchor: 'center'
                         }
                     },
@@ -232,8 +251,8 @@
                 maintainAspectRatio: false,
                 layout: { 
                     padding: { 
-                        top: 80, // Aumentado para que el $18,000 no se corte arriba
-                        right: 110, // Aumentado para las etiquetas laterales
+                        top: 80, 
+                        right: 110, 
                         left: 20, 
                         bottom: 20 
                     } 
@@ -258,11 +277,22 @@
                     annotation: {
                         annotations: {
                             line1: {
-                                type: 'line', xMin: 4, xMax: 4, borderColor: '#cbd5e1', borderWidth: 3, borderDash: [8, 8],
+                                type: 'line', xMin: 4, xMax: 4, borderColor: '#64748b', borderWidth: 2, borderDash: [2, 2],
                                 label: {
-                                    content: window.innerWidth < 768 ? 'Crisis' : 'Colapso Institucional',
-                                    display: true, position: 'start', backgroundColor: 'rgba(255, 255, 255, 0.95)',
-                                    color: '#0f172a', font: { size: 10, weight: 'black' }, padding: 10, borderRadius: 8, borderWidth: 1, borderColor: '#e2e8f0'
+                                    content: window.innerWidth < 768 ? 'Fin Compras' : 'Desmantelamiento Compras',
+                                    display: true, position: 'start', backgroundColor: 'rgba(241, 245, 249, 0.9)',
+                                    color: '#475569', font: { size: 10 }
+                                }
+                            },
+                            box1: {
+                                type: 'box',
+                                xMin: 5, xMax: 6, // 2020-2021
+                                backgroundColor: 'rgba(220, 38, 38, 0.05)',
+                                borderColor: 'transparent',
+                                label: {
+                                    content: 'CRISIS DE DESABASTO',
+                                    display: true, position: 'center', color: 'rgba(220, 38, 38, 0.5)',
+                                    font: { size: 14, weight: 'bold' }, rotation: -90
                                 }
                             }
                         }
@@ -271,16 +301,21 @@
                 scales: {
                     x: {
                         grid: { display: false },
-                        ticks: { font: { weight: 'black', size: getFontSize() }, color: '#94a3b8', autoSkip: true, maxTicksLimit: 7 }
+                        ticks: { font: { weight: 'bold', size: 10 }, color: '#475569' }
                     },
                     y: {
-                        suggestedMax: 20000, // Forzamos el techo más arriba del valor máximo
-                        title: { display: window.innerWidth > 768, text: 'PRECIO UNITARIO ($ MXN)', font: { weight: 'black' }, color: '#1e1b4b' },
-                        ticks: {
-                            callback: (val) => '$' + new Intl.NumberFormat('es-MX', { notation: 'compact' }).format(val),
-                            font: { weight: 'black', size: getFontSize() }, color: '#1e1b4b'
+                        title: { 
+                            display: !isMobile, 
+                            text: 'Precio Promedio en Farmacia ($ MXN)', 
+                            font: { weight: 'bold' },
+                            color: '#581c87'
                         },
-                        grid: { color: '#f1f5f9' }
+                        ticks: { 
+                            callback: (val) => '$' + val,
+                            font: { weight: 'bold', size: 10 },
+                            color: '#581c87'
+                        },
+                        grid: { color: '#f3e8ff' }
                     }
                 }
             }
