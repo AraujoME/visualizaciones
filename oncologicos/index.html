@@ -48,7 +48,7 @@
 
     <!-- BARRA DE HERRAMIENTAS -->
     <div class="max-w-6xl mx-auto mb-4 flex justify-between gap-3 no-print">
-        <a href="https://araujome.github.io/visualizaciones/" class="flex items-center text-slate-500 hover:text-purple-600 transition-colors font-bold text-sm px-4 py-2 bg-white rounded-full shadow-sm border border-slate-200">
+        <a href="../index.html" class="flex items-center text-slate-500 hover:text-purple-600 transition-colors font-bold text-sm px-4 py-2 bg-white rounded-full shadow-sm border border-slate-200">
             <i class="fa-solid fa-arrow-left mr-2"></i> Más Estudios
         </a>
         <button onclick="downloadImage()"
@@ -71,9 +71,22 @@
             <div class="relative z-10">
                 <p class="text-purple-400 font-black text-[10px] md:text-xs uppercase tracking-[0.5em] mb-3 leading-none italic">Intelligence Unit • SocioNomicsLab</p>
                 <h1 class="text-3xl md:text-5xl font-black mb-4 tracking-tighter leading-none italic uppercase">El costo de <span class="text-purple-400 underline decoration-white decoration-4 underline-offset-8">sobrevivir</span></h1>
-                <p class="text-purple-100 text-sm md:text-xl font-medium max-w-2xl italic opacity-80 leading-tight">
+                <p class="text-purple-100 text-sm md:text-xl font-medium max-w-2xl italic opacity-80 leading-tight mb-8">
                     Auditoría de precios en mercado privado ante el desabasto institucional (2012-2025).
                 </p>
+
+                <!-- ÍCONOS SOCIALES AÑADIDOS -->
+                <div class="flex gap-6 opacity-80 hover:opacity-100 transition-opacity">
+                    <a href="https://github.com/araujome" target="_blank" class="text-white hover:text-purple-400 transition-transform hover:scale-110">
+                        <i class="fab fa-github text-2xl"></i>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="text-white hover:text-purple-400 transition-transform hover:scale-110">
+                        <i class="fab fa-linkedin-in text-2xl"></i>
+                    </a>
+                    <a href="https://x.com/SocioNomicsLab" target="_blank" class="text-white hover:text-purple-400 transition-transform hover:scale-110">
+                        <i class="fab fa-x-twitter text-2xl"></i>
+                    </a>
+                </div>
             </div>
             <div
                 class="absolute top-0 right-0 w-96 h-96 bg-fuchsia-600 rounded-full mix-blend-overlay filter blur-[120px] opacity-25 transform translate-x-1/3 -translate-y-1/3">
@@ -150,7 +163,6 @@
                             <td class="px-5 py-5 text-right font-black text-indigo-900">$18,000</td>
                             <td class="px-5 py-5 text-[10px] font-black text-indigo-600 italic text-center rounded-r-2xl uppercase tracking-tighter">Cáncer Adrenal</td>
                         </tr>
-                        <!-- FILA AÑADIDA -->
                         <tr class="bg-white rounded-2xl shadow-sm">
                             <td class="px-5 py-5 font-black text-orange-700 italic border-l-8 border-orange-500 rounded-l-2xl uppercase tracking-tight">Hidroxiurea</td>
                             <td class="px-5 py-5 text-right font-bold text-slate-400">$800</td>
@@ -252,8 +264,8 @@
                 layout: { 
                     padding: { 
                         top: 80, 
-                        right: 110, 
-                        left: 20, 
+                        right: window.innerWidth < 768 ? 20 : 110, 
+                        left: 10, 
                         bottom: 20 
                     } 
                 },
