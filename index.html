@@ -9,18 +9,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        /* Usamos Inter para replicar el estilo limpio y fuerte de las imágenes */
         @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,600;0,900;1,900&display=swap');
 
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #020617; /* Slate 950 - Fondo muy oscuro */
-            color: #94a3b8; /* Slate 400 - Texto base */
+            background-color: #020617; 
+            color: #94a3b8; 
         }
 
         /* Estilo de Tarjetas Glassmorphism */
         .glass-card {
-            background: rgba(15, 23, 42, 0.6); /* Slate 900 con transparencia */
+            background: rgba(15, 23, 42, 0.6); 
             backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -39,11 +38,6 @@
             border-color: rgba(255, 255, 255, 0.1);
         }
 
-        /* Efecto de borde de color al hacer hover según categoría */
-        .glass-card:hover::after {
-            opacity: 1;
-        }
-
         .glass-card::after {
             content: '';
             position: absolute;
@@ -58,30 +52,32 @@
             transition: opacity 0.4s ease;
         }
 
-        /* Definición de colores hover */
-        .card-resaca:hover { border-color: #ef4444; }      /* Rojo */
-        .card-mercado:hover { border-color: #f97316; }     /* Naranja */
-        .card-pisa:hover { border-color: #3b82f6; }        /* Azul */
-        .card-clase:hover { border-color: #14b8a6; }       /* Teal */
-        .card-piramide:hover { border-color: #be185d; }    /* Rosa */
-        .card-pib:hover { border-color: #10b981; }         /* Esmeralda */
-        .card-deuda:hover { border-color: #a855f7; }       /* Morado */
-        .card-petroleo:hover { border-color: #0ea5e9; }    /* Sky */
-        .card-mortalidad:hover { border-color: #eab308; }  /* Ámbar */
-        .card-oncologico:hover { border-color: #6366f1; }  /* Indigo */
+        .glass-card:hover::after {
+            opacity: 1;
+        }
 
-        /* Tipografía del Título Principal (Estilo de la imagen adjunta) */
+        /* Colores de Hover */
+        .card-laboral:hover { border-color: #22c55e; }
+        .card-resaca:hover { border-color: #ef4444; }
+        .card-mercado:hover { border-color: #f97316; }
+        .card-pisa:hover { border-color: #3b82f6; }
+        .card-clase:hover { border-color: #14b8a6; }
+        .card-piramide:hover { border-color: #be185d; }
+        .card-pib:hover { border-color: #10b981; }
+        .card-deuda:hover { border-color: #a855f7; }
+        .card-petroleo:hover { border-color: #0ea5e9; }
+        .card-mortalidad:hover { border-color: #eab308; }
+        .card-oncologico:hover { border-color: #6366f1; }
+
         .brand-title {
             background: linear-gradient(135deg, #a78bfa 0%, #c084fc 50%, #818cf8 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            /* Padding para evitar cortes en la fuente itálica */
             padding-right: 0.1em; 
             padding-bottom: 0.1em;
             filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.15));
         }
 
-        /* Botones Sociales */
         .social-link {
             width: 48px;
             height: 48px;
@@ -102,7 +98,6 @@
             transform: scale(1.1);
         }
 
-        /* Fondo */
         .bg-gradient-radial {
             background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #020617 60%);
         }
@@ -111,7 +106,7 @@
 
 <body class="selection:bg-indigo-500/30 min-h-screen relative">
 
-    <!-- IMAGEN DE FONDO (Opcional, con fallback al gradiente si no carga) -->
+    <!-- IMAGEN DE FONDO -->
     <div class="fixed inset-0 z-0 bg-gradient-radial"></div>
     <img src="./visualizacionesportada1.png" class="fixed inset-0 w-full h-full object-cover z-0 opacity-40 mix-blend-overlay pointer-events-none" alt="" onerror="this.style.display='none'">
     
@@ -127,7 +122,7 @@
                     <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-indigo-200">Intelligence Unit</span>
                 </div>
 
-                <!-- Título Marca RESPONSIVE -->
+                <!-- Título Marca -->
                 <div>
                     <h1 class="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black italic tracking-tighter leading-[0.9] brand-title mb-4 break-words">
                         SOCIONOMICS<br>LAB
@@ -140,8 +135,9 @@
                     </div>
                 </div>
 
+                <!-- LEMA REFINADO -->
                 <p class="text-slate-500 max-w-2xl text-sm md:text-base leading-relaxed font-light">
-                    Auditoría de datos, econometría y visualización estratégica para el análisis de impacto social, financiero y político en México y Latinoamérica.
+                    Auditoría de datos, <strong class="text-slate-300 font-semibold italic">inteligencia estratégica</strong> y <strong class="text-slate-300 font-semibold italic">visualización de precisión</strong> para el análisis de impacto social, financiero y político en México y Latinoamérica.
                 </p>
             </div>
 
@@ -159,20 +155,37 @@
             </div>
         </header>
 
-        <!-- GRID DE ESTUDIOS (10 Items) -->
+        <!-- GRID DE ESTUDIOS -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
-            <!-- 1. RESACA DEL CRÉDITO (NUEVO) -->
+            <!-- 0. LA ILUSIÓN DEL EMPLEO (NUEVO) -->
+            <a href="https://araujome.github.io/visualizaciones/altasybajaspatronales/" class="glass-card card-laboral rounded-3xl p-6 group">
+                <div class="space-y-4">
+                    <div class="w-10 h-10 bg-green-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-900/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-users-line text-white"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <h3 class="text-base font-black text-white italic uppercase tracking-tight">La Ilusión del Empleo</h3>
+                            <span class="bg-green-500/20 text-green-400 text-[9px] font-bold px-2 py-0.5 rounded border border-green-500/30 animate-pulse">NUEVO</span>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">Desglose del impacto administrativo (Plataformas) vs. Realidad de las empresas (Bajas Patronales).</p>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
+                    <span class="text-green-400">LABORAL</span>
+                    <span>IMSS 2025</span>
+                </div>
+            </a>
+
+            <!-- 1. RESACA DEL CRÉDITO -->
             <a href="https://araujome.github.io/visualizaciones/resaca-del-credito/" class="glass-card card-resaca rounded-3xl p-6 group">
                 <div class="space-y-4">
                     <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-900/20 group-hover:scale-110 transition-transform">
                         <i class="fa-solid fa-credit-card text-white"></i>
                     </div>
                     <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <h3 class="text-base font-black text-white italic uppercase tracking-tight">La Resaca del Crédito</h3>
-                            <span class="bg-red-500/20 text-red-400 text-[9px] font-bold px-2 py-0.5 rounded border border-red-500/30 animate-pulse">NUEVO</span>
-                        </div>
+                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">La Resaca del Crédito</h3>
                         <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">Monitor de morosidad (IMOR) en retail: Liverpool, Sanborns y Palacio (2023-2025).</p>
                     </div>
                 </div>
@@ -345,7 +358,6 @@
             </div>
         </footer>
     </div>
-</div>
 
 </body>
 </html>
