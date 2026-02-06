@@ -7,13 +7,16 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- OPTIMIZACIÓN 1: Preload de recurso crítico (Chart.js) -->
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" as="script">
+    
     <!-- LIBRERÍAS DE GRÁFICAS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
     
-    <!-- Librería para capturar pantalla -->
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <!-- OPTIMIZACIÓN 2: Defer para script no crítico (Captura de pantalla) -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js" defer></script>
     
     <style>
         @media print {
@@ -23,125 +26,227 @@
             .border { border: none !important; }
             #report-container { margin: 0; width: 100%; box-shadow: none; border: none; }
         }
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
-        body { font-family: 'Inter', sans-serif; }
+        /* TIPOGRAFÍA EDITORIAL */
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+        
+        body { font-family: 'IBM Plex Mono', monospace; } /* Datos técnicos y cuerpo */
+        h1, h2, h3, .font-display { font-family: 'Space Grotesk', sans-serif; } /* Títulos de impacto */
+        
+        /* Utilidad para accesibilidad */
+        .sr-only {
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+            overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;
+        }
+        
+        /* OPTIMIZACIÓN 3: Reservar espacio para chart para evitar reflow */
+        #chart-wrapper {
+            contain: content;
+        }
     </style>
 </head>
-<body class="bg-stone-50 p-2 md:p-8 font-sans text-stone-800">
+<body class="bg-stone-50 p-2 md:p-8 font-mono text-stone-800">
 
     <!-- BARRA DE HERRAMIENTAS -->
-    <div class="max-w-6xl mx-auto mb-4 flex justify-end gap-3 no-print">
-        <button onclick="downloadImage()" class="flex items-center px-4 py-2 bg-white text-slate-700 rounded-lg shadow-sm hover:shadow border border-slate-200 font-semibold transition-all text-sm md:text-base">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-            Guardar Imagen
+    <div class="max-w-6xl mx-auto mb-4 flex justify-between items-center no-print">
+        <!-- BOTÓN IZQUIERDO: CATÁLOGO DE ESTUDIOS -->
+        <a href="https://araujome.github.io/visualizaciones/" target="_blank" class="flex items-center px-4 py-2 bg-slate-100 text-slate-600 rounded-lg shadow-sm hover:bg-slate-200 border border-slate-200 font-semibold transition-all text-sm md:text-base group">
+            <svg class="w-5 h-5 mr-2 text-slate-500 group-hover:text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            <span class="font-display">Más estudios</span>
+        </a>
+
+        <!-- BOTÓN DERECHO: DESCARGA -->
+        <button onclick="downloadImage()" aria-label="Descargar gráfica como imagen PNG de alta resolución" class="flex items-center px-4 py-2 bg-white text-slate-700 rounded-lg shadow-sm hover:shadow-md hover:bg-slate-50 border border-slate-200 font-semibold transition-all text-sm md:text-base cursor-pointer group">
+            <svg class="w-5 h-5 mr-2 group-hover:text-indigo-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            <span class="font-display">Guardar Imagen</span>
         </button>
     </div>
 
     <!-- REPORT CONTAINER -->
     <div id="report-container" class="max-w-6xl mx-auto bg-white rounded-xl shadow-xl overflow-hidden border border-stone-200">
         
-        <!-- ENCABEZADO RESPONSIVO -->
-        <div class="bg-indigo-900 p-5 md:p-8 text-white relative overflow-hidden">
-            <div class="relative z-10">
-                <p class="text-indigo-400 font-bold text-[10px] md:text-xs uppercase tracking-widest mb-1">@SocioNomicsLab</p>
-                <h1 class="text-2xl md:text-4xl font-black mb-2 tracking-tight leading-tight">Brecha Generacional Oncológica</h1>
-                <p class="text-indigo-200 text-sm md:text-lg font-medium leading-snug">
-                    Comparativa de defunciones anuales: Población joven vs. Población adulta (2012-2025)
-                </p>
+        <!-- ENCABEZADO -->
+        <div class="bg-indigo-950 p-6 md:p-8 text-white relative overflow-hidden">
+            <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-start gap-4">
+                <div class="flex-1">
+                    <p class="text-indigo-400 font-bold text-[10px] md:text-xs uppercase tracking-widest mb-1 font-display">@SocioNomicsLab</p>
+                    <h1 class="text-3xl md:text-5xl font-black mb-2 tracking-tight leading-none text-white">Brecha Oncológica</h1>
+                    <p class="text-indigo-200 text-sm md:text-base font-medium">
+                        Comparativa de defunciones anuales: <span class="text-orange-400 font-bold">Jóvenes</span> vs. <span class="text-indigo-300 font-bold">Adultos</span> (2012-2025)
+                    </p>
+                </div>
+                <!-- REDES SOCIALES -->
+                <div class="flex gap-4 items-center pt-2">
+                    <a href="https://github.com/AraujoME/visualizaciones" target="_blank" class="text-indigo-300 hover:text-white transition-colors" title="GitHub" aria-label="Visitar perfil de GitHub">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="text-indigo-300 hover:text-white transition-colors" title="LinkedIn" aria-label="Visitar perfil de LinkedIn">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"></path></svg>
+                    </a>
+                    <a href="https://x.com/SocioNomicsLab" target="_blank" class="text-indigo-300 hover:text-white transition-colors" title="X (Twitter)" aria-label="Visitar perfil de X (Twitter)">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.6823 10.6218L20.2391 3H18.6854L12.9921 9.61788L8.44486 3H3.2002L10.0765 13.0074L3.2002 21H4.75404L10.7663 14.0113L15.5685 21H20.8131L13.6819 10.6218H13.6823ZM11.5541 13.0956L10.8574 12.0991L5.31391 4.16971H7.70053L12.1742 10.5689L12.8709 11.5655L18.6861 19.8835H16.2995L11.5541 13.096V13.0956Z"></path></svg>
+                    </a>
+                </div>
             </div>
-            <!-- Fondo decorativo -->
-            <div class="absolute top-0 right-0 w-64 h-64 md:w-80 md:h-80 bg-violet-600 rounded-full mix-blend-overlay filter blur-[60px] md:blur-[80px] opacity-40 transform translate-x-1/3 -translate-y-1/3"></div>
+            <div class="absolute top-0 right-0 w-80 h-80 bg-violet-600 rounded-full mix-blend-overlay filter blur-[90px] opacity-30 transform translate-x-1/2 -translate-y-1/2"></div>
         </div>
 
-        <!-- LEYENDA ESTRUCTURADA (Grid Responsivo) -->
+        <!-- LEYENDA -->
         <div class="bg-white border-b border-slate-100 p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 gap-3 md:gap-6">
             <div class="flex items-center p-3 md:p-4 rounded-lg bg-orange-50 border-l-4 border-orange-500 shadow-sm">
                 <span class="text-xl md:text-2xl mr-3">🧒</span>
                 <div>
-                    <p class="font-bold text-orange-900 text-base md:text-lg">Menores de 20 años</p>
+                    <p class="font-bold text-orange-900 text-base md:text-lg font-display">Menores de 20 años</p>
                     <p class="text-xs md:text-sm text-orange-700">Niños y Adolescentes (Eje Izquierdo)</p>
                 </div>
             </div>
             <div class="flex items-center p-3 md:p-4 rounded-lg bg-slate-50 border-l-4 border-slate-600 shadow-sm">
                 <span class="text-xl md:text-2xl mr-3">👨‍🦳</span>
                 <div>
-                    <p class="font-bold text-slate-900 text-base md:text-lg">Adultos (20+ años)</p>
+                    <p class="font-bold text-slate-900 text-base md:text-lg font-display">Adultos (20+ años)</p>
                     <p class="text-xs md:text-sm text-slate-600">Población General (Eje Derecho)</p>
                 </div>
             </div>
         </div>
 
-        <!-- GRÁFICA RESPONSIVA -->
-        <div class="p-4 md:p-8 relative h-[50vh] md:h-[65vh] w-full bg-white">
-            <canvas id="cancerChart"></canvas>
+        <!-- GRÁFICA -->
+        <div id="chart-wrapper" class="p-4 md:p-8 relative h-[50vh] md:h-[65vh] w-full bg-white">
+            <!-- ACCESIBILIDAD MEJORADA: Role img y aria-label descriptivo -->
+            <canvas id="cancerChart" 
+                    role="img" 
+                    aria-label="Gráfica de líneas mostrando tendencia creciente en defunciones por cáncer de 2012 a 2025. Menores: de 2360 a 2710. Adultos: de 76 mil a 98 mil.">
+            </canvas>
         </div>
 
-        <!-- TABLA DE DATOS SELECTOS (Texto ajustable) -->
+        <!-- NARRATIVA: PANEL DE INTELIGENCIA UNIFICADO -->
+        <div class="p-6 md:p-8 bg-gradient-to-r from-blue-50 to-indigo-50 border-y border-blue-200">
+            <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center font-display">
+                <svg class="w-6 h-6 mr-2 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z">
+                    </path>
+                </svg>
+                ¿Qué nos dice esta brecha?
+            </h3>
+            
+            <div class="grid md:grid-cols-2 gap-4 text-sm text-slate-700">
+                <!-- Columna Menores -->
+                <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-orange-500">
+                    <p class="font-bold text-orange-900 mb-2 font-display">📈 Menores de 20 años (+12.9%)</p>
+                    <p class="leading-relaxed">
+                        El incremento puede reflejar <strong>mejor diagnóstico</strong> 
+                        (se detectan casos antes invisibles) y <strong>cambios demográficos</strong> 
+                        en la pirámide poblacional mexicana. Leucemias y tumores cerebrales 
+                        representan el 60% de estos casos.
+                    </p>
+                </div>
+                
+                <!-- Columna Adultos -->
+                <div class="bg-white p-4 rounded-lg shadow-sm border-l-4 border-slate-500">
+                    <p class="font-bold text-slate-900 mb-2 font-display">👨‍🦳 Adultos 20+ años (+18.0%)</p>
+                    <p class="leading-relaxed">
+                        El alza está impulsada por <strong>envejecimiento poblacional</strong>: 
+                        México tiene cada vez más adultos mayores. Cáncer de mama, próstata 
+                        y colorrectal concentran el 40% de defunciones adultas.
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Nota Metodológica Integrada -->
+            <div class="mt-4 p-4 bg-amber-50 rounded-lg border border-amber-200">
+                <p class="text-xs text-amber-800">
+                    <strong>⚠️ Nota Metodológica:</strong> Datos 2025 son preliminares (SINAIS). 
+                    Las cifras definitivas se publican con ~12 meses de retraso. 
+                    Los "menores" consolidan edades 0-19 años sin distinción entre grupos etarios.
+                </p>
+            </div>
+        </div>
+
+        <!-- TABLA DE DATOS -->
         <div class="p-5 md:p-8 bg-slate-50 border-t border-slate-200">
-            <h3 class="text-base md:text-lg font-bold text-slate-800 mb-4 flex items-center">
+            <h3 class="text-base md:text-lg font-bold text-slate-800 mb-4 flex items-center font-display">
                 <svg class="w-5 h-5 mr-2 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
                 Impacto acumulado por grupo
             </h3>
             <div class="overflow-x-auto">
                 <table class="min-w-full text-xs md:text-sm text-left text-stone-600">
+                    <caption class="sr-only">Comparación de defunciones por cáncer entre 2018 y 2025 por grupo de edad</caption>
                     <thead class="text-[10px] md:text-xs text-stone-700 uppercase bg-stone-100">
                         <tr>
-                            <th scope="col" class="px-3 md:px-6 py-3 rounded-l-lg">Grupo</th>
-                            <th scope="col" class="px-3 md:px-6 py-3 text-right">Cierre '18</th>
-                            <th scope="col" class="px-3 md:px-6 py-3 text-right font-bold text-red-700">Cierre '25</th>
-                            <th scope="col" class="px-3 md:px-6 py-3 rounded-r-lg">Variación</th>
+                            <th scope="col" class="px-3 md:px-6 py-3 rounded-l-lg font-display tracking-wider">Grupo</th>
+                            <th scope="col" class="px-3 md:px-6 py-3 text-right font-display tracking-wider">Cierre '18</th>
+                            <th scope="col" class="px-3 md:px-6 py-3 text-right font-bold text-red-700 font-display tracking-wider">Cierre '25</th>
+                            <th scope="col" class="px-3 md:px-6 py-3 rounded-r-lg font-display tracking-wider">Variación</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-stone-100">
-                        <tr class="bg-orange-50 border-l-4 border-orange-500">
-                            <td class="px-3 md:px-6 py-4 font-bold text-orange-900">Menores (0-19)</td>
-                            <td class="px-3 md:px-6 py-4 text-right">~2,400</td>
-                            <td class="px-3 md:px-6 py-4 text-right font-bold">~2,710</td>
-                            <td class="px-3 md:px-6 py-4 text-[10px] md:text-xs italic font-bold text-orange-700">+12.9%</td>
+                        <tr class="bg-orange-50 border-l-4 border-orange-500 hover:bg-orange-100 transition-colors">
+                            <td class="px-3 md:px-6 py-4 font-bold text-orange-900 font-display">Menores (0-19)</td>
+                            <td class="px-3 md:px-6 py-4 text-right tabular-nums">~2,400</td>
+                            <td class="px-3 md:px-6 py-4 text-right font-bold tabular-nums">~2,710</td>
+                            <td class="px-3 md:px-6 py-4 text-[10px] md:text-xs italic font-bold text-orange-700 tabular-nums">+12.9%</td>
                         </tr>
-                        <tr class="bg-white border-l-4 border-slate-500">
-                            <td class="px-3 md:px-6 py-4 font-bold text-slate-900">Adultos (20+)</td>
-                            <td class="px-3 md:px-6 py-4 text-right">~83k</td>
-                            <td class="px-3 md:px-6 py-4 text-right font-black text-red-800">~98k</td>
-                            <td class="px-3 md:px-6 py-4 text-[10px] md:text-xs italic font-bold text-slate-700">+18.0%</td>
+                        <tr class="bg-white border-l-4 border-slate-500 hover:bg-slate-50 transition-colors">
+                            <td class="px-3 md:px-6 py-4 font-bold text-slate-900 font-display">Adultos (20+)</td>
+                            <td class="px-3 md:px-6 py-4 text-right tabular-nums">~83k</td>
+                            <td class="px-3 md:px-6 py-4 text-right font-black text-red-800 tabular-nums">~98k</td>
+                            <td class="px-3 md:px-6 py-4 text-[10px] md:text-xs italic font-bold text-slate-700 tabular-nums">+18.0%</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             
-            <div class="mt-6 pt-4 border-t border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center text-[10px] md:text-xs text-slate-400 gap-2">
-                <p>Fuente: INEGI (EDR) y SINAIS (Preliminar 2025).</p>
-                <p class="font-bold text-slate-500 self-end md:self-auto">Elaborado por Eric Araujo Martínez</p>
+            <!-- REFERENCIAS EXPANDIDAS -->
+            <div class="mt-6 pt-4 border-t border-slate-200">
+                <h4 class="text-xs font-bold text-slate-600 mb-2 font-display">📚 FUENTES DE DATOS</h4>
+                <div class="space-y-1 text-[10px] text-slate-500">
+                    <p>
+                        • INEGI (2012-2024): 
+                        <a href="https://www.inegi.org.mx/programas/mortalidad/"
+                           target="_blank"
+                           class="text-blue-600 hover:underline">
+                            Estadísticas de Defunciones Registradas
+                        </a>
+                    </p>
+                    <p>
+                        • SINAIS (2025 Preliminar): 
+                        <a href="http://www.dgis.salud.gob.mx/contenidos/basesdedatos/std_defunciones.html"
+                           target="_blank"
+                           class="text-blue-600 hover:underline">
+                            Cubos Dinámicos de Mortalidad
+                        </a>
+                    </p>
+                    <p class="text-slate-400 italic pt-1">
+                        Clasificación CIE-10: C00-C97 (Tumores malignos). 
+                        Última consulta: febrero 2026.
+                    </p>
+                </div>
+                <p class="font-bold text-slate-500 text-[10px] mt-3 font-display">Elaborado por Eric Araujo Martínez</p>
             </div>
         </div>
 
-        <!-- SECCIÓN DE LICENCIAS Y DERECHOS -->
+        <!-- SECCIÓN DE LICENCIAS -->
         <div class="p-6 bg-slate-100 border-t border-slate-200 text-xs text-slate-500">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-                <!-- Licencia Creative Commons (Contenido) -->
                 <div class="flex flex-col items-center md:items-start text-center md:text-left">
-                    <p class="font-bold text-slate-600 uppercase tracking-widest text-[10px] mb-2">Licencia de Contenido</p>
-                    <a rel="license" href="http://creativecommons.org/licenses/by/4.0/" target="_blank" class="mb-2">
-                        <img alt="Licencia Creative Commons" style="border-width:0" src="https://licensebuttons.net/l/by/4.0/88x31.png" onerror="this.style.display='none'" />
+                    <p class="font-bold text-slate-600 uppercase tracking-widest text-[10px] mb-2 font-display">Licencia de Contenido</p>
+                    <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" class="mb-2 transition-opacity hover:opacity-80">
+                        <img alt="Licencia Creative Commons" style="border-width:0" src="https://licensebuttons.net/l/by-nc/4.0/88x31.png" onerror="this.style.display='none'" />
                     </a>
                     <p class="leading-relaxed">
-                        Esta obra visual está bajo una <a rel="license" href="http://creativecommons.org/licenses/by/4.0/" target="_blank" class="text-indigo-600 font-bold hover:underline">Licencia Creative Commons Atribución 4.0 Internacional</a>. 
-                        Usted es libre de compartir y adaptar el material siempre que otorgue el crédito a su creador: <strong>Eric Araujo Martínez (@SocioNomicsLab)</strong>.
+                        Esta obra visual está bajo una <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" class="text-indigo-600 font-bold hover:underline">Licencia Creative Commons Atribución-NoComercial 4.0 Internacional</a>. 
+                        Usted es libre de compartir y adaptar el material siempre que otorgue el crédito a: <strong>Eric Araujo Martínez (@SocioNomicsLab)</strong> y no lo use para fines comerciales.
                     </p>
                 </div>
-
-                <!-- Licencia MIT (Software) -->
                 <div class="flex flex-col items-center md:items-end text-center md:text-right border-t md:border-t-0 md:border-l border-slate-300 pt-4 md:pt-0 md:pl-8">
-                    <p class="font-bold text-slate-600 uppercase tracking-widest text-[10px] mb-2">Licencia de Software</p>
+                    <p class="font-bold text-slate-600 uppercase tracking-widest text-[10px] mb-2 font-display">Licencia de Software</p>
                     <div class="bg-white p-3 rounded border border-slate-200 shadow-sm max-w-xs">
                         <div class="flex items-center justify-center md:justify-end gap-2 mb-1">
                             <svg class="w-4 h-4 text-slate-700" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                            <span class="font-bold text-slate-800">MIT License</span>
+                            <span class="font-bold text-slate-800 font-display">MIT License</span>
                         </div>
                         <p class="text-[9px] text-slate-500 leading-tight">
-                            Copyright © 2026 Eric Araujo Martínez. Permission is hereby granted, free of charge, to any person obtaining a copy...
+                            Copyright © 2026 Eric Araujo Martínez.
                         </p>
-                        <a href="https://opensource.org/licenses/MIT" target="_blank" class="block mt-1 text-[9px] text-indigo-600 font-bold hover:underline">Ver Licencia Completa &rarr;</a>
                     </div>
                 </div>
             </div>
@@ -165,11 +270,12 @@
         // DATOS ADULTOS (20+ AÑOS)
         const adultData = [76000, 77500, 78200, 79500, 81000, 82500, 83200, 85000, 89000, 91500, 93000, 94800, 96500, 98000];
 
-        // CONFIGURACIÓN DINÁMICA DE FUENTES
+        // CONFIGURACIÓN DINÁMICA DE FUENTES CON FONT EDITORIAL
         const fontConfig = {
+            family: "'IBM Plex Mono', monospace", // Fuente monoespaciada para datos
+            titleFamily: "'Space Grotesk', sans-serif", // Fuente para títulos
             title: isMobile ? 16 : 20, 
             ticks: isMobile ? 12 : 14, 
-            // AUMENTO DE TAMAÑO Y GROSOR DE DATALABELS
             datalabels: isMobile ? 11 : 14,
             annotation: isMobile ? 9 : 11
         };
@@ -224,7 +330,7 @@
                     x: {
                         grid: { display: false },
                         ticks: { 
-                            font: { family: 'Inter', size: fontConfig.ticks, weight: 'bold' }, 
+                            font: { family: fontConfig.family, size: fontConfig.ticks, weight: 'bold' }, 
                             color: '#475569',
                             maxRotation: 45, 
                             minRotation: isMobile ? 45 : 0 
@@ -234,7 +340,7 @@
                         title: {
                             display: true,
                             text: isMobile ? 'Defunciones (0-19)' : 'Defunciones (0-19 años)',
-                            font: { family: 'Inter', size: fontConfig.title, weight: 'bold' },
+                            font: { family: fontConfig.titleFamily, size: fontConfig.title, weight: 'bold' },
                             color: '#ea580c'
                         },
                         min: 2200, 
@@ -243,14 +349,14 @@
                         grid: { color: '#fff7ed' },
                         ticks: { 
                             color: '#ea580c',
-                            font: { size: fontConfig.ticks, weight: 'bold' }
+                            font: { family: fontConfig.family, size: fontConfig.ticks, weight: 'bold' }
                         }
                     },
                     y1: {
                         title: {
                             display: true,
                             text: isMobile ? 'Defunciones (Adultos)' : 'Defunciones (Adultos)',
-                            font: { family: 'Inter', size: fontConfig.title, weight: 'bold' },
+                            font: { family: fontConfig.titleFamily, size: fontConfig.title, weight: 'bold' },
                             color: '#475569'
                         },
                         min: 70000,
@@ -259,7 +365,7 @@
                         grid: { display: false },
                         ticks: { 
                             color: '#475569',
-                            font: { size: fontConfig.ticks, weight: 'bold' },
+                            font: { family: fontConfig.family, size: fontConfig.ticks, weight: 'bold' },
                             callback: (val) => val / 1000 + 'k'
                         }
                     }
@@ -268,8 +374,8 @@
                     legend: { display: false },
                     tooltip: {
                         backgroundColor: 'rgba(15, 23, 42, 0.95)',
-                        titleFont: { size: 14 },
-                        bodyFont: { size: 14 },
+                        titleFont: { family: fontConfig.titleFamily, size: 14 },
+                        bodyFont: { family: fontConfig.family, size: 14 },
                         padding: 10,
                         callbacks: {
                             label: (ctx) => {
@@ -280,15 +386,26 @@
                         }
                     },
                     datalabels: {
-                        // AJUSTE DINÁMICO DE POSICIÓN
                         align: (ctx) => {
-                            // Si es el primer punto (2012) de Adultos (dataset 1), ponerlo abajo
+                            // HEURÍSTICA DE UI: Prevenir solapamiento visual en 2025
+                            if (ctx.dataIndex === 13) return 'left'; // Mover etiquetas de 2025 a la IZQUIERDA del punto
+                            
+                            // Separación para el primer punto (2012)
                             if (ctx.datasetIndex === 1 && ctx.dataIndex === 0) return 'bottom';
+                            
                             return 'top';
                         },
-                        // AUMENTO DE PESO A "900" (Extra Bold) Y TAMAÑO
-                        font: { weight: '900', size: fontConfig.datalabels },
+                        anchor: (ctx) => {
+                             // Para el último punto (2025), anclar al inicio (izquierda) para asegurar separación total del eje Y derecho
+                             if (ctx.dataIndex === 13) return 'start';
+                             return 'end';
+                        },
+                        font: { family: fontConfig.family, weight: 'bold', size: fontConfig.datalabels },
                         color: (ctx) => ctx.dataset.borderColor,
+                        // MEJORA DE CONTRASTE: Fondo blanco semitransparente para legibilidad perfecta sobre la cuadrícula
+                        backgroundColor: 'rgba(255, 255, 255, 0.85)',
+                        borderRadius: 4,
+                        padding: 2,
                         formatter: (val, ctx) => {
                             const showIndex = isMobile ? [0, 6, 13] : [0, 6, 13];
                             if(showIndex.includes(ctx.dataIndex)) {
@@ -314,7 +431,7 @@
                                     position: 'start',
                                     backgroundColor: '#f1f5f9',
                                     color: '#4b5563',
-                                    font: { size: fontConfig.annotation },
+                                    font: { family: fontConfig.titleFamily, size: fontConfig.annotation },
                                     yAdjust: 0
                                 }
                             }
