@@ -6,17 +6,18 @@
     <title>Carreras en México: Ingresos vs Popularidad</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Plugin Datalabels -->
+    
+    <!-- LIBRERÍAS DE GRÁFICAS (Versiones Compatibles y Estables) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
-    <!-- Plugin Annotation -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-annotation/2.2.1/chartjs-plugin-annotation.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    
     <!-- Librería para capturar pantalla -->
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <!-- FontAwesome (Versión 6.5.1 para soporte completo de X/Twitter) -->
+    <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
@@ -92,14 +93,14 @@
                     Mercado Laboral Universitario
                 </h1>
                 <p class="text-slate-400 text-sm md:text-lg lg:text-xl font-light max-w-3xl mx-auto px-2">
-                    Evolución de ingresos vs. popularidad de las carreras más demandadas en México (2018-2024)
+                    Evolución e ingresos vs. popularidad de las carreras más demandadas en México (2018-2030)
                 </p>
 
                 <!-- Redes Sociales (Header) -->
                 <div class="flex justify-center gap-4 md:gap-6 mt-4 md:mt-8">
                     <a href="https://github.com/araujome" target="_blank" class="text-slate-400 hover:text-white transition-colors text-xl md:text-2xl"><i class="fa-brands fa-github"></i></a>
                     <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="text-slate-400 hover:text-white transition-colors text-xl md:text-2xl"><i class="fa-brands fa-linkedin"></i></a>
-                    <!-- X (Twitter) - Icono actualizado -->
+                    <!-- X (Twitter) -->
                     <a href="https://x.com/SocioNomicsLab" target="_blank" class="text-slate-400 hover:text-white transition-colors text-xl md:text-2xl"><i class="fa-brands fa-x-twitter"></i></a>
                 </div>
             </div>
@@ -119,8 +120,15 @@
                 
                 <div class="flex items-center gap-2 md:gap-4 mb-4 md:mb-6">
                     <span class="text-[10px] md:text-xs font-bold text-slate-400">2018</span>
-                    <input type="range" id="year-slider" min="2018" max="2024" value="2024" step="1" class="flex-grow accent-indigo-600 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
-                    <span class="text-[10px] md:text-xs font-bold text-slate-400">2024</span>
+                    <input type="range" id="year-slider" min="2018" max="2030" value="2024" step="1" class="flex-grow accent-indigo-600 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
+                    <span class="text-[10px] md:text-xs font-bold text-slate-400">2030</span>
+                </div>
+                
+                <!-- Indicador proyección -->
+                <div id="projection-badge" class="hidden mb-3 text-center">
+                    <span class="inline-block bg-amber-100 text-amber-800 text-[10px] md:text-xs font-bold px-3 py-1 rounded-full">
+                        📊 Proyección basada en tendencias WEF + IMCO
+                    </span>
                 </div>
                 
                 <!-- Indicadores de Cuadrante -->
@@ -141,7 +149,7 @@
             <div class="px-4 md:px-8 py-4 md:py-6 bg-white border-t border-slate-100">
                 <h3 class="text-base md:text-lg font-bold text-slate-800 mb-2">Radiografía del Talento en México</h3>
                 <p class="text-xs md:text-sm text-slate-600 leading-relaxed text-justify">
-                    Esta gráfica de dispersión, al cruzar el <strong>ingreso promedio mensual</strong> (eje vertical) con la <strong>cantidad de profesionistas ocupados</strong> (eje horizontal), podemos identificar patrones claros: mientras carreras tradicionales como Derecho o Administración muestran signos de saturación (alta competencia, ingresos estancados), sectores emergentes y tecnológicos se desplazan hacia cuadrantes de mayor rentabilidad. Adicionalmente, el <strong>tamaño de la burbuja</strong> indica la tasa de ocupación real, ofreciendo una visión completa de la empleabilidad.
+                    Esta gráfica de dispersión, al cruzar el <strong>ingreso promedio mensual</strong> (eje vertical) con la <strong>cantidad de profesionistas ocupados</strong> (eje horizontal), permite identificar patrones claros: mientras carreras tradicionales como Derecho o Administración muestran signos de saturación, sectores emergentes se desplazan hacia cuadrantes de mayor rentabilidad.
                 </p>
             </div>
 
@@ -156,8 +164,8 @@
                     <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 h-full">
                         <ul class="text-xs md:text-sm text-slate-600 space-y-2 md:space-y-3 leading-relaxed">
                             <li class="flex items-start"><span class="text-emerald-500 mr-2 font-bold text-sm md:text-base">↑</span> <div><strong>Eje Vertical (Ingreso):</strong> Cuanto más arriba, mayor es el salario promedio mensual.</div></li>
-                            <li class="flex items-start"><span class="text-indigo-500 mr-2 font-bold text-sm md:text-base">→</span> <div><strong>Eje Horizontal (Popularidad):</strong> Cuanto más a la derecha, más saturada está la carrera (mayor matrícula).</div></li>
-                            <li class="flex items-start"><span class="text-slate-400 mr-2 font-bold text-[10px]">●</span> <div><strong>Tamaño de burbuja:</strong> Representa la Tasa de Ocupación (facilidad relativa para conseguir empleo).</div></li>
+                            <li class="flex items-start"><span class="text-indigo-500 mr-2 font-bold text-sm md:text-base">→</span> <div><strong>Eje Horizontal (Popularidad):</strong> Cuanto más a la derecha, más saturada está la carrera.</div></li>
+                            <li class="flex items-start"><span class="text-slate-400 mr-2 font-bold text-[10px]">●</span> <div><strong>Tamaño de burbuja:</strong> Representa la Tasa de Ocupación.</div></li>
                         </ul>
                     </div>
                 </div>
@@ -169,10 +177,10 @@
                     </h3>
                     <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 h-full space-y-2 md:space-y-3">
                         <p class="text-[9px] md:text-[10px] text-slate-500 leading-relaxed border-b border-slate-100 pb-2 md:pb-3">
-                            <strong>⚠️ Sobre la Inflación:</strong> Los salarios mostrados son <em>nominales</em>. El incremento visible a lo largo de los años responde en gran medida a ajustes inflacionarios y al aumento del Salario Mínimo, no necesariamente a un aumento del poder adquisitivo real.
+                            <strong>⚠️ Sobre la Inflación:</strong> Los salarios mostrados son nominales. El incremento visible a lo largo de los años responde en gran medida a ajustes inflacionarios y al aumento del Salario Mínimo, no necesariamente a un aumento del poder adquisitivo real.
                         </p>
                         <p class="text-[9px] md:text-[10px] text-slate-500 leading-relaxed border-b border-slate-100 pb-2 md:pb-3">
-                            <strong>Selección de muestra:</strong> Se grafican las 12 carreras con mayor matrícula nacional (representando ~40% de estudiantes) + 3 carreras emergentes (Ciencia de Datos, Energías) para contrastar nichos de alto valor vs. saturación tradicional.
+                            <strong>Selección de muestra:</strong> Se grafica una muestra representativa que incluye las <strong>carreras con mayor matrícula</strong> (como Derecho, Admin., Industrial) junto a <strong>carreras de nicho</strong> (Minería, Artes) y <strong>emergentes</strong> para contrastar distintos escenarios de saturación y rentabilidad.
                         </p>
                         <p class="text-[9px] md:text-[10px] text-slate-500 leading-relaxed">
                             <strong>Fuentes:</strong> INEGI (ENOE), STPS (Observatorio Laboral) e IMCO (Compara Carreras). Datos 2024 preliminares.
@@ -210,100 +218,131 @@
                     <div class="flex gap-3 md:gap-4 text-slate-400">
                         <a href="https://github.com/araujome" target="_blank" class="hover:text-slate-800 transition-colors text-lg md:text-xl"><i class="fa-brands fa-github"></i></a>
                         <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="hover:text-blue-600 transition-colors text-lg md:text-xl"><i class="fa-brands fa-linkedin"></i></a>
-                        <!-- X (Twitter) -->
                         <a href="https://x.com/SocioNomicsLab" target="_blank" class="hover:text-black transition-colors text-lg md:text-xl"><i class="fa-brands fa-x-twitter"></i></a>
                     </div>
                     <p class="text-xs md:text-sm font-bold text-slate-600 text-center md:text-right">
                         Elaborado por <span class="text-indigo-600">Eric Araujo Martínez (@SocioNomicsLab)</span>
                     </p>
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
     <script>
-        // Registrar plugins
+        // Registrar plugins (Aseguramos registro correcto para Chart.js 4.x)
         Chart.register(ChartDataLabels, window['chartjs-plugin-annotation']);
 
         const ctx = document.getElementById('scatterChart').getContext('2d');
         const yearDisplay = document.getElementById('year-display');
         const slider = document.getElementById('year-slider');
 
-        // Detectar si es móvil
-        const isMobile = window.innerWidth < 768;
+        // Detectar si es móvil (Dinámico)
+        let isMobile = window.innerWidth < 768;
 
-        // --- BASE DE DATOS EVOLUTIVA (2018-2024) ---
+        // --- BASE DE DATOS ---
         const db = {
             2018: [
-                { x: 980, y: 12500, r: 15, label: 'Admin. Empresas', type: 'negocios' },
-                { x: 800, y: 11800, r: 14, label: 'Derecho', type: 'negocios' },
-                { x: 650, y: 12000, r: 14, label: 'Contabilidad', type: 'negocios' },
-                { x: 380, y: 17500, r: 18, label: 'Medicina', type: 'salud' },
-                { x: 300, y: 14500, r: 16, label: 'Ing. Industrial', type: 'inge' },
-                { x: 220, y: 13800, r: 15, label: 'Psicología', type: 'salud' },
-                { x: 180, y: 15200, r: 16, label: 'Ing. Electrónica', type: 'inge' },
-                { x: 120, y: 16000, r: 17, label: 'Finanzas', type: 'negocios' },
-                { x: 40, y: 22000, r: 12, label: 'Minería', type: 'inge' },
-                { x: 250, y: 9800, r: 10, label: 'Docencia Prim.', type: 'humanidades' },
-                { x: 100, y: 10500, r: 9, label: 'Artes', type: 'humanidades' },
-                { x: 300, y: 13500, r: 14, label: 'Sistemas/TI', type: 'inge' },
-                { x: 180, y: 11000, r: 14, label: 'Turismo', type: 'humanidades' }, 
-                { x: 5, y: 14000, r: 2, label: 'Ciencia Datos', type: 'inge' }, 
-                { x: 10, y: 13000, r: 3, label: 'Energías Renov.', type: 'inge' } 
+                { x: 980, y: 12500, r: 15, label: 'Admin. Empresas', type: 'negocios', align: 'top' },
+                { x: 800, y: 11800, r: 14, label: 'Derecho', type: 'negocios', align: 'bottom' },
+                { x: 650, y: 12000, r: 14, label: 'Contabilidad', type: 'negocios', align: 'left' },
+                { x: 380, y: 17500, r: 18, label: 'Medicina', type: 'salud', align: 'top' },
+                { x: 300, y: 14500, r: 16, label: 'Ing. Industrial', type: 'inge', align: 'bottom' },
+                { x: 220, y: 13800, r: 15, label: 'Psicología', type: 'salud', align: 'left' },
+                { x: 180, y: 15200, r: 16, label: 'Ing. Electrónica', type: 'inge', align: 'right' },
+                { x: 120, y: 16000, r: 17, label: 'Finanzas', type: 'negocios', align: 'top' },
+                { x: 40, y: 22000, r: 12, label: 'Minería', type: 'inge', align: 'left' },
+                { x: 250, y: 9800, r: 10, label: 'Docencia Prim.', type: 'humanidades', align: 'bottom' },
+                { x: 100, y: 10500, r: 9, label: 'Artes', type: 'humanidades', align: 'left' },
+                { x: 300, y: 13500, r: 14, label: 'Sistemas/TI', type: 'inge', align: 'top' },
+                { x: 180, y: 11000, r: 14, label: 'Turismo', type: 'humanidades', align: 'right' }, 
+                { x: 5, y: 14000, r: 2, label: 'Ciencia Datos', type: 'inge', align: 'right' }, 
+                { x: 10, y: 13000, r: 3, label: 'Energías Renov.', type: 'inge', align: 'bottom' } 
             ],
             2020: [ 
-                { x: 1050, y: 12100, r: 14, label: 'Admin. Empresas', type: 'negocios' },
-                { x: 850, y: 11500, r: 13, label: 'Derecho', type: 'negocios' },
-                { x: 680, y: 11800, r: 13, label: 'Contabilidad', type: 'negocios' },
-                { x: 400, y: 18200, r: 19, label: 'Medicina', type: 'salud' }, 
-                { x: 320, y: 14200, r: 15, label: 'Ing. Industrial', type: 'inge' },
-                { x: 240, y: 13200, r: 14, label: 'Psicología', type: 'salud' },
-                { x: 200, y: 15500, r: 16, label: 'Ing. Electrónica', type: 'inge' },
-                { x: 130, y: 16500, r: 16, label: 'Finanzas', type: 'negocios' },
-                { x: 38, y: 21000, r: 11, label: 'Minería', type: 'inge' },
-                { x: 260, y: 10200, r: 10, label: 'Docencia Prim.', type: 'humanidades' },
-                { x: 110, y: 9500, r: 8, label: 'Artes', type: 'humanidades' },
-                { x: 330, y: 14500, r: 15, label: 'Sistemas/TI', type: 'inge' },
-                { x: 160, y: 8500, r: 8, label: 'Turismo', type: 'humanidades' }, 
-                { x: 15, y: 18000, r: 5, label: 'Ciencia Datos', type: 'inge' }, 
-                { x: 15, y: 14000, r: 4, label: 'Energías Renov.', type: 'inge' }
+                { x: 1050, y: 12100, r: 14, label: 'Admin. Empresas', type: 'negocios', align: 'top' },
+                { x: 850, y: 11500, r: 13, label: 'Derecho', type: 'negocios', align: 'bottom' },
+                { x: 680, y: 11800, r: 13, label: 'Contabilidad', type: 'negocios', align: 'left' },
+                { x: 400, y: 18200, r: 19, label: 'Medicina', type: 'salud', align: 'top' }, 
+                { x: 320, y: 14200, r: 15, label: 'Ing. Industrial', type: 'inge', align: 'bottom' },
+                { x: 240, y: 13200, r: 14, label: 'Psicología', type: 'salud', align: 'left' },
+                { x: 200, y: 15500, r: 16, label: 'Ing. Electrónica', type: 'inge', align: 'right' },
+                { x: 130, y: 16500, r: 16, label: 'Finanzas', type: 'negocios', align: 'top' },
+                { x: 38, y: 21000, r: 11, label: 'Minería', type: 'inge', align: 'left' },
+                { x: 260, y: 10200, r: 10, label: 'Docencia Prim.', type: 'humanidades', align: 'bottom' },
+                { x: 110, y: 9500, r: 8, label: 'Artes', type: 'humanidades', align: 'left' },
+                { x: 330, y: 14500, r: 15, label: 'Sistemas/TI', type: 'inge', align: 'top' },
+                { x: 160, y: 8500, r: 8, label: 'Turismo', type: 'humanidades', align: 'bottom' }, 
+                { x: 15, y: 18000, r: 5, label: 'Ciencia Datos', type: 'inge', align: 'right' }, 
+                { x: 15, y: 14000, r: 4, label: 'Energías Renov.', type: 'inge', align: 'bottom' }
             ],
             2022: [ 
-                { x: 1150, y: 13500, r: 15, label: 'Admin. Empresas', type: 'negocios' },
-                { x: 920, y: 12800, r: 14, label: 'Derecho', type: 'negocios' },
-                { x: 750, y: 13200, r: 14, label: 'Contabilidad', type: 'negocios' },
-                { x: 450, y: 19500, r: 19, label: 'Medicina', type: 'salud' },
-                { x: 360, y: 15800, r: 17, label: 'Ing. Industrial', type: 'inge' },
-                { x: 280, y: 14500, r: 15, label: 'Psicología', type: 'salud' },
-                { x: 230, y: 17200, r: 17, label: 'Ing. Electrónica', type: 'inge' },
-                { x: 145, y: 19000, r: 18, label: 'Finanzas', type: 'negocios' },
-                { x: 35, y: 24500, r: 12, label: 'Minería', type: 'inge' }, 
-                { x: 280, y: 11500, r: 12, label: 'Docencia Prim.', type: 'humanidades' },
-                { x: 120, y: 10800, r: 9, label: 'Artes', type: 'humanidades' },
-                { x: 380, y: 17000, r: 18, label: 'Sistemas/TI', type: 'inge' },
-                { x: 170, y: 10500, r: 10, label: 'Turismo', type: 'humanidades' }, 
-                { x: 35, y: 22000, r: 8, label: 'Ciencia Datos', type: 'inge' }, 
-                { x: 25, y: 16000, r: 6, label: 'Energías Renov.', type: 'inge' }
+                { x: 1150, y: 13500, r: 15, label: 'Admin. Empresas', type: 'negocios', align: 'top' },
+                { x: 920, y: 12800, r: 14, label: 'Derecho', type: 'negocios', align: 'bottom' },
+                { x: 750, y: 13200, r: 14, label: 'Contabilidad', type: 'negocios', align: 'left' },
+                { x: 450, y: 19500, r: 19, label: 'Medicina', type: 'salud', align: 'top' },
+                { x: 360, y: 15800, r: 17, label: 'Ing. Industrial', type: 'inge', align: 'bottom' },
+                { x: 280, y: 14500, r: 15, label: 'Psicología', type: 'salud', align: 'left' },
+                { x: 230, y: 17200, r: 17, label: 'Ing. Electrónica', type: 'inge', align: 'right' },
+                { x: 145, y: 19000, r: 18, label: 'Finanzas', type: 'negocios', align: 'top' },
+                { x: 35, y: 24500, r: 12, label: 'Minería', type: 'inge', align: 'left' }, 
+                { x: 280, y: 11500, r: 12, label: 'Docencia Prim.', type: 'humanidades', align: 'bottom' },
+                { x: 120, y: 10800, r: 9, label: 'Artes', type: 'humanidades', align: 'left' },
+                { x: 380, y: 17000, r: 18, label: 'Sistemas/TI', type: 'inge', align: 'top' },
+                { x: 170, y: 10500, r: 10, label: 'Turismo', type: 'humanidades', align: 'bottom' }, 
+                { x: 35, y: 22000, r: 8, label: 'Ciencia Datos', type: 'inge', align: 'right' }, 
+                { x: 25, y: 16000, r: 6, label: 'Energías Renov.', type: 'inge', align: 'bottom' }
             ],
             2024: [ 
-                { x: 1280, y: 15500, r: 15, label: 'Admin. Empresas', type: 'negocios' },
-                { x: 1000, y: 14200, r: 14, label: 'Derecho', type: 'negocios' },
-                { x: 820, y: 15000, r: 14, label: 'Contabilidad', type: 'negocios' },
-                { x: 500, y: 22500, r: 20, label: 'Medicina', type: 'salud' },
-                { x: 420, y: 18500, r: 18, label: 'Ing. Industrial', type: 'inge' },
-                { x: 320, y: 15800, r: 15, label: 'Psicología', type: 'salud' },
-                { x: 280, y: 20500, r: 19, label: 'Ing. Electrónica', type: 'inge' }, 
-                { x: 160, y: 24000, r: 19, label: 'Finanzas', type: 'negocios' },
-                { x: 32, y: 28000, r: 13, label: 'Minería', type: 'inge' },
-                { x: 300, y: 13500, r: 13, label: 'Docencia Prim.', type: 'humanidades' },
-                { x: 130, y: 11500, r: 9, label: 'Artes', type: 'humanidades' },
-                { x: 450, y: 21000, r: 20, label: 'Sistemas/TI', type: 'inge' }, 
-                { x: 190, y: 12500, r: 13, label: 'Turismo', type: 'humanidades' },
-                { x: 60, y: 29000, r: 12, label: 'Ciencia Datos', type: 'inge' }, 
-                { x: 45, y: 19500, r: 10, label: 'Energías Renov.', type: 'inge' } 
+                { x: 1280, y: 15500, r: 15, label: 'Admin. Empresas', type: 'negocios', align: 'top' },
+                { x: 1000, y: 14200, r: 14, label: 'Derecho', type: 'negocios', align: 'bottom' },
+                { x: 820, y: 15000, r: 14, label: 'Contabilidad', type: 'negocios', align: 'left' },
+                { x: 500, y: 22500, r: 20, label: 'Medicina', type: 'salud', align: 'top' },
+                { x: 420, y: 18500, r: 18, label: 'Ing. Industrial', type: 'inge', align: 'bottom' },
+                { x: 320, y: 15800, r: 15, label: 'Psicología', type: 'salud', align: 'left' },
+                { x: 280, y: 20500, r: 19, label: 'Ing. Electrónica', type: 'inge', align: 'bottom' }, 
+                { x: 160, y: 24000, r: 19, label: 'Finanzas', type: 'negocios', align: 'top' },
+                { x: 32, y: 28000, r: 13, label: 'Minería', type: 'inge', align: 'left' },
+                { x: 300, y: 13500, r: 13, label: 'Docencia Prim.', type: 'humanidades', align: 'bottom' },
+                { x: 130, y: 11500, r: 9, label: 'Artes', type: 'humanidades', align: 'left' },
+                { x: 450, y: 21000, r: 20, label: 'Sistemas/TI', type: 'inge', align: 'left' }, 
+                { x: 190, y: 12500, r: 13, label: 'Turismo', type: 'humanidades', align: 'right' },
+                { x: 60, y: 29000, r: 12, label: 'Ciencia Datos', type: 'inge', align: 'right' }, 
+                { x: 45, y: 19500, r: 10, label: 'Energías Renov.', type: 'inge', align: 'bottom' } 
+            ],
+            // PROYECCIONES 2027-2030 (con alineaciones ajustadas)
+            2027: [
+                { x: 1340, y: 16500, r: 14, label: 'Admin. Empresas', type: 'negocios', align: 'top' },
+                { x: 1050, y: 15000, r: 13, label: 'Derecho', type: 'negocios', align: 'bottom' },
+                { x: 780, y: 15800, r: 13, label: 'Contabilidad', type: 'negocios', align: 'left' },
+                { x: 575, y: 25200, r: 20, label: 'Medicina', type: 'salud', align: 'top' },
+                { x: 470, y: 20500, r: 18, label: 'Ing. Industrial', type: 'inge', align: 'bottom' },
+                { x: 350, y: 16500, r: 15, label: 'Psicología', type: 'salud', align: 'left' },
+                { x: 340, y: 23500, r: 19, label: 'Ing. Electrónica', type: 'inge', align: 'bottom' },
+                { x: 180, y: 26500, r: 19, label: 'Finanzas', type: 'negocios', align: 'top' },
+                { x: 30, y: 30000, r: 12, label: 'Minería', type: 'inge', align: 'left' },
+                { x: 310, y: 14200, r: 12, label: 'Docencia Prim.', type: 'humanidades', align: 'bottom' },
+                { x: 135, y: 12000, r: 9, label: 'Artes', type: 'humanidades', align: 'left' },
+                { x: 585, y: 24500, r: 20, label: 'Sistemas/TI', type: 'inge', align: 'left' },
+                { x: 195, y: 13200, r: 12, label: 'Turismo', type: 'humanidades', align: 'right' },
+                { x: 95, y: 34000, r: 14, label: 'Ciencia Datos', type: 'inge', align: 'top' },
+                { x: 70, y: 22500, r: 12, label: 'Energías Renov.', type: 'inge', align: 'bottom' }
+            ],
+            2030: [
+                { x: 1380, y: 17500, r: 14, label: 'Admin. Empresas', type: 'negocios', align: 'top' },
+                { x: 1080, y: 15800, r: 12, label: 'Derecho', type: 'negocios', align: 'bottom' },
+                { x: 740, y: 16500, r: 13, label: 'Contabilidad', type: 'negocios', align: 'left' },
+                { x: 660, y: 28000, r: 21, label: 'Medicina', type: 'salud', align: 'top' },
+                { x: 520, y: 22500, r: 18, label: 'Ing. Industrial', type: 'inge', align: 'bottom' },
+                { x: 380, y: 17200, r: 15, label: 'Psicología', type: 'salud', align: 'left' },
+                { x: 400, y: 26500, r: 20, label: 'Ing. Electrónica', type: 'inge', align: 'bottom' },
+                { x: 205, y: 29000, r: 19, label: 'Finanzas', type: 'negocios', align: 'left' },
+                { x: 28, y: 32000, r: 12, label: 'Minería', type: 'inge', align: 'left' },
+                { x: 315, y: 14800, r: 12, label: 'Docencia Prim.', type: 'humanidades', align: 'bottom' },
+                { x: 140, y: 12500, r: 9, label: 'Artes', type: 'humanidades', align: 'left' },
+                { x: 720, y: 28000, r: 21, label: 'Sistemas/TI', type: 'inge', align: 'left' },
+                { x: 200, y: 14000, r: 12, label: 'Turismo', type: 'humanidades', align: 'right' },
+                { x: 135, y: 40000, r: 16, label: 'Ciencia Datos', type: 'inge', align: 'top' },
+                { x: 105, y: 25500, r: 14, label: 'Energías Renov.', type: 'inge', align: 'bottom' }
             ]
         };
 
@@ -333,7 +372,8 @@
                     y: item.y + (upperItem.y - item.y) * factor,
                     r: item.r + (upperItem.r - item.r) * factor,
                     label: item.label,
-                    type: item.type
+                    type: item.type,
+                    align: item.align // Preservar la propiedad de alineación
                 };
             });
         }
@@ -401,7 +441,7 @@
                             color: '#475569' 
                         },
                         min: 8000, 
-                        max: 32000, 
+                        max: 42000, 
                         ticks: { 
                             callback: (val) => '$' + new Intl.NumberFormat('es-MX', {
                                 notation: isMobile ? 'compact' : 'standard',
@@ -431,26 +471,42 @@
                         }
                     },
                     datalabels: {
-                        align: 'top', 
-                        color: '#334155', 
-                        font: { 
-                            size: isMobile ? 8 : 11, 
-                            weight: 'bold' 
-                        },
-                        formatter: (val) => val.label, 
-                        offset: isMobile ? 2 : 4, 
-                        clip: false,
-                        display: function(context) {
-                            // En móvil, mostrar solo etiquetas de puntos más relevantes
-                            if (isMobile) {
-                                const item = context.dataset.data[context.dataIndex];
-                                // Mostrar solo si: alto salario O baja población O carreras emergentes
-                                return item.y > 20000 || item.x < 100 || 
-                                       item.label.includes('Ciencia') || 
-                                       item.label.includes('Energías');
+                        // FIX: Alineación lógica dinámica para Móvil
+                        align: (ctx) => {
+                            if (isMobile && ctx.raw && ctx.raw.label) {
+                                // Overrides específicos para móvil para evitar colisiones
+                                const label = ctx.raw.label;
+                                if (label.includes('Artes')) return 'bottom';
+                                if (label.includes('Turismo')) return 'right';
+                                if (label.includes('Docencia')) return 'top';
+                                if (label.includes('Energías')) return 'top';
+                                if (label.includes('Psicología')) return 'left';
+                                if (label.includes('Minería')) return 'right';
                             }
-                            return 'auto';
-                        }
+                            // Default o Desktop
+                            return (ctx.raw && ctx.raw.align) ? ctx.raw.align : 'top';
+                        },
+                        anchor: 'center', 
+                        color: '#334155', 
+                        
+                        // LÓGICA DINÁMICA DE FUENTE: 
+                        font: function(context) {
+                            const year = parseInt(document.getElementById('year-slider').value);
+                            const baseSize = isMobile ? 9 : 11;
+                            // Si el año es 2022 o menor, bajamos 2 puntos el tamaño
+                            const size = year <= 2022 ? baseSize - 2 : baseSize;
+                            return {
+                                size: size,
+                                weight: 'bold'
+                            };
+                        },
+
+                        // FIX: Verificación de seguridad en el formatter
+                        formatter: (val) => (val && val.label) ? val.label : '', 
+                        offset: isMobile ? 5 : 15, // Offset reducido en móvil para que estén más cerca
+                        clip: false, 
+                        
+                        display: true
                     },
                     annotation: {
                         annotations: {
@@ -458,8 +514,8 @@
                                 type: 'box', 
                                 xMin: 0, 
                                 xMax: 600, 
-                                yMin: 20000, 
-                                yMax: 32000,
+                                yMin: 25000, 
+                                yMax: 42000,
                                 backgroundColor: 'rgba(16, 185, 129, 0.05)', 
                                 borderColor: 'rgba(16, 185, 129, 0.2)', 
                                 borderWidth: 1,
@@ -505,6 +561,15 @@
         slider.addEventListener('input', (e) => {
             const year = parseInt(e.target.value);
             yearDisplay.textContent = year;
+            
+            // Mostrar badge si es proyección
+            const badge = document.getElementById('projection-badge');
+            if (year > 2024) {
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+            
             const newData = interpolateData(year);
             chart.data.datasets[0].data = newData;
             chart.update();
@@ -526,7 +591,28 @@
 
         // Redimensionar gráfica al cambiar orientación
         window.addEventListener('resize', () => {
+            // Actualizar detección de móvil
+            isMobile = window.innerWidth < 768;
+            
+            // Forzar actualización de opciones dependientes de isMobile
+            chart.options.layout.padding = isMobile ? 10 : 20;
+            chart.options.scales.x.title.font.size = isMobile ? 10 : 14;
+            chart.options.scales.x.ticks.font.size = isMobile ? 9 : 11;
+            chart.options.scales.x.ticks.maxTicksLimit = isMobile ? 6 : 10;
+            
+            chart.options.scales.y.title.font.size = isMobile ? 10 : 14;
+            chart.options.scales.y.ticks.font.size = isMobile ? 9 : 11;
+            chart.options.scales.y.ticks.maxTicksLimit = isMobile ? 6 : 10;
+            
+            chart.options.plugins.datalabels.font.size = isMobile ? 9 : 11;
+            chart.options.plugins.datalabels.offset = isMobile ? 5 : 15;
+            
+            // Ajustar anotaciones
+            chart.options.plugins.annotation.annotations.boxHighIncome.label.font.size = isMobile ? 8 : 11;
+            chart.options.plugins.annotation.annotations.boxSaturated.label.font.size = isMobile ? 8 : 11;
+
             chart.resize();
+            chart.update();
         });
     </script>
 </body>
