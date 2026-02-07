@@ -1,111 +1,87 @@
-<p align="center">
-  <img src="https://img.shields.io/badge/Status-Active-10b981?style=for-the-badge">
-  <img src="https://img.shields.io/badge/Data-INEGI%20%7C%20STPS%20%7C%20IMCO-3b82f6?style=for-the-badge">
-  <img src="https://img.shields.io/badge/License-CC%20BY--NC%204.0-f59e0b?style=for-the-badge">
-  <img src="https://img.shields.io/badge/Code-MIT-f43f5e?style=for-the-badge">
-</p>
+Mercado Laboral Universitario: Ingresos vs. Popularidad 📊
 
-# Mercado Laboral Universitario en México (2018–2024)
+Una visualización interactiva de datos que explora la evolución del mercado laboral para profesionistas en México. Este proyecto cruza variables de Ingreso Promedio Mensual con la Población Ocupada (Saturación) para identificar carreras de nicho, oportunidades emergentes y sectores saturados.
 
-Visualización interactiva que analiza la relación entre:
+Incluye datos históricos (2018-2024) y proyecciones estimadas (2025-2030) basadas en tendencias económicas globales.
 
-- **Ingreso promedio mensual (MXN nominales)**
-- **Población ocupada por carrera (miles de personas)**
-- **Tasa de ocupación (representada por el tamaño de la burbuja)**
+🚀 Características
 
-El objetivo es identificar patrones de **saturación, rentabilidad relativa y nichos de alto valor** dentro del mercado laboral mexicano.
+Gráfica de Dispersión (Scatter Plot): Visualización clara de cuadrantes (Ingresos vs. Popularidad).
 
-🔗 **Visualización en línea:**  
-https://araujome.github.io/visualizaciones/
+Línea de Tiempo Interactiva: Slider para navegar año por año desde 2018 hasta 2030 con interpolación suave de datos.
 
-🔗 **Autor:**  
-Eric Araujo Martínez  
-https://www.linkedin.com/in/ericaraujom/  
-https://github.com/araujome  
-https://x.com/SocioNomicsLab  
+Diseño Responsivo: Optimizado para escritorio y dispositivos móviles, con ajuste dinámico de etiquetas y fuentes.
 
----
+Categorización por Colores: Segmentación visual por áreas de estudio (Ingenierías, Salud, Negocios, Humanidades).
 
-## 📊 ¿Qué muestra la gráfica?
+Exportación: Funcionalidad integrada para descargar la visualización actual como imagen PNG de alta resolución.
 
-La visualización cruza tres dimensiones clave:
+Notas Contextuales: Badges automáticos que indican cuándo se están visualizando datos proyectados.
 
-| Variable | Representación |
-|----------|---------------|
-| Salario promedio mensual | Eje vertical |
-| Población ocupada (miles) | Eje horizontal |
-| Tasa de ocupación | Tamaño de la burbuja |
+🛠️ Tecnologías Utilizadas
 
-Esto permite distinguir cuatro dinámicas estructurales:
+Este proyecto se ha construido utilizando una arquitectura de archivo único (Single File Component) para facilitar su portabilidad y despliegue.
 
-- **Alto ingreso + baja saturación** → Nichos de alto valor  
-- **Alta saturación + ingreso medio/bajo** → Mercados competidos  
-- **Sectores tecnológicos** → Desplazamiento hacia cuadrantes superiores  
-- **Carreras tradicionales** → Estancamiento relativo
+HTML5 / CSS3
 
-La línea de tiempo (2018–2024) permite observar la evolución estructural del mercado laboral.
+Tailwind CSS: Para el estilizado y diseño responsivo.
 
----
+Chart.js (v4.x): Motor principal de renderizado de gráficas.
 
-## 🧠 Metodología
+Chart.js Datalabels: Para el manejo inteligente de etiquetas en las burbujas.
 
-### Selección de muestra
-- 12 carreras con mayor matrícula nacional (~40% del total)
-- 3 carreras emergentes (Ciencia de Datos, Energías Renovables, etc.) para contraste estructural
+Chart.js Annotation: Para dibujar las zonas de "Alto Valor" y "Mercado Saturado".
 
-### Fuentes
-- INEGI – ENOE  
-- STPS – Observatorio Laboral  
-- IMCO – Compara Carreras  
-- Datos 2024 preliminares
+html2canvas: Para la funcionalidad de captura de pantalla y descarga.
 
-### Notas técnicas
-- Los salarios están expresados en **pesos mexicanos nominales**.
-- No están ajustados por inflación.
-- Los datos intermedios (2019, 2021, 2023) se estiman mediante interpolación lineal entre años observados.
-- La visualización utiliza Chart.js con plugins de anotación y datalabels.
+FontAwesome & Google Fonts: Tipografía e iconografía.
 
----
+📋 Estructura de Datos
 
-## ⚙️ Stack Tecnológico
+Los datos se estructuran en un objeto db dentro del script principal, conteniendo "snapshots" de años clave. El sistema utiliza una función de interpolación lineal (interpolateData) para calcular la posición y tamaño de las burbujas en los años intermedios, proporcionando una animación fluida.
 
-- HTML5
-- TailwindCSS
-- Chart.js
-- chartjs-plugin-datalabels
-- chartjs-plugin-annotation
-- html2canvas
+// Ejemplo de estructura de datos
+{
+    x: 980,   // Población Ocupada (Miles)
+    y: 12500, // Salario Promedio ($ MXN)
+    r: 15,    // Radio (Tasa de ocupación relativa)
+    label: 'Admin. Empresas',
+    type: 'negocios',
+    align: 'top' // Alineación forzada para evitar solapamientos
+}
 
----
 
-## 📈 Interpretación Responsable
+📦 Instalación y Uso
 
-Este proyecto no pretende determinar la “mejor carrera”, sino mostrar:
+Clonar o Descargar:
+Simplemente descarga el archivo carreras_mexico.html.
 
-- Tendencias de saturación relativa
-- Diferenciales salariales promedio
-- Dinámicas sectoriales emergentes
+Ejecutar:
+Abre el archivo directamente en cualquier navegador web moderno (Chrome, Firefox, Edge, Safari). No requiere un servidor local (backend) para funcionar, ya que todas las librerías se cargan vía CDN.
 
-Los salarios promedio no reflejan distribución interna, informalidad ni brechas regionales.
+📄 Licencias
 
----
+Este proyecto opera bajo un modelo de licencia dual:
 
-## 📜 Licencias
+Código Fuente (Software): Bajo la Licencia MIT. Eres libre de usar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar y/o vender copias del software.
 
-**Contenido (datos, análisis y visualización):**  
-Creative Commons CC BY-NC 4.0  
-http://creativecommons.org/licenses/by-nc/4.0/
+Contenido y Datos (Visualización): Bajo la licencia Creative Commons Atribución-NoComercial 4.0 Internacional (CC BY-NC 4.0). Puedes compartir y adaptar el material, siempre que des crédito al autor y no lo uses para fines comerciales.
 
-**Código:**  
-MIT License  
-https://opensource.org/license/MIT
+Autor: Eric Araujo Martínez (@SocioNomicsLab)
 
----
+📚 Referencias Bibliográficas (APA)
 
-## 👤 Autor
+Para aquellos interesados en utilizar la metodología o los datos de este proyecto para investigación académica, se citan las fuentes originales utilizadas para la construcción de la base de datos y las proyecciones:
 
-Eric Araujo Martínez  
-Data Intelligence | SocioNomicsLab  
+Instituto Nacional de Estadística y Geografía (INEGI). (2024). Encuesta Nacional de Ocupación y Empleo (ENOE), indicadores estratégicos. Recuperado de https://www.inegi.org.mx/programas/enoe/15ymas/
+
+Instituto Mexicano para la Competitividad (IMCO). (2024). Compara Carreras: Índice de Calidad de la Inversión. Recuperado de https://imco.org.mx/comparacarreras/
+
+Secretaría del Trabajo y Previsión Social (STPS). (n.d.). Observatorio Laboral: Panorama profesional por carreras. Gobierno de México. Recuperado de https://www.observatoriolaboral.gob.mx/
+
+World Economic Forum. (2023). The Future of Jobs Report 2023. Geneva: World Economic Forum. Recuperado de https://www.weforum.org/publications/the-future-of-jobs-report-2023/
+
+Última actualización: Febrero 2026
 
 Si este proyecto te resulta útil para investigación, docencia o análisis público, puedes citarlo como:
 
