@@ -46,102 +46,117 @@
             background: #cbd5e1;
             border-radius: 3px;
         }
+
+        /* Optimizaciones para móvil */
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 500px !important;
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .chart-container {
+                height: 600px !important;
+            }
+        }
     </style>
 </head>
-<body class="p-4 md:p-8 text-slate-800 bg-slate-50 min-h-screen">
+<body class="p-2 md:p-8 text-slate-800 bg-slate-50 min-h-screen">
 
     <!-- BOTONERA SUPERIOR -->
-    <div class="max-w-6xl mx-auto mb-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-        <a href="https://araujome.github.io/visualizaciones/" class="px-6 py-2 bg-white text-indigo-600 rounded-full font-bold shadow-sm hover:shadow-md border border-indigo-100 transition-all flex items-center gap-2 text-sm">
+    <div class="max-w-6xl mx-auto mb-4 md:mb-6 flex flex-col sm:flex-row justify-between items-center gap-3 md:gap-4">
+        <a href="https://araujome.github.io/visualizaciones/" class="px-4 md:px-6 py-2 bg-white text-indigo-600 rounded-full font-bold shadow-sm hover:shadow-md border border-indigo-100 transition-all flex items-center gap-2 text-xs md:text-sm">
             <i class="fa-solid fa-arrow-left"></i> Más Estudios
         </a>
         
-        <button onclick="downloadImage()" class="px-6 py-2 bg-indigo-600 text-white rounded-full font-bold shadow-md hover:bg-indigo-700 transition-all flex items-center gap-2 text-sm">
+        <button onclick="downloadImage()" class="px-4 md:px-6 py-2 bg-indigo-600 text-white rounded-full font-bold shadow-md hover:bg-indigo-700 transition-all flex items-center gap-2 text-xs md:text-sm">
             <i class="fa-solid fa-image"></i> Descargar Gráfica
         </button>
     </div>
 
     <!-- CONTENEDOR PRINCIPAL (Área de Captura) -->
-    <div id="capture-area" class="max-w-6xl mx-auto space-y-6">
+    <div id="capture-area" class="max-w-6xl mx-auto space-y-4 md:space-y-6">
 
         <!-- HEADER OSCURO -->
-        <div class="bg-[#0f172a] rounded-[2rem] p-10 text-center relative overflow-hidden shadow-2xl">
+        <div class="bg-[#0f172a] rounded-2xl md:rounded-[2rem] p-6 md:p-10 text-center relative overflow-hidden shadow-2xl">
             <!-- Fondo abstracto -->
             <div class="absolute top-0 left-0 w-full h-full bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20"></div>
             <div class="absolute -top-24 -right-24 w-96 h-96 bg-indigo-600 rounded-full blur-[120px] opacity-40"></div>
             <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-purple-600 rounded-full blur-[120px] opacity-30"></div>
             
             <div class="relative z-10">
-                <p class="text-indigo-400 font-bold text-xs uppercase tracking-[0.2em] mb-4">@SocioNomicsLab</p>
-                <h1 class="text-4xl md:text-6xl font-black text-white mb-4 tracking-tight">
+                <p class="text-indigo-400 font-bold text-[10px] md:text-xs uppercase tracking-[0.15em] md:tracking-[0.2em] mb-2 md:mb-4">@SocioNomicsLab</p>
+                <h1 class="text-2xl md:text-4xl lg:text-6xl font-black text-white mb-2 md:mb-4 tracking-tight leading-tight">
                     Mercado Laboral Universitario
                 </h1>
-                <p class="text-slate-400 text-lg md:text-xl font-light max-w-3xl mx-auto">
+                <p class="text-slate-400 text-sm md:text-lg lg:text-xl font-light max-w-3xl mx-auto px-2">
                     Evolución de ingresos vs. popularidad de las carreras más demandadas en México (2018-2024)
                 </p>
 
                 <!-- Redes Sociales (Header) -->
-                <div class="flex justify-center gap-6 mt-8">
-                    <a href="https://github.com/araujome" target="_blank" class="text-slate-400 hover:text-white transition-colors text-2xl"><i class="fa-brands fa-github"></i></a>
-                    <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="text-slate-400 hover:text-white transition-colors text-2xl"><i class="fa-brands fa-linkedin"></i></a>
+                <div class="flex justify-center gap-4 md:gap-6 mt-4 md:mt-8">
+                    <a href="https://github.com/araujome" target="_blank" class="text-slate-400 hover:text-white transition-colors text-xl md:text-2xl"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="text-slate-400 hover:text-white transition-colors text-xl md:text-2xl"><i class="fa-brands fa-linkedin"></i></a>
                     <!-- X (Twitter) - Icono actualizado -->
-                    <a href="https://x.com/SocioNomicsLab" target="_blank" class="text-slate-400 hover:text-white transition-colors text-2xl"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://x.com/SocioNomicsLab" target="_blank" class="text-slate-400 hover:text-white transition-colors text-xl md:text-2xl"><i class="fa-brands fa-x-twitter"></i></a>
                 </div>
             </div>
         </div>
 
         <!-- CUERPO DE LA GRÁFICA -->
-        <div class="bg-white rounded-[2rem] shadow-xl border border-slate-200 overflow-hidden">
+        <div class="bg-white rounded-2xl md:rounded-[2rem] shadow-xl border border-slate-200 overflow-hidden">
             
             <!-- CONTROL DE TIEMPO -->
-            <div class="bg-slate-50/50 p-8 border-b border-slate-100">
-                <div class="flex justify-between items-end mb-4">
-                    <label for="year-slider" class="block text-sm font-black text-slate-700 uppercase tracking-wide">
+            <div class="bg-slate-50/50 p-4 md:p-8 border-b border-slate-100">
+                <div class="flex justify-between items-end mb-3 md:mb-4">
+                    <label for="year-slider" class="block text-xs md:text-sm font-black text-slate-700 uppercase tracking-wide">
                         Línea de Tiempo
                     </label>
-                    <span id="year-display" class="text-3xl font-black text-indigo-600">2024</span>
+                    <span id="year-display" class="text-2xl md:text-3xl font-black text-indigo-600">2024</span>
                 </div>
                 
-                <div class="flex items-center gap-4 mb-6">
-                    <span class="text-xs font-bold text-slate-400">2018</span>
+                <div class="flex items-center gap-2 md:gap-4 mb-4 md:mb-6">
+                    <span class="text-[10px] md:text-xs font-bold text-slate-400">2018</span>
                     <input type="range" id="year-slider" min="2018" max="2024" value="2024" step="1" class="flex-grow accent-indigo-600 h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer">
-                    <span class="text-xs font-bold text-slate-400">2024</span>
+                    <span class="text-[10px] md:text-xs font-bold text-slate-400">2024</span>
                 </div>
                 
                 <!-- Indicadores de Cuadrante -->
-                <div class="flex flex-wrap justify-center gap-6 text-xs font-medium text-slate-600">
-                    <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-emerald-500 mr-2"></span>Ingenierías</div>
-                    <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-blue-500 mr-2"></span>Salud</div>
-                    <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-amber-500 mr-2"></span>Negocios</div>
-                    <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-rose-500 mr-2"></span>Humanidades</div>
+                <div class="flex flex-wrap justify-center gap-3 md:gap-6 text-[10px] md:text-xs font-medium text-slate-600">
+                    <div class="flex items-center"><span class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-emerald-500 mr-1.5 md:mr-2"></span>Ingenierías</div>
+                    <div class="flex items-center"><span class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-blue-500 mr-1.5 md:mr-2"></span>Salud</div>
+                    <div class="flex items-center"><span class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-amber-500 mr-1.5 md:mr-2"></span>Negocios</div>
+                    <div class="flex items-center"><span class="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full bg-rose-500 mr-1.5 md:mr-2"></span>Humanidades</div>
                 </div>
             </div>
 
-            <!-- CANVAS -->
-            <div class="p-6 relative h-[600px] w-full">
+            <!-- CANVAS - Altura responsive -->
+            <div class="chart-container p-3 md:p-6 relative w-full">
                 <canvas id="scatterChart"></canvas>
             </div>
 
-            <!-- DESCRIPCIÓN GENERAL (NUEVA SECCIÓN) -->
-            <div class="px-8 py-6 bg-white border-t border-slate-100">
-                <h3 class="text-lg font-bold text-slate-800 mb-2">Radiografía del Talento en México</h3>
-                <p class="text-sm text-slate-600 leading-relaxed text-justify">
+            <!-- DESCRIPCIÓN GENERAL -->
+            <div class="px-4 md:px-8 py-4 md:py-6 bg-white border-t border-slate-100">
+                <h3 class="text-base md:text-lg font-bold text-slate-800 mb-2">Radiografía del Talento en México</h3>
+                <p class="text-xs md:text-sm text-slate-600 leading-relaxed text-justify">
                     Esta gráfica de dispersión, al cruzar el <strong>ingreso promedio mensual</strong> (eje vertical) con la <strong>cantidad de profesionistas ocupados</strong> (eje horizontal), podemos identificar patrones claros: mientras carreras tradicionales como Derecho o Administración muestran signos de saturación (alta competencia, ingresos estancados), sectores emergentes y tecnológicos se desplazan hacia cuadrantes de mayor rentabilidad. Adicionalmente, el <strong>tamaño de la burbuja</strong> indica la tasa de ocupación real, ofreciendo una visión completa de la empleabilidad.
                 </p>
             </div>
 
             <!-- NOTAS EXPLICATIVAS (GRID) -->
-            <div class="p-8 bg-slate-50 border-t border-slate-200 grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="p-4 md:p-8 bg-slate-50 border-t border-slate-200 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
                 
                 <!-- Columna 1: Guía de Lectura -->
                 <div>
-                    <h3 class="text-sm font-black text-slate-800 uppercase tracking-wide mb-3 flex items-center gap-2">
+                    <h3 class="text-xs md:text-sm font-black text-slate-800 uppercase tracking-wide mb-2 md:mb-3 flex items-center gap-2">
                         <i class="fa-solid fa-eye text-indigo-500"></i> Cómo leer esta gráfica
                     </h3>
-                    <div class="bg-white p-5 rounded-xl border border-slate-200 h-full">
-                        <ul class="text-sm text-slate-600 space-y-3 leading-relaxed">
-                            <li class="flex items-start"><span class="text-emerald-500 mr-2 font-bold text-base">↑</span> <div><strong>Eje Vertical (Ingreso):</strong> Cuanto más arriba, mayor es el salario promedio mensual.</div></li>
-                            <li class="flex items-start"><span class="text-indigo-500 mr-2 font-bold text-base">→</span> <div><strong>Eje Horizontal (Popularidad):</strong> Cuanto más a la derecha, más saturada está la carrera (mayor matrícula).</div></li>
+                    <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 h-full">
+                        <ul class="text-xs md:text-sm text-slate-600 space-y-2 md:space-y-3 leading-relaxed">
+                            <li class="flex items-start"><span class="text-emerald-500 mr-2 font-bold text-sm md:text-base">↑</span> <div><strong>Eje Vertical (Ingreso):</strong> Cuanto más arriba, mayor es el salario promedio mensual.</div></li>
+                            <li class="flex items-start"><span class="text-indigo-500 mr-2 font-bold text-sm md:text-base">→</span> <div><strong>Eje Horizontal (Popularidad):</strong> Cuanto más a la derecha, más saturada está la carrera (mayor matrícula).</div></li>
                             <li class="flex items-start"><span class="text-slate-400 mr-2 font-bold text-[10px]">●</span> <div><strong>Tamaño de burbuja:</strong> Representa la Tasa de Ocupación (facilidad relativa para conseguir empleo).</div></li>
                         </ul>
                     </div>
@@ -149,17 +164,17 @@
 
                 <!-- Columna 2: Notas Metodológicas -->
                 <div>
-                    <h3 class="text-sm font-black text-slate-800 uppercase tracking-wide mb-3 flex items-center gap-2">
+                    <h3 class="text-xs md:text-sm font-black text-slate-800 uppercase tracking-wide mb-2 md:mb-3 flex items-center gap-2">
                         <i class="fa-solid fa-circle-info text-indigo-500"></i> Notas Técnicas
                     </h3>
-                    <div class="bg-white p-5 rounded-xl border border-slate-200 h-full space-y-3">
-                        <p class="text-[10px] text-slate-500 leading-relaxed border-b border-slate-100 pb-3">
+                    <div class="bg-white p-4 md:p-5 rounded-xl border border-slate-200 h-full space-y-2 md:space-y-3">
+                        <p class="text-[9px] md:text-[10px] text-slate-500 leading-relaxed border-b border-slate-100 pb-2 md:pb-3">
                             <strong>⚠️ Sobre la Inflación:</strong> Los salarios mostrados son <em>nominales</em>. El incremento visible a lo largo de los años responde en gran medida a ajustes inflacionarios y al aumento del Salario Mínimo, no necesariamente a un aumento del poder adquisitivo real.
                         </p>
-                        <p class="text-[10px] text-slate-500 leading-relaxed border-b border-slate-100 pb-3">
+                        <p class="text-[9px] md:text-[10px] text-slate-500 leading-relaxed border-b border-slate-100 pb-2 md:pb-3">
                             <strong>Selección de muestra:</strong> Se grafican las 12 carreras con mayor matrícula nacional (representando ~40% de estudiantes) + 3 carreras emergentes (Ciencia de Datos, Energías) para contrastar nichos de alto valor vs. saturación tradicional.
                         </p>
-                        <p class="text-[10px] text-slate-500 leading-relaxed">
+                        <p class="text-[9px] md:text-[10px] text-slate-500 leading-relaxed">
                             <strong>Fuentes:</strong> INEGI (ENOE), STPS (Observatorio Laboral) e IMCO (Compara Carreras). Datos 2024 preliminares.
                         </p>
                     </div>
@@ -167,38 +182,38 @@
             </div>
 
             <!-- FOOTER DE LICENCIAS -->
-            <div class="bg-slate-100 p-6 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="bg-slate-100 p-4 md:p-6 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
                 
                 <!-- Bloque Licencias -->
-                <div class="flex items-center gap-4">
+                <div class="flex items-center gap-3 md:gap-4 flex-wrap justify-center md:justify-start">
                     <!-- CC -->
-                    <div class="flex flex-col">
-                        <span class="text-[9px] font-bold text-slate-400 uppercase mb-1">Licencia de Contenido</span>
+                    <div class="flex flex-col items-center md:items-start">
+                        <span class="text-[8px] md:text-[9px] font-bold text-slate-400 uppercase mb-1">Licencia de Contenido</span>
                         <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" class="opacity-80 hover:opacity-100">
-                            <img alt="CC BY-NC" style="border-width:0" src="https://licensebuttons.net/l/by-nc/4.0/88x31.png" width="80" />
+                            <img alt="CC BY-NC" style="border-width:0" src="https://licensebuttons.net/l/by-nc/4.0/88x31.png" width="70" class="md:w-20" />
                         </a>
                     </div>
                     
-                    <div class="h-8 w-px bg-slate-300 mx-2"></div>
+                    <div class="h-8 w-px bg-slate-300 hidden md:block"></div>
 
                     <!-- MIT -->
-                    <div class="flex flex-col">
-                        <span class="text-[9px] font-bold text-slate-400 uppercase mb-1">Licencia de Software</span>
-                        <a href="https://opensource.org/license/MIT" target="_blank" class="flex items-center gap-1 text-xs font-bold text-slate-600 hover:text-indigo-600 transition-colors">
+                    <div class="flex flex-col items-center md:items-start">
+                        <span class="text-[8px] md:text-[9px] font-bold text-slate-400 uppercase mb-1">Licencia de Software</span>
+                        <a href="https://opensource.org/license/MIT" target="_blank" class="flex items-center gap-1 text-[10px] md:text-xs font-bold text-slate-600 hover:text-indigo-600 transition-colors">
                             <i class="fa-brands fa-github"></i> MIT License
                         </a>
                     </div>
                 </div>
 
                 <!-- Redes Sociales (Footer) y Autoría -->
-                <div class="flex flex-col items-end gap-2">
-                    <div class="flex gap-4 text-slate-400">
-                        <a href="https://github.com/araujome" target="_blank" class="hover:text-slate-800 transition-colors text-xl"><i class="fa-brands fa-github"></i></a>
-                        <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="hover:text-blue-600 transition-colors text-xl"><i class="fa-brands fa-linkedin"></i></a>
+                <div class="flex flex-col items-center md:items-end gap-2">
+                    <div class="flex gap-3 md:gap-4 text-slate-400">
+                        <a href="https://github.com/araujome" target="_blank" class="hover:text-slate-800 transition-colors text-lg md:text-xl"><i class="fa-brands fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="hover:text-blue-600 transition-colors text-lg md:text-xl"><i class="fa-brands fa-linkedin"></i></a>
                         <!-- X (Twitter) -->
-                        <a href="https://x.com/SocioNomicsLab" target="_blank" class="hover:text-black transition-colors text-xl"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://x.com/SocioNomicsLab" target="_blank" class="hover:text-black transition-colors text-lg md:text-xl"><i class="fa-brands fa-x-twitter"></i></a>
                     </div>
-                    <p class="text-sm font-bold text-slate-600">
+                    <p class="text-xs md:text-sm font-bold text-slate-600 text-center md:text-right">
                         Elaborado por <span class="text-indigo-600">Eric Araujo Martínez (@SocioNomicsLab)</span>
                     </p>
                 </div>
@@ -216,6 +231,9 @@
         const ctx = document.getElementById('scatterChart').getContext('2d');
         const yearDisplay = document.getElementById('year-display');
         const slider = document.getElementById('year-slider');
+
+        // Detectar si es móvil
+        const isMobile = window.innerWidth < 768;
 
         // --- BASE DE DATOS EVOLUTIVA (2018-2024) ---
         const db = {
@@ -344,16 +362,57 @@
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                layout: { padding: 20 },
+                layout: { 
+                    padding: isMobile ? 10 : 20 
+                },
                 animation: { duration: 800, easing: 'easeOutQuart' },
                 scales: {
                     x: {
-                        title: { display: true, text: 'Población Ocupada (Miles)', font: { weight: 'bold', size: 14 }, color: '#475569' },
-                        min: 0, max: 1400, grid: { color: '#f1f5f9' }, ticks: { font: { weight: 'bold' } }
+                        title: { 
+                            display: true, 
+                            text: 'Población Ocupada (Miles)', 
+                            font: { 
+                                weight: 'bold', 
+                                size: isMobile ? 10 : 14 
+                            }, 
+                            color: '#475569' 
+                        },
+                        min: 0, 
+                        max: 1400, 
+                        grid: { color: '#f1f5f9' }, 
+                        ticks: { 
+                            font: { 
+                                weight: 'bold',
+                                size: isMobile ? 9 : 11
+                            },
+                            maxRotation: 0,
+                            autoSkip: true,
+                            maxTicksLimit: isMobile ? 6 : 10
+                        }
                     },
                     y: {
-                        title: { display: true, text: 'Salario Promedio ($ MXN)', font: { weight: 'bold', size: 14 }, color: '#475569' },
-                        min: 8000, max: 32000, ticks: { callback: (val) => '$' + new Intl.NumberFormat('es-MX').format(val), font: { weight: 'bold' } },
+                        title: { 
+                            display: true, 
+                            text: 'Salario Promedio ($ MXN)', 
+                            font: { 
+                                weight: 'bold', 
+                                size: isMobile ? 10 : 14 
+                            }, 
+                            color: '#475569' 
+                        },
+                        min: 8000, 
+                        max: 32000, 
+                        ticks: { 
+                            callback: (val) => '$' + new Intl.NumberFormat('es-MX', {
+                                notation: isMobile ? 'compact' : 'standard',
+                                compactDisplay: 'short'
+                            }).format(val), 
+                            font: { 
+                                weight: 'bold',
+                                size: isMobile ? 9 : 11
+                            },
+                            maxTicksLimit: isMobile ? 6 : 10
+                        },
                         grid: { color: '#f1f5f9' }
                     }
                 },
@@ -361,6 +420,9 @@
                     legend: { display: false }, 
                     tooltip: {
                         backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        titleFont: { size: isMobile ? 11 : 13 },
+                        bodyFont: { size: isMobile ? 10 : 12 },
+                        padding: isMobile ? 8 : 12,
                         callbacks: {
                             label: (ctx) => {
                                 const item = ctx.raw;
@@ -369,21 +431,70 @@
                         }
                     },
                     datalabels: {
-                        align: 'top', color: '#334155', font: { size: 11, weight: 'bold' },
-                        formatter: (val) => val.label, offset: 4, clip: false,
-                        display: 'auto'
+                        align: 'top', 
+                        color: '#334155', 
+                        font: { 
+                            size: isMobile ? 8 : 11, 
+                            weight: 'bold' 
+                        },
+                        formatter: (val) => val.label, 
+                        offset: isMobile ? 2 : 4, 
+                        clip: false,
+                        display: function(context) {
+                            // En móvil, mostrar solo etiquetas de puntos más relevantes
+                            if (isMobile) {
+                                const item = context.dataset.data[context.dataIndex];
+                                // Mostrar solo si: alto salario O baja población O carreras emergentes
+                                return item.y > 20000 || item.x < 100 || 
+                                       item.label.includes('Ciencia') || 
+                                       item.label.includes('Energías');
+                            }
+                            return 'auto';
+                        }
                     },
                     annotation: {
                         annotations: {
                             boxHighIncome: {
-                                type: 'box', xMin: 0, xMax: 600, yMin: 20000, yMax: 32000,
-                                backgroundColor: 'rgba(16, 185, 129, 0.05)', borderColor: 'rgba(16, 185, 129, 0.2)', borderWidth: 1,
-                                label: { content: 'Alto Valor / Nicho', position: {x: 'start', y: 'top'}, color: '#059669', font: {size: 11, style:'italic'}, xAdjust: 10, yAdjust: 10 }
+                                type: 'box', 
+                                xMin: 0, 
+                                xMax: 600, 
+                                yMin: 20000, 
+                                yMax: 32000,
+                                backgroundColor: 'rgba(16, 185, 129, 0.05)', 
+                                borderColor: 'rgba(16, 185, 129, 0.2)', 
+                                borderWidth: 1,
+                                label: { 
+                                    content: 'Alto Valor / Nicho', 
+                                    position: {x: 'start', y: 'top'}, 
+                                    color: '#059669', 
+                                    font: {
+                                        size: isMobile ? 8 : 11, 
+                                        style:'italic'
+                                    }, 
+                                    xAdjust: isMobile ? 5 : 10, 
+                                    yAdjust: isMobile ? 5 : 10 
+                                }
                             },
                             boxSaturated: {
-                                type: 'box', xMin: 800, xMax: 1400, yMin: 8000, yMax: 16000,
-                                backgroundColor: 'rgba(245, 158, 11, 0.05)', borderColor: 'rgba(245, 158, 11, 0.2)', borderWidth: 1,
-                                label: { content: 'Mercado Saturado', position: {x: 'end', y: 'bottom'}, color: '#d97706', font: {size: 11, style:'italic'}, xAdjust: -10, yAdjust: -10 }
+                                type: 'box', 
+                                xMin: 800, 
+                                xMax: 1400, 
+                                yMin: 8000, 
+                                yMax: 16000,
+                                backgroundColor: 'rgba(245, 158, 11, 0.05)', 
+                                borderColor: 'rgba(245, 158, 11, 0.2)', 
+                                borderWidth: 1,
+                                label: { 
+                                    content: 'Mercado Saturado', 
+                                    position: {x: 'end', y: 'bottom'}, 
+                                    color: '#d97706', 
+                                    font: {
+                                        size: isMobile ? 8 : 11, 
+                                        style:'italic'
+                                    }, 
+                                    xAdjust: isMobile ? -5 : -10, 
+                                    yAdjust: isMobile ? -5 : -10 
+                                }
                             }
                         }
                     }
@@ -402,7 +513,9 @@
         function downloadImage() {
             const container = document.getElementById('capture-area');
             html2canvas(container, {
-                scale: 2, useCORS: true, backgroundColor: "#f8fafc"
+                scale: 2, 
+                useCORS: true, 
+                backgroundColor: "#f8fafc"
             }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = `mapa_carreras_${yearDisplay.textContent}.png`;
@@ -410,6 +523,11 @@
                 link.click();
             });
         }
+
+        // Redimensionar gráfica al cambiar orientación
+        window.addEventListener('resize', () => {
+            chart.resize();
+        });
     </script>
 </body>
 </html>
