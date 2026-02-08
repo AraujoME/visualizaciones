@@ -57,7 +57,8 @@
         }
 
         /* Colores de Hover Personalizados */
-        .card-universidad:hover { border-color: #6366f1; } /* Indigo - Nuevo */
+        .card-fobaproa:hover { border-color: #e11d48; } /* Rose - NUEVO */
+        .card-universidad:hover { border-color: #6366f1; } 
         .card-laboral:hover { border-color: #22c55e; }
         .card-resaca:hover { border-color: #ef4444; }
         .card-mercado:hover { border-color: #f97316; }
@@ -172,7 +173,27 @@
         <!-- GRID DE ESTUDIOS -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
-            <!-- 1. MERCADO LABORAL UNIVERSITARIO (NUEVO - Posición 1) -->
+            <!-- 1. DEUDA PÚBLICA / FOBAPROA (NUEVO - Posición 1) -->
+            <a href="proyeccion_fobaproa.html" class="glass-card card-fobaproa rounded-3xl p-6 group">
+                <div class="space-y-4">
+                    <div class="w-10 h-10 bg-rose-600 rounded-xl flex items-center justify-center shadow-lg shadow-rose-900/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-scale-unbalanced-flip text-white"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <h3 class="text-base font-black text-white italic uppercase tracking-tight">Deuda Pública</h3>
+                            <span class="bg-rose-500/20 text-rose-300 text-[9px] font-bold px-2 py-0.5 rounded border border-rose-500/30 animate-pulse">NUEVO</span>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">Comparativa: Costo real del FOBAPROA vs. Proyección de pérdidas en Pemex, CFE y NAIM.</p>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
+                    <span class="text-rose-400">FINANZAS</span>
+                    <span>SHCP / ASF</span>
+                </div>
+            </a>
+
+            <!-- 2. MERCADO LABORAL UNIVERSITARIO (Posición 2) -->
             <a href="https://araujome.github.io/visualizaciones/mercadolaboraluniversitario/" class="glass-card card-universidad rounded-3xl p-6 group">
                 <div class="space-y-4">
                     <div class="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-900/20 group-hover:scale-110 transition-transform">
@@ -181,7 +202,6 @@
                     <div>
                         <div class="flex items-center gap-2 mb-1">
                             <h3 class="text-base font-black text-white italic uppercase tracking-tight">Mercado Laboral</h3>
-                            <span class="bg-indigo-500/20 text-indigo-300 text-[9px] font-bold px-2 py-0.5 rounded border border-indigo-500/30 animate-pulse">NUEVO</span>
                         </div>
                         <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">Evolución de ingresos vs. popularidad de las carreras más demandadas en México (2018-2024).</p>
                     </div>
@@ -192,7 +212,7 @@
                 </div>
             </a>
 
-            <!-- 2. LA ILUSIÓN DEL EMPLEO (Posición 2) -->
+            <!-- 3. LA ILUSIÓN DEL EMPLEO -->
             <a href="https://araujome.github.io/visualizaciones/altasybajaspatronales/" class="glass-card card-laboral rounded-3xl p-6 group">
                 <div class="space-y-4">
                     <div class="w-10 h-10 bg-green-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-900/20 group-hover:scale-110 transition-transform">
@@ -211,7 +231,7 @@
                 </div>
             </a>
 
-            <!-- 3. RESACA DEL CRÉDITO -->
+            <!-- 4. RESACA DEL CRÉDITO -->
             <a href="https://araujome.github.io/visualizaciones/resaca-del-credito/" class="glass-card card-resaca rounded-3xl p-6 group">
                 <div class="space-y-4">
                     <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-900/20 group-hover:scale-110 transition-transform">
@@ -228,7 +248,7 @@
                 </div>
             </a>
 
-            <!-- 4. LA GRAN DIVERGENCIA -->
+            <!-- 5. LA GRAN DIVERGENCIA -->
             <a href="https://araujome.github.io/visualizaciones/precios-mercado-vs-estado/" class="glass-card card-mercado rounded-3xl p-6 group">
                 <div class="space-y-4">
                     <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-orange-900/20 group-hover:scale-110 transition-transform">
@@ -245,7 +265,7 @@
                 </div>
             </a>
 
-            <!-- 5. LA CARRERA EDUCATIVA -->
+            <!-- 6. LA CARRERA EDUCATIVA -->
             <a href="https://araujome.github.io/visualizaciones/comparativapisamexico/" class="glass-card card-pisa rounded-3xl p-6 group">
                 <div class="space-y-4">
                     <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/20 group-hover:scale-110 transition-transform">
@@ -262,7 +282,7 @@
                 </div>
             </a>
 
-            <!-- 6. CLASE MEDIA GLOBAL -->
+            <!-- 7. CLASE MEDIA GLOBAL -->
             <a href="https://araujome.github.io/visualizaciones/clasemedia/" class="glass-card card-clase rounded-3xl p-6 group">
                 <div class="space-y-4">
                     <div class="w-10 h-10 bg-teal-500 rounded-xl flex items-center justify-center shadow-lg shadow-teal-900/20 group-hover:scale-110 transition-transform">
@@ -279,7 +299,7 @@
                 </div>
             </a>
 
-            <!-- 7. PIRÁMIDE POBLACIONAL -->
+            <!-- 8. PIRÁMIDE POBLACIONAL -->
             <a href="https://araujome.github.io/visualizaciones/piramidepoblacionalmexico/" class="glass-card card-piramide rounded-3xl p-6 group">
                 <div class="space-y-4">
                     <div class="w-10 h-10 bg-pink-600 rounded-xl flex items-center justify-center shadow-lg shadow-pink-900/20 group-hover:scale-110 transition-transform">
@@ -296,7 +316,7 @@
                 </div>
             </a>
 
-            <!-- 8. PIB GLOBAL -->
+            <!-- 9. PIB GLOBAL -->
             <a href="https://araujome.github.io/visualizaciones/pibpercapitappa/" class="glass-card card-pib rounded-3xl p-6 group">
                 <div class="space-y-4">
                     <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-900/20 group-hover:scale-110 transition-transform">
@@ -315,7 +335,7 @@
                 </div>
             </a>
 
-            <!-- 9. TU DEUDA PERSONAL -->
+            <!-- 10. TU DEUDA PERSONAL -->
             <a href="https://araujome.github.io/visualizaciones/deudapormexicano/" class="glass-card card-deuda rounded-3xl p-6 group">
                 <div class="space-y-4">
                     <div class="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-900/20 group-hover:scale-110 transition-transform">
@@ -332,7 +352,7 @@
                 </div>
             </a>
 
-            <!-- 10. DIPLOMACIA DEL CRUDO -->
+            <!-- 11. DIPLOMACIA DEL CRUDO -->
             <a href="https://araujome.github.io/visualizaciones/petroleoacuba/" class="glass-card card-petroleo rounded-3xl p-6 group">
                 <div class="space-y-4">
                     <div class="w-10 h-10 bg-sky-600 rounded-xl flex items-center justify-center shadow-lg shadow-sky-900/20 group-hover:scale-110 transition-transform">
@@ -349,7 +369,7 @@
                 </div>
             </a>
 
-            <!-- 11. CRISIS DE MORTALIDAD -->
+            <!-- 12. CRISIS DE MORTALIDAD -->
             <a href="https://araujome.github.io/visualizaciones/defunciones-oncologico/" class="glass-card card-mortalidad rounded-3xl p-6 group">
                 <div class="space-y-4">
                     <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center shadow-lg shadow-amber-900/20 group-hover:scale-110 transition-transform">
@@ -366,7 +386,7 @@
                 </div>
             </a>
 
-            <!-- 12. REPORTE ONCOLÓGICO -->
+            <!-- 13. REPORTE ONCOLÓGICO -->
             <a href="https://araujome.github.io/visualizaciones/oncologicos/" class="glass-card card-oncologico rounded-3xl p-6 group">
                 <div class="space-y-4">
                     <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-900/20 group-hover:scale-110 transition-transform">
