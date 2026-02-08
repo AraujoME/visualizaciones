@@ -12,9 +12,8 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
     <!-- Librería para capturar pantalla -->
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    <!-- Google Fonts & Icons -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
    
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -33,16 +32,28 @@
     <div class="max-w-5xl mx-auto mb-6 flex flex-col sm:flex-row justify-between items-center gap-4 no-print">
         <div class="flex gap-4">
             <a href="https://araujome.github.io/visualizaciones/" class="text-slate-500 hover:text-slate-800 font-bold text-sm transition-colors flex items-center gap-2">
-                <i class="fa-solid fa-arrow-left"></i>Más Estudios
+                <!-- Icono Flecha SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Volver al índice
             </a>
             <a href="https://github.com/araujome/visualizaciones" target="_blank" class="text-slate-500 hover:text-slate-900 font-bold text-sm transition-colors flex items-center gap-2">
-                <i class="fa-brands fa-github text-lg"></i> Repositorio GitHub
+                <!-- Icono GitHub SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                Repositorio GitHub
             </a>
         </div>
 
         <div class="flex gap-3">
             <button onclick="downloadImage()" class="flex items-center px-5 py-2.5 bg-white text-slate-700 rounded-lg shadow-sm hover:shadow-md border border-slate-200 font-semibold transition-all text-sm group">
-                <i class="fa-solid fa-download mr-2 text-slate-400 group-hover:text-slate-600"></i> Guardar Imagen
+                <!-- Icono Download SVG -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2 text-slate-400 group-hover:text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                </svg>
+                Guardar Imagen
             </button>
         </div>
     </div>
@@ -70,10 +81,17 @@
                     </p>
                 </div>
                 
-                <div class="flex gap-4 text-xl md:text-2xl text-slate-400">
-                    <a href="https://github.com/araujome/visualizaciones" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-github"></i></a>
-                    <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="hover:text-blue-400 transition-colors"><i class="fa-brands fa-linkedin"></i></a>
-                    <a href="https://x.com/SocioNomicsLab" target="_blank" class="hover:text-white transition-colors"><i class="fa-brands fa-x-twitter"></i></a>
+                <!-- REDES SOCIALES (SVG para garantizar renderizado) -->
+                <div class="flex gap-4 text-slate-400">
+                    <a href="https://github.com/araujome" target="_blank" class="hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd"></path></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="hover:text-blue-400 transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"></path></svg>
+                    </a>
+                    <a href="https://x.com/SocioNomicsLab" target="_blank" class="hover:text-white transition-colors">
+                        <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"></path></svg>
+                    </a>
                 </div>
             </div>
             
@@ -82,7 +100,9 @@
 
         <!-- NOTA EXPLICATIVA: ¿Qué significa "convertir en deuda pública"? -->
         <div class="bg-blue-50 px-8 py-5 border-b border-blue-100 flex gap-4 items-start">
-            <i class="fa-solid fa-circle-info text-blue-600 text-xl mt-0.5"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-blue-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
             <div>
                 <h3 class="text-sm font-bold text-blue-900 uppercase tracking-wide mb-2">¿Qué significa "asumir como deuda pública formal"?</h3>
                 <div class="text-sm text-blue-800 leading-relaxed space-y-2">
@@ -102,7 +122,9 @@
 
         <!-- NOTA ALERTA -->
         <div class="bg-rose-50 px-8 py-5 border-b border-rose-100 flex gap-4 items-start">
-            <i class="fa-solid fa-scale-unbalanced-flip text-rose-600 text-xl mt-0.5"></i>
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-rose-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
             <div>
                 <h3 class="text-sm font-bold text-rose-900 uppercase tracking-wide">Actualización de Datos (2025) - ESCENARIO PROYECTADO</h3>
                 <p class="text-sm text-rose-800 mt-1 leading-relaxed text-justify">
@@ -123,11 +145,12 @@
         <!-- TABLA DE DATOS -->
         <div class="px-8 py-8 bg-slate-50 border-t border-slate-200">
             <div class="flex items-center gap-2 mb-4">
-                <i class="fa-solid fa-table-list text-slate-400"></i>
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                </svg>
                 <h3 class="text-lg font-bold text-slate-800">Desglose Financiero (Billones de Pesos $MXN)</h3>
             </div>
             
-            <!-- CORRECCIÓN: Cambiado overflow-hidden por overflow-x-auto para permitir scroll horizontal -->
             <div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm bg-white">
                 <table class="min-w-full text-sm text-left">
                     <thead class="bg-slate-100 text-slate-500 font-bold uppercase text-xs">
@@ -231,7 +254,9 @@
                 <div class="flex flex-col">
                     <span class="text-[9px] font-bold text-slate-400 uppercase mb-1">Open Source</span>
                     <a href="https://opensource.org/license/MIT" target="_blank" class="text-xs font-bold text-slate-600 hover:text-rose-600 flex items-center gap-1 transition-colors">
-                        <i class="fa-brands fa-github"></i> MIT License
+                        <!-- Icono GitHub pequeño SVG -->
+                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        MIT License
                     </a>
                 </div>
             </div>
@@ -239,10 +264,17 @@
             <!-- Autoría -->
             <div class="text-center md:text-right">
                 <p class="text-xs font-bold text-slate-600">Elaborado por <span class="text-rose-600">Eric Araujo Martínez</span></p>
+                <!-- REDES SOCIALES FOOTER (SVG) -->
                 <div class="flex justify-center md:justify-end gap-3 mt-1.5 text-slate-400">
-                    <a href="https://x.com/SocioNomicsLab" target="_blank" class="hover:text-slate-800 transition-colors"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="hover:text-blue-700 transition-colors"><i class="fa-brands fa-linkedin"></i></a>
-                    <a href="https://github.com/araujome/visualizaciones" target="_blank" class="hover:text-slate-900 transition-colors"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://x.com/SocioNomicsLab" target="_blank" class="hover:text-slate-800 transition-colors">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"></path></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="hover:text-blue-700 transition-colors">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" clip-rule="evenodd"></path></svg>
+                    </a>
+                    <a href="https://github.com/araujome" target="_blank" class="hover:text-slate-900 transition-colors">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
                 </div>
             </div>
         </div>
@@ -373,18 +405,27 @@
         function downloadImage() {
             const container = document.getElementById('report-container');
             
-            // Opciones mejoradas para html2canvas
             html2canvas(container, {
-                scale: 2,
+                scale: 2, // High resolution
                 useCORS: true,
                 allowTaint: true,
                 backgroundColor: "#ffffff",
-                logging: false,
-                windowWidth: container.scrollWidth,
-                windowHeight: container.scrollHeight,
                 onclone: function(clonedDoc) {
-                    // Asegurar que los elementos absolute se rendericen
                     const clonedContainer = clonedDoc.getElementById('report-container');
+                    const tableWrapper = clonedContainer.querySelector('.overflow-x-auto');
+                    
+                    // 1. Force the main container to expand freely
+                    clonedContainer.style.maxWidth = 'none';
+                    clonedContainer.style.width = 'fit-content'; 
+                    
+                    // 2. Force the table wrapper to show everything (no scroll)
+                    if (tableWrapper) {
+                        tableWrapper.style.overflow = 'visible';
+                        tableWrapper.style.display = 'block';
+                        tableWrapper.style.width = 'fit-content';
+                    }
+                    
+                    // 3. Ensure transformations don't break it
                     clonedContainer.style.transform = 'none';
                 }
             }).then(canvas => {
