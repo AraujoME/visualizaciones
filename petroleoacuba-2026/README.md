@@ -86,37 +86,41 @@ No requiere instalación de dependencias. Proyecto *client-side* puro.
 ```bash
 git clone https://github.com/AraujoME/visualizaciones.git
 
+---
+
 ## 👤 Autor
 
-Eric Araujo Martínez
-Director — SocioNomics Lab
+**Eric Araujo Martínez**  
+Director — **SocioNomics Lab**
 
-🌐 X (Twitter): https://x.com/SocioNomicsLab
+- 🌐 **X (Twitter):** https://x.com/SocioNomicsLab  
+- 💼 **LinkedIn:** https://www.linkedin.com/in/ericaraujo/  
+- 💻 **GitHub:** https://github.com/AraujoME  
 
-💼 LinkedIn: https://www.linkedin.com/in/ericaraujom/
-
-💻 GitHub: https://github.com/AraujoME
+---
 
 ## ⚖️ Licencia
 
-Este proyecto utiliza licenciamiento dual:
+Este proyecto utiliza **licenciamiento dual**:
 
-Contenido visual y datos:
-Creative Commons CC BY-NC 4.0
-(Atribución requerida · Uso no comercial)
+- **Contenido visual y datos:**  
+  Creative Commons **CC BY-NC 4.0**  
+  *(Atribución requerida · Uso no comercial)*
 
-Código fuente:
-MIT License
-(Uso libre, incluyendo fines comerciales)
+- **Código fuente:**  
+  **MIT License**  
+  *(Uso libre, incluyendo fines comerciales)*
 
-Para usos comerciales del contenido visual o de los datos, se requiere autorización explícita del autor.
+> Para usos comerciales del contenido visual o de los datos, se requiere autorización explícita del autor.
+
+---
 
 ## ⚠️ Descargo de Responsabilidad
 
-Este proyecto es un ejercicio de periodismo de datos y análisis de política pública basado en estimaciones y fuentes abiertas.
-
-No constituye una auditoría oficial, legal ni contable.
-
-Las cifras presentadas representan valores de mercado estimados y pueden diferir de los registros contables internos de las entidades mencionadas.
-
-El contenido se proporciona con fines informativos y analíticos, no como evidencia legal.
+> Este proyecto es un ejercicio de **periodismo de datos** y **análisis de política pública**, basado en **estimaciones** y **fuentes abiertas**.
+>
+> No constituye una auditoría oficial, legal ni contable.
+>
+> Las cifras presentadas representan **valores de mercado estimados** y pueden diferir de los registros contables internos de las entidades mencionadas.
+>
+> El contenido se proporciona con fines **informativos y analíticos**, no como evidencia legal.
