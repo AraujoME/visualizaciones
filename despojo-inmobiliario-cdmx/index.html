@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Despojo Inmobiliario CDMX: Realidad vs Oficialidad</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js 4.x -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <!-- Fuentes e Iconos -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        
+        /* Estilos Toggle Mejorados */
+        .toggle-checkbox {
+            appearance: none;
+            display: block;
+            position: absolute;
+            border-radius: 9999px;
+            cursor: pointer;
+            height: 1.5rem; /* h-6 */
+            width: 1.5rem;   /* w-6 */
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            top: 0.125rem; /* top-0.5 */
+            left: 0.125rem; /* left-0.5 */
+            transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            z-index: 10;
+        }
+
+        .toggle-container input:checked {
+            transform: translateX(1.5rem); 
+            border-color: #f97316;
+        }
+
+        .toggle-bg {
+            display: block;
+            overflow: hidden;
+            height: 1.75rem; /* h-7 */
+            border-radius: 9999px;
+            background-color: #e2e8f0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .toggle-container input:checked + .toggle-bg {
+            background-color: #f97316;
+        }
+        
+        /* Transición suave de gráfica */
+        canvas {
+            transition: all 0.5s ease;
+        }
+
+        /* Micro-interacción: EFECTO BUMP (Suave) */
+        .hover-bump {
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+        }
+        .hover-bump:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+    </style>
+</head>
+<body class="p-3 md:p-8 bg-slate-50 min-h-screen flex flex-col items-center">
+
+    <!-- BOTONERA SUPERIOR -->
+    <div class="max-w-6xl w-full mb-6 flex justify-between items-center gap-4 no-print">
+        <a href="https://araujome.github.io/visualizaciones/" class="px-4 py-2 bg-white text-slate-600 rounded-lg shadow-sm hover:shadow border border-slate-200 text-sm font-bold flex items-center gap-2 transition-all hover-bump" aria-label="Volver al catálogo principal">
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Volver al Catálogo
+        </a>
+        <button id="export-btn" onclick="downloadImage()" class="flex items-center px-5 py-2.5 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 font-bold transition-all text-sm group hover-bump" aria-label="Descargar gráfica como imagen PNG">
+            <span id="btn-icon"><i class="fa-solid fa-camera mr-2"></i></span>
+            <span id="btn-text">Guardar Imagen</span>
+        </button>
+    </div>
+
+    <!-- MAIN DASHBOARD -->
+    <div id="report-container" class="max-w-6xl w-full bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
+        
+        <!-- HEADER SOCIONOMICS -->
+        <div class="bg-[#0f172a] p-6 md:p-10 relative overflow-hidden">
+            <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div>
+                    <div class="inline-flex items-center gap-3 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full backdrop-blur-md mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
+                        <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-indigo-200">Intelligence Unit</span>
+                    </div>
+                    <h1 class="text-2xl md:text-5xl font-black text-white mb-2 tracking-tight leading-none">
+                        Despojo Inmobiliario CDMX
+                    </h1>
+                    <p class="text-slate-400 text-sm md:text-lg font-light">
+                        Análisis de incidencia por administración y la <span class="text-orange-400 font-bold">Cifra Negra</span> oculta (2015-2025)
+                    </p>
+                </div>
+
+                <!-- Redes Sociales Header -->
+                <div class="flex gap-4 self-end md:self-center">
+                    <a href="https://github.com/AraujoME/visualizaciones" target="_blank" aria-label="Github" class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-all hover-bump"><i class="fa-brands fa-github text-lg"></i></a>
+                    <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" aria-label="LinkedIn" class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-blue-400 hover:bg-white/10 transition-all hover-bump"><i class="fa-brands fa-linkedin text-lg"></i></a>
+                    <a href="https://x.com/SocioNomicsLab" target="_blank" aria-label="X Twitter" class="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:bg-white/10 transition-all hover-bump"><i class="fa-brands fa-x-twitter text-lg"></i></a>
+                </div>
+            </div>
+            <!-- Decoración -->
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-orange-600 rounded-full blur-[100px] opacity-20"></div>
+            <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-indigo-600 rounded-full blur-[100px] opacity-20"></div>
+        </div>
+
+        <!-- DEFINICIÓN Y CONTROLES -->
+        <div class="bg-slate-50 border-b border-slate-200 p-4 md:p-6 grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+            
+            <!-- DEFINICIÓN DEL DELITO -->
+            <div class="md:col-span-2 text-sm text-slate-600 border-l-4 border-indigo-500 pl-4">
+                <p class="font-bold text-slate-800 text-xs uppercase mb-1">¿Qué es el Delito de Despojo?</p>
+                <p class="text-xs leading-relaxed">
+                    Es la ocupación ilegal de un inmueble ajeno (vivienda, terreno o edificio) mediante violencia, engaño, amenaza o furtividad (a escondidas), impidiendo el uso legítimo de su propietario. 
+                    <span class="italic text-slate-400">(Ref. Código Penal CDMX Art. 237)</span>
+                </p>
+            </div>
+            
+            <!-- TOGGLE SWITCH (Alineado a la derecha) -->
+            <div class="flex flex-col items-center md:items-end gap-2">
+                <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Visualizar Cifra Negra</span>
+                <div class="flex items-center gap-3 bg-white px-4 py-2 rounded-xl border border-slate-200 shadow-sm toggle-container">
+                    <span class="text-xs font-bold text-slate-500 uppercase tracking-wide">Oficial</span>
+                    <div class="relative w-14 h-7">
+                        <input type="checkbox" id="reality-toggle" class="toggle-checkbox" aria-label="Activar vista de Cifra Negra">
+                        <label for="reality-toggle" class="toggle-bg"></label>
+                    </div>
+                    <span class="text-xs font-bold text-orange-600 uppercase tracking-wide">Realidad</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- GRÁFICA RESPONSIVA -->
+        <div class="p-4 md:p-8 relative w-full bg-white transition-all duration-500 h-[350px] md:h-[550px]">
+            <canvas id="regimeChart" role="img" aria-label="Gráfica lineal mostrando la evolución de despojos inmobiliarios en CDMX de 2015 a 2025."></canvas>
+            
+            <!-- NOTA AL PIE DE GRÁFICA -->
+            <div class="absolute bottom-2 right-4 md:right-8">
+                <p class="text-[10px] text-slate-400 italic">*2025: proyección basada en tendencia ene–sep. Datos SESNSP descargables en gob.mx/sesnsp.</p>
+            </div>
+        </div>
+
+        <!-- SECCIÓN: ANÁLISIS POR GESTIÓN -->
+        <div class="p-6 md:p-8 bg-slate-50 border-t border-slate-200">
+            <h3 class="text-lg font-bold text-slate-800 mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-landmark text-slate-500"></i> Balance por Administración (Acumulado Estimado)
+            </h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Mancera -->
+                <div class="bg-white p-6 rounded-xl border-t-4 border-yellow-400 shadow-sm hover-bump flex flex-col justify-between cursor-default">
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">2015 - 2018</p>
+                        <h4 class="text-lg font-black text-slate-800 mb-4">M. Á. MANCERA</h4>
+                        <div class="mb-4">
+                            <p class="text-[10px] uppercase font-bold text-slate-400">Total Oficial</p>
+                            <p class="text-xl font-bold text-yellow-600">~14,000</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900 p-3 rounded-lg text-center mt-2">
+                        <p class="text-[9px] uppercase font-bold text-slate-400">Total Real Estimado</p>
+                        <p class="text-lg font-black text-white">~285,100</p>
+                    </div>
+                </div>
+
+                <!-- Sheinbaum -->
+                <div class="bg-white p-6 rounded-xl border-t-4 border-red-700 shadow-sm hover-bump relative overflow-hidden flex flex-col justify-between cursor-default">
+                    <div>
+                        <div class="absolute top-0 right-0 p-2 opacity-10"><i class="fa-solid fa-arrow-trend-up text-5xl"></i></div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">2019 - 2023 (Jun)</p>
+                        <h4 class="text-lg font-black text-slate-800 mb-4">C. SHEINBAUM</h4>
+                        <div class="mb-4">
+                            <p class="text-[10px] uppercase font-bold text-slate-400">Total Oficial</p>
+                            <p class="text-xl font-bold text-red-700">~18,300</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900 p-3 rounded-lg text-center mt-2 border border-red-900/30">
+                        <p class="text-[9px] uppercase font-bold text-slate-400">Total Real Estimado</p>
+                        <p class="text-lg font-black text-white">~373,300</p>
+                        <p class="text-[9px] text-red-400 italic font-bold">⚠️ Pico histórico 2021</p>
+                    </div>
+                </div>
+
+                <!-- Batres -->
+                <div class="bg-white p-6 rounded-xl border-t-4 border-red-500 shadow-sm hover-bump flex flex-col justify-between cursor-default">
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">2023 (Jun) - 2024</p>
+                        <h4 class="text-lg font-black text-slate-800 mb-4">MARTÍ BATRES</h4>
+                        <div class="mb-4">
+                            <p class="text-[10px] uppercase font-bold text-slate-400">Total Oficial</p>
+                            <p class="text-xl font-bold text-red-500">~4,800</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900 p-3 rounded-lg text-center mt-2">
+                        <p class="text-[9px] uppercase font-bold text-slate-400">Total Real (Est)</p>
+                        <p class="text-lg font-black text-white">~98,000</p>
+                    </div>
+                </div>
+
+                <!-- Brugada -->
+                <div class="bg-white p-6 rounded-xl border-t-4 border-purple-600 shadow-sm hover-bump flex flex-col justify-between cursor-default">
+                    <div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1">2024 (Oct) - Actual</p>
+                        <h4 class="text-lg font-black text-slate-800 mb-4">CLARA BRUGADA</h4>
+                        <div class="mb-4">
+                            <p class="text-[10px] uppercase font-bold text-slate-400">Total Oficial (Est)</p>
+                            <p class="text-xl font-bold text-purple-700">~5,000</p>
+                        </div>
+                    </div>
+                    <div class="bg-slate-900 p-3 rounded-lg text-center mt-2 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-purple-900/20"></div>
+                        <p class="text-[9px] uppercase font-bold text-slate-400 relative z-10">Total Real Estimado</p>
+                        <p class="text-lg font-black text-white relative z-10">~102,000</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- NOTA METODOLÓGICA (DISTRIBUIDA) -->
+        <div class="px-6 md:px-8 py-6 bg-slate-50 border-t border-slate-200">
+            <div class="flex items-start gap-4 mb-4">
+                <i class="fa-solid fa-file-circle-check text-indigo-500 text-xl mt-1"></i>
+                <div class="w-full">
+                    <h3 class="text-sm font-bold text-slate-800 uppercase tracking-wide mb-3">Nota Técnica y Análisis</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Columna 1: Metodología y Cifra Negra -->
+                        <div class="space-y-3">
+                            <p class="text-xs text-slate-600 leading-relaxed text-justify">
+                                <strong>Metodología:</strong> Esta visualización contrasta dos realidades. La "Vista Oficial" utiliza datos del <strong>SESNSP</strong> sobre carpetas de investigación por despojo en CDMX (CIE-10 disponible en gob.mx/sesnsp). La "Vista Realidad" aplica un factor de expansión basado en la <strong>Cifra Negra del 95.1%</strong> calculada por <strong>México Evalúa</strong> a partir de la ENVIPE (INEGI).
+                            </p>
+                            <div class="bg-indigo-50 p-2 rounded border border-indigo-100">
+                                <p class="text-xs text-indigo-800 font-mono">Fórmula: total_real = oficial ÷ (1 − 0.951) ≈ oficial × 20.4</p>
+                            </div>
+                        </div>
+
+                        <!-- Columna 2: Interpretación Política -->
+                        <div class="space-y-3">
+                            <p class="text-xs text-slate-600 leading-relaxed text-justify">
+                                <strong>Sobre el pico 2021 (Sheinbaum):</strong> El máximo registrado puede responder a múltiples causas: efectos económicos de la pandemia, digitalización del SESNSP o cambios en tipificación. Los datos no aíslan causalidad administrativa.
+                            </p>
+                            <p class="text-xs text-slate-600 leading-relaxed text-justify">
+                                <strong>Interpretación Brugada:</strong> La administración no muestra un "pico súbito", sino un <strong>arranque en meseta alta</strong>. Recibe niveles superiores a 4,000 casos anuales, un piso más alto que el de sus predecesores. Cifras sujetas a revisión.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FOOTER LEGAL Y CRÉDITOS -->
+        <div class="bg-slate-100 p-6 md:p-8 border-t border-slate-200">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- FUENTES -->
+                <div class="text-[10px] text-slate-500">
+                    <p class="font-bold uppercase mb-2 text-slate-700">📚 Fuentes de Inteligencia y Verificación</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li>
+                            <a href="https://www.gob.mx/sesnsp/acciones-y-programas/datos-abiertos-de-incidencia-delictiva" target="_blank" class="text-indigo-600 hover:underline hover:text-indigo-800 font-bold">SESNSP – Incidencia Delictiva</a>
+                            <span class="block pl-4 opacity-80">— Carpetas de investigación por despojo CDMX 2015–2025.</span>
+                        </li>
+                        <li>
+                            <a href="https://www.mexicoevalua.org/hallazgos-2023/" target="_blank" class="text-indigo-600 hover:underline hover:text-indigo-800 font-bold">México Evalúa</a>
+                            <span class="block pl-4 opacity-80">— Cálculo de cifra negra 95.1% basado en ENVIPE (INEGI).</span>
+                        </li>
+                        <li>
+                            <a href="https://www.inegi.org.mx/programas/envipe/2024/" target="_blank" class="text-indigo-600 hover:underline hover:text-indigo-800 font-bold">INEGI – ENVIPE</a>
+                            <span class="block pl-4 opacity-80">— Encuesta Nacional de Victimización y Percepción sobre Seguridad.</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Licencias y Autor -->
+                <div class="flex flex-col gap-4 items-start md:items-end text-left md:text-right">
+                    <div class="flex items-center gap-4">
+                        <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" class="flex items-center gap-1 text-slate-400 hover:text-slate-600 group">
+                            <i class="fa-brands fa-creative-commons text-xl"></i>
+                            <span class="text-[10px] font-bold">CC BY-NC 4.0</span>
+                        </a>
+                        <div class="h-4 w-px bg-slate-300"></div>
+                        <a href="https://opensource.org/license/MIT" target="_blank" class="flex items-center gap-1 text-slate-400 hover:text-slate-600 group">
+                            <i class="fa-brands fa-github text-xl"></i>
+                            <span class="text-[10px] font-bold">MIT License</span>
+                        </a>
+                    </div>
+                    
+                    <div>
+                        <p class="text-[10px] text-slate-400 uppercase font-bold mb-1">Análisis, Datos y Diseño</p>
+                        <p class="text-base font-bold text-slate-800">Eric Araujo Martínez <a href="https://x.com/SocioNomicsLab" target="_blank" class="text-indigo-600 hover:text-indigo-800">(@SocioNomicsLab)</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Plugin nativo para dibujar la marca de agua y etiquetas personalizadas
+        const watermarkPlugin = {
+            id: 'watermark',
+            afterDraw: (chart) => {
+                if (document.getElementById('reality-toggle').checked) {
+                    const ctx = chart.ctx;
+                    const { top, left, width, height } = chart.chartArea;
+                    
+                    ctx.save();
+                    
+                    // Cálculo responsivo de fuente
+                    // Base: 80px para escritorio, proporcional para móvil
+                    // Se asegura de que no sea minúsculo ni gigante.
+                    const responsiveNumSize = Math.min(80, Math.max(30, width * 0.12));
+                    const responsiveTextSize = Math.min(24, Math.max(10, width * 0.04));
+
+                    // 1. Marca de agua "95.1%" CENTRADA
+                    ctx.globalAlpha = 0.25; // Opacidad visible
+                    ctx.fillStyle = '#ea580c';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    
+                    // Número grande
+                    ctx.font = `900 ${responsiveNumSize}px Inter`;
+                    ctx.fillText('95.1%', left + width / 2, top + height / 2 - (responsiveNumSize * 0.2));
+                    
+                    // Texto descriptivo
+                    ctx.font = `900 ${responsiveTextSize}px Inter`;
+                    ctx.fillText('IMPUNIDAD (CIFRA NEGRA)', left + width / 2, top + height / 2 + (responsiveNumSize * 0.5));
+                    
+                    // 2. Etiqueta al final de la línea naranja
+                    ctx.globalAlpha = 1.0;
+                    // Tamaño de fuente para la etiqueta final también un poco dinámico o fijo pequeño
+                    const responsiveLabelSize = Math.max(9, Math.min(11, width * 0.025));
+                    ctx.font = `bold ${responsiveLabelSize}px Inter`;
+                    ctx.fillStyle = '#ea580c';
+                    ctx.textAlign = 'right';
+                    const lastPoint = chart.getDatasetMeta(1).data[chart.getDatasetMeta(1).data.length - 1];
+                    if (lastPoint) {
+                        ctx.fillText('Delitos Reales', lastPoint.x, lastPoint.y - 15);
+                        ctx.fillText('Estimados', lastPoint.x, lastPoint.y - 5);
+                    }
+                    
+                    ctx.restore();
+                }
+            }
+        };
+
+        Chart.register(ChartDataLabels, window['chartjs-plugin-annotation'], watermarkPlugin);
+
+        const ctx = document.getElementById('regimeChart').getContext('2d');
+        const toggle = document.getElementById('reality-toggle');
+
+        const years = ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025*'];
+        const officialData = [2950, 3388, 3745, 3896, 4142, 3642, 4437, 4059, 4070, 3900, 4100];
+        const multiplier = 1 / (1 - 0.951); // ~20.408
+        const realData = officialData.map(val => Math.round(val * multiplier));
+
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        label: 'Denuncias Oficiales',
+                        data: officialData,
+                        borderColor: '#334155',
+                        backgroundColor: '#334155',
+                        borderWidth: 4,
+                        pointRadius: 6,
+                        pointHoverRadius: 9,
+                        pointBackgroundColor: '#fff',
+                        tension: 0.3,
+                        yAxisID: 'y',
+                        order: 1
+                    },
+                    {
+                        label: 'Total Real Estimado (Oficial + Cifra Negra)',
+                        data: realData,
+                        borderColor: '#ea580c',
+                        backgroundColor: 'rgba(234, 88, 12, 0.1)',
+                        // Ajustes clave para interacción:
+                        borderWidth: 0,
+                        pointRadius: 0,          // Invisible por defecto
+                        pointHoverRadius: 8,     // Aparece al hover
+                        hitRadius: 20,           // Área de detección grande
+                        fill: true,
+                        tension: 0.3,
+                        yAxisID: 'y',
+                        order: 2,
+                        hidden: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: { padding: { top: 20, right: 20, left: 10, bottom: 20 } },
+                interaction: { mode: 'index', intersect: false },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { family: 'Inter', weight: 'bold' }, color: '#64748b' }
+                    },
+                    y: {
+                        beginAtZero: false,
+                        min: 2000,
+                        max: 5000, 
+                        title: { display: true, text: 'Carpetas de Investigación', font: { weight: 'bold' } },
+                        grid: { color: '#f1f5f9' }
+                    }
+                },
+                plugins: {
+                    legend: { 
+                        display: true,
+                        position: 'top',
+                        labels: { usePointStyle: true, font: { weight: 'bold' } }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                        padding: 12,
+                        callbacks: {
+                            label: (ctx) => ctx.dataset.label + ': ' + ctx.raw.toLocaleString()
+                        }
+                    },
+                    datalabels: {
+                        display: (ctx) => ctx.datasetIndex === 0,
+                        align: 'top',
+                        color: '#334155',
+                        font: { weight: 'bold' },
+                        formatter: (val, ctx) => [3, 6, 10].includes(ctx.dataIndex) ? val.toLocaleString() : ''
+                    },
+                    annotation: {
+                        annotations: {
+                            // Administraciones
+                            boxMancera: {
+                                type: 'box', xMin: -0.5, xMax: 3.5,
+                                backgroundColor: 'rgba(203, 213, 225, 0.2)', borderWidth: 0,
+                                label: { content: 'Mancera', position: 'end', color: '#94a3b8', font: {size:10} }
+                            },
+                            boxSheinbaum: {
+                                type: 'box', xMin: 3.5, xMax: 8.5,
+                                backgroundColor: 'rgba(203, 213, 225, 0.1)', borderWidth: 0,
+                                label: { content: 'Sheinbaum', position: 'end', color: '#94a3b8', font: {size:10} }
+                            },
+                            boxBatres: {
+                                type: 'box', xMin: 8.5, xMax: 9.8,
+                                backgroundColor: 'rgba(220, 38, 38, 0.05)', borderWidth: 0,
+                                label: { content: 'Batres', position: 'end', color: '#94a3b8', font: {size:10} }
+                            },
+                            boxBrugada: {
+                                type: 'box', xMin: 9.8, xMax: 10.5,
+                                backgroundColor: 'rgba(147, 51, 234, 0.05)', borderWidth: 0,
+                                label: { content: 'Brugada', position: 'end', color: '#94a3b8', font: {size:10} }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        toggle.addEventListener('change', function() {
+            if (this.checked) {
+                // Activar modo Realidad
+                chart.data.datasets[1].hidden = false;
+                chart.data.datasets[1].borderWidth = 4;
+                chart.options.scales.y.max = 100000; 
+                chart.options.scales.y.min = 0;
+                chart.options.scales.y.title.text = 'Total de Delitos Estimados';
+                chart.data.datasets[0].borderColor = '#94a3b8';
+                chart.data.datasets[0].borderWidth = 2;
+                
+            } else {
+                // Volver a modo Oficial
+                chart.data.datasets[1].hidden = true;
+                chart.options.scales.y.max = 5000;
+                chart.options.scales.y.min = 2000;
+                chart.options.scales.y.title.text = 'Carpetas de Investigación';
+                chart.data.datasets[0].borderColor = '#334155';
+                chart.data.datasets[0].borderWidth = 4;
+            }
+            chart.update();
+        });
+
+        function downloadImage() {
+            const btn = document.getElementById('export-btn');
+            const originalText = document.getElementById('btn-text').innerHTML;
+            const originalIcon = document.getElementById('btn-icon').innerHTML;
+            
+            // Estado de carga visual
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> Generando...';
+            
+            const container = document.getElementById('report-container');
+            
+            setTimeout(() => {
+                html2canvas(container, {
+                    scale: 2, 
+                    useCORS: true, 
+                    backgroundColor: "#ffffff",
+                    allowTaint: true
+                }).then(canvas => {
+                    const link = document.createElement('a');
+                    link.download = 'despojo_cdmx_realidad_vs_oficial.png';
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                    
+                    // Restaurar botón
+                    btn.disabled = false;
+                    btn.innerHTML = `<span id="btn-icon">${originalIcon}</span><span id="btn-text">Guardar Imagen</span>`;
+                }).catch(err => {
+                    console.error("Error al exportar:", err);
+                    alert("Hubo un error al generar la imagen. Por favor intenta de nuevo.");
+                    btn.disabled = false;
+                    btn.innerHTML = `<span id="btn-icon">${originalIcon}</span><span id="btn-text">Guardar Imagen</span>`;
+                });
+            }, 100);
+        }
+    </script>
+</body>
+</html>
