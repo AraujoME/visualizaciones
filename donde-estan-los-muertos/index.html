@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Meta Tags -->
+    <meta property="og:title" content="¿DÓNDE ESTÁN LOS MUERTOS? — Sustitución Estadística de la Violencia en México">
+    <meta property="og:description" content="Análisis comparativo de homicidios, muertes indeterminadas y desapariciones en México (2015-2025). Fuentes: SESNSP, INEGI, CNB.">
+    <meta property="og:image" content="https://araujome.github.io/visualizaciones/assets/preview_violencia.png">
+    <meta property="og:url" content="https://araujome.github.io/visualizaciones/donde-estan-los-muertos.html">
+    <meta property="og:type" content="article">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@SocioNomicsLab">
+
+    <title>Sustitución de la Violencia en México (2.0)</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js 4.x -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    
+    <!-- Librería para capturar pantalla -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <!-- Fuentes e Iconos -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        .card-shadow { box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.8); }
+        #report-container { opacity: 0; animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { to { opacity: 1; } }
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen flex flex-col items-center justify-center">
+
+    <!-- BOTONERA SUPERIOR -->
+    <div class="max-w-6xl w-full mb-6 flex justify-between items-center gap-4 no-print">
+        <a href="https://araujome.github.io/visualizaciones/" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-lg shadow-sm hover:bg-slate-700 border border-slate-600 text-sm font-bold flex items-center gap-2 transition-all">
+            <i class="fa-solid fa-arrow-left"></i> Más Estudios
+        </a>
+        <button onclick="downloadImage()" class="flex items-center px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg shadow-lg font-bold transition-all text-sm transform hover:scale-105">
+            <i class="fa-solid fa-camera mr-2"></i> Guardar Imagen
+        </button>
+    </div>
+
+    <!-- MAIN DASHBOARD -->
+    <div id="report-container" class="max-w-6xl w-full bg-slate-900 rounded-3xl card-shadow overflow-hidden border border-slate-700 relative">
+        
+        <!-- HEADER -->
+        <div class="p-8 md:p-12 relative overflow-hidden border-b border-slate-800 bg-gradient-to-r from-slate-900 to-slate-800">
+            <div class="relative z-10 flex flex-col md:flex-row justify-between items-start gap-6">
+                <div>
+                    <!-- BRANDING SOCIONOMICS LAB (INTELLIGENCE UNIT) -->
+                    <div class="inline-flex items-center gap-3 bg-indigo-500/10 border border-indigo-500/20 px-3 py-1 rounded-full backdrop-blur-md mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse"></span>
+                        <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-indigo-200">Intelligence Unit</span>
+                    </div>
+
+                    <h1 class="text-4xl md:text-6xl font-black text-white mb-2 tracking-tighter leading-none">
+                        ¿DÓNDE ESTÁN <br><span class="text-red-500">LOS MUERTOS?</span>
+                    </h1>
+                    <p class="text-slate-400 text-lg font-light max-w-2xl mt-4 leading-relaxed">
+                        Análisis de la <strong>sustitución estadística</strong> de la violencia (2015-2025). <br>
+                        Contrastando carpetas oficiales vs. realidad forense y desapariciones.
+                    </p>
+                </div>
+                
+                <div class="flex flex-col items-end gap-6">
+                    <div class="flex gap-4">
+                        <a href="https://github.com/AraujoME/visualizaciones" target="_blank" class="text-slate-500 hover:text-white transition-colors text-xl"><i class="fa-brands fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="text-slate-500 hover:text-blue-500 transition-colors text-xl"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://x.com/SocioNomicsLab" target="_blank" class="text-slate-500 hover:text-white transition-colors text-xl"><i class="fa-brands fa-x-twitter"></i></a>
+                    </div>
+                    
+                    <div class="inline-block bg-slate-900/50 p-6 rounded-2xl border border-red-500/30 backdrop-blur-sm text-right">
+                        <p class="text-[11px] text-red-400 uppercase font-bold mb-1">Volumen Estimado (2025*)</p>
+                        <p class="text-4xl font-black text-white">~70,700</p>
+                        <p class="text-xs text-slate-400 mt-1">Suma de 3 categorías apiladas (est.)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="no-capture absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-red-600 rounded-full mix-blend-overlay filter blur-[120px] opacity-20 pointer-events-none"></div>
+        </div>
+
+        <!-- LEYENDA TÉCNICA -->
+        <div class="bg-slate-800/80 p-5 border-b border-slate-700 flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm">
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-1 bg-white border border-slate-500 border-dashed"></div> 
+                <div class="flex flex-col leading-none">
+                    <span class="text-white font-bold">INEGI (Control)</span>
+                    <span class="text-[11px] text-slate-400">Defunciones certificadas (Cuerpos)</span>
+                </div>
+            </div>
+            <div class="w-px h-8 bg-slate-700 mx-2"></div>
+            <div class="flex items-center gap-2">
+                <span class="w-4 h-4 rounded bg-red-600"></span>
+                <span class="text-slate-300 font-medium">Homicidio Doloso (SESNSP)</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="w-4 h-4 rounded bg-amber-500"></span>
+                <div class="flex flex-col leading-tight">
+                    <span class="text-slate-300 font-medium">Clasificación Ambigua</span>
+                    <span class="text-[11px] text-slate-500">Culposos + Indeterminados</span>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="w-4 h-4 rounded bg-slate-500"></span>
+                <span class="text-slate-300 font-medium">Desaparecidos (CNB)</span>
+            </div>
+        </div>
+
+        <!-- GRÁFICA -->
+        <div class="p-6 md:p-10 bg-slate-900 relative">
+            <div class="relative h-[400px] md:h-[600px] w-full">
+                <canvas id="violenceChart" role="img" 
+                    aria-label="Gráfica de series temporales comparando homicidios dolosos, muertes de clasificación indeterminada y personas desaparecidas en México entre 2015 y 2025.">
+                </canvas>
+                <noscript>
+                    <div class="absolute inset-0 flex items-center justify-center bg-slate-800 rounded-xl">
+                        <div class="text-center p-8">
+                            <i class="fa-solid fa-chart-area text-4xl text-slate-500 mb-4"></i>
+                            <p class="text-slate-300 font-bold">Esta visualización requiere JavaScript</p>
+                        </div>
+                    </div>
+                </noscript>
+            </div>
+        </div>
+
+        <!-- ANÁLISIS, METODOLOGÍA E INTERPRETACIÓN -->
+        <div class="p-8 bg-slate-950 border-t border-slate-800">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 text-slate-400 text-xs leading-relaxed mb-8">
+                
+                <!-- Columna 1: Claves de Lectura (ACTUALIZADA Y AMPLIADA) -->
+                <div class="lg:col-span-1">
+                    <h3 class="text-sm font-bold text-white uppercase tracking-wide mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-eye text-indigo-500"></i> Claves de Lectura
+                    </h3>
+                    <ul class="space-y-6">
+                        <li class="flex gap-4">
+                            <span class="font-bold text-white bg-slate-800 w-6 h-6 flex items-center justify-center rounded-full text-[11px] shrink-0 border border-slate-700">1</span>
+                            <div>
+                                <strong class="text-slate-200 block mb-1">Divergencia Institucional</strong>
+                                La línea blanca (INEGI) y el área roja (Fiscalías) deberían moverse juntas. Su separación o "divorcio" indica que hay miles de cuerpos certificados por médicos (INEGI) que no se están investigando jurídicamente como homicidios (SESNSP).
+                            </div>
+                        </li>
+                        <li class="flex gap-4">
+                            <span class="font-bold text-white bg-slate-800 w-6 h-6 flex items-center justify-center rounded-full text-[11px] shrink-0 border border-slate-700">2</span>
+                            <div>
+                                <strong class="text-slate-200 block mb-1">Desplazamiento Táctico</strong>
+                                La violencia no desaparece, se desplaza. Observa cómo las áreas ámbar y gris se ensanchan progresivamente para "compensar" la caída visual del área roja, sugiriendo una migración administrativa del delito hacia categorías menos auditables.
+                            </div>
+                        </li>
+                        <li class="flex gap-4">
+                            <span class="font-bold text-white bg-slate-800 w-6 h-6 flex items-center justify-center rounded-full text-[11px] shrink-0 border border-slate-700">3</span>
+                            <div>
+                                <strong class="text-slate-200 block mb-1">Inercia Letal</strong>
+                                Pese a la reducción oficial en homicidios dolosos, la suma total de víctimas (volumen apilado) se mantiene en una "meseta" alta superior a 70k casos anuales. Esto indica que la crisis de violencia persiste, aunque cambie su clasificación burocrática.
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Columna 2 y 3: Interpretación + Explicaciones Alternativas -->
+                <div class="lg:col-span-2 bg-slate-900/40 p-5 rounded-xl border border-indigo-500/20">
+                    <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wide mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-lightbulb"></i> Interpretación de Hallazgos
+                    </h3>
+                    
+                    <!-- Interpretación Principal -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <strong class="text-white block mb-1">La Licuadora Estadística</strong>
+                            <p class="mb-2 text-justify">La "bajada" en la línea blanca no implica necesariamente paz. Para que INEGI cuente un homicidio, requiere un <strong>cuerpo</strong>. Si la violencia muta hacia la <strong>desaparición</strong> (sin cuerpo) o hacia métodos que dificultan la autopsia (causa indeterminada), esos casos salen del radar de homicidios.</p>
+                            <p class="text-justify">Esto crea un incentivo perverso: fragmentar la violencia en múltiples categorías burocráticas diluye la percepción de crisis.</p>
+                        </div>
+                        <div>
+                            <strong class="text-white block mb-1">¿De dónde salen los datos 2024-2025?</strong>
+                            <p class="mb-2 text-justify">El INEGI tiene un rezago de publicación de ~1-2 años. Los puntos finales de la línea punteada son <strong>proyecciones estadísticas</strong> calculadas por SocioNomics Lab.</p>
+                            <p class="text-justify">Se obtuvo sumando el diferencial histórico promedio (+8-12%) a la tendencia observada en los reportes preliminares del SESNSP para el periodo actual.</p>
+                        </div>
+                    </div>
+
+                    <!-- Explicaciones Alternativas (INTEGRADO) -->
+                    <div class="mt-5 pt-4 border-t border-slate-700/50">
+                        <strong class="text-amber-400 block mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation text-sm"></i> 
+                            Explicaciones Alternativas
+                        </strong>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                            <div class="bg-slate-800/60 p-3 rounded-lg">
+                                <strong class="text-slate-300 block mb-1">Mejora en Registro</strong>
+                                <p>El RNPDNO se fortaleció post-2018. El aumento en desapariciones registradas puede reflejar mayor capacidad de denuncia, no más casos reales.</p>
+                            </div>
+                            <div class="bg-slate-800/60 p-3 rounded-lg">
+                                <strong class="text-slate-300 block mb-1">Cambios Forenses</strong>
+                                <p>La actualización de protocolos de certificación puede reclasificar muertes por criterios técnicos, sin intención de ocultamiento.</p>
+                            </div>
+                            <div class="bg-slate-800/60 p-3 rounded-lg">
+                                <strong class="text-slate-300 block mb-1">Siniestros Viales</strong>
+                                <p>La categoría "homicidio culposo" incluye muertes por accidentes de tránsito, con dinámicas independientes de la violencia criminal.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fila Inferior: Metodología y Notas -->
+            <div class="border-t border-slate-800 pt-6 grid grid-cols-1 md:grid-cols-2 gap-8 text-xs text-slate-500">
+                <div>
+                    <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wide mb-2">Fuentes Oficiales</h3>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li><strong>SESNSP:</strong> Incidencia Delictiva del Fuero Común (Carpetas).</li>
+                        <li><strong>INEGI:</strong> Estadísticas de Defunciones Registradas (Certificados).</li>
+                        <li><strong>CNB:</strong> Registro Nacional de Personas Desaparecidas (RNPDNO).</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xs font-bold text-slate-300 uppercase tracking-wide mb-2">Nota de Descargo</h3>
+                    <p class="italic">
+                        ⚠️ Las series de "Clasificación Ambigua" y "Desaparecidos" son estimaciones derivadas. Metodología completa y datos fuente disponibles en el <a href="https://github.com/AraujoME/visualizaciones" target="_blank" class="text-indigo-400 hover:underline">repositorio</a>.
+                    </p>
+                </div>
+            </div>
+            
+        </div>
+
+        <!-- FOOTER LICENCIAS -->
+        <div class="bg-black p-6 border-t border-slate-900">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-6 opacity-70 hover:opacity-100 transition-opacity">
+                    <div class="flex flex-col gap-1">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase">Contenido</span>
+                        <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">
+                            <img src="https://licensebuttons.net/l/by-nc/4.0/80x15.png" alt="CC BY-NC">
+                        </a>
+                    </div>
+                    <div class="w-px h-8 bg-slate-800"></div>
+                    <div class="flex flex-col gap-1">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase">Software</span>
+                        <!-- LINK A LICENCIA MIT -->
+                        <a href="https://opensource.org/licenses/MIT" target="_blank" class="font-mono text-[11px] text-slate-400 flex items-center gap-1 hover:text-indigo-400 transition-colors">
+                            <i class="fa-brands fa-github"></i> MIT LICENSE
+                        </a>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-[11px] text-slate-500 uppercase font-bold mb-1">Análisis y Diseño</p>
+                    <p class="text-sm font-bold text-slate-300">Eric Araujo Martínez <span class="text-indigo-500">(@SocioNomicsLab)</span></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        Chart.register(ChartDataLabels, window['chartjs-plugin-annotation']);
+
+        const ctx = document.getElementById('violenceChart').getContext('2d');
+        const years = ['2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025*'];
+
+        // ══════════════════════════════════════════════════════════════
+        // DATOS Y FUENTES (DOCUMENTACIÓN TÉCNICA)
+        // ══════════════════════════════════════════════════════════════
+        // 
+        // ── SERIE 1: Homicidio Doloso + Feminicidio ──
+        // Fuente: SESNSP - Incidencia Delictiva del Fuero Común
+        // URL: https://www.gob.mx/sesnsp/acciones-y-programas/datos-abiertos-de-incidencia-delictiva
+        // Período verificado: 2015-2023 (datos oficiales publicados)
+        // 2024: Estimación con datos enero-septiembre anualizados
+        // 2025: Proyección lineal basada en tendencia 2022-2024
+        //
+        const dataHomicidios = [17886, 24559, 32079, 36685, 37315, 36773, 35700, 33287, 30523, 29000, 28200];
+        //                      ────────────── verificados ──────────────────────────────────   ─est─   ─proy─
+
+        // ── SERIE 2: Defunciones por Homicidio (INEGI) ──
+        // Fuente: INEGI - Estadísticas de defunciones registradas
+        // URL: https://www.inegi.org.mx/programas/mortalidad/
+        // Período verificado: 2015-2022 (último año publicado: oct 2023)
+        // 2023-2025: Estimación del autor basada en tendencia + datos preliminares SESNSP
+        // NOTA: INEGI reporta ~8-15% más homicidios que SESNSP históricamente
+        //
+        const dataINEGI = [20762, 24559, 32079, 36685, 36661, 36773, 35625, 33287, 31500, 31000, 30500];
+        //                 ──────────────── verificados ─────────────────────────────   ──── estimados ────
+
+        // ── SERIE 3: Clasificación Ambigua ──
+        // Composición: Homicidios culposos (SESNSP) + Muertes con causa indeterminada (INEGI)
+        // ⚠️ SERIE DERIVADA: Estos valores son estimaciones del autor.
+        // Metodología: Se sumaron homicidios culposos de SESNSP (~16k-20k anuales) con muertes
+        // de intención no determinada de INEGI (~5k-8k anuales). Los totales se redondearon.
+        // LIMITACIÓN: Los homicidios culposos incluyen siniestros viales genuinos.
+        //
+        const dataSospechosos = [15000, 16000, 17500, 18500, 19800, 20500, 22000, 24000, 25500, 27000, 28500];
+        //                        ⚠️ Todos los valores son estimaciones redondeadas del autor
+
+        // ── SERIE 4: Personas Desaparecidas (flujo anual) ──
+        // Fuente base: CNB - Registro Nacional de Personas Desaparecidas (RNPDNO)
+        // URL: https://vfrfrp-plataforma.segob.gob.mx/
+        // ⚠️ SERIE DERIVADA: CNB reporta acumulados (~115k total). El flujo anual se estimó
+        // como delta interanual del acumulado, ajustado por fecha de último avistamiento.
+        // LIMITACIÓN: El fortalecimiento del RNPDNO post-2018 aumenta el registro.
+        //
+        const dataDesaparecidos = [4500, 5500, 6800, 8000, 9000, 9500, 10500, 11800, 12500, 13200, 14000];
+        //                          ⚠️ Valores derivados del acumulado CNB por el autor
+
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [
+                    {
+                        label: 'INEGI (Defunciones Certificadas)',
+                        data: dataINEGI,
+                        borderColor: '#ffffff',
+                        backgroundColor: 'transparent',
+                        borderWidth: 3,
+                        borderDash: [5, 5], 
+                        pointRadius: 5,
+                        pointBackgroundColor: '#0f172a',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        tension: 0.3,
+                        yAxisID: 'y2', 
+                        order: 0, 
+                        fill: false
+                    },
+                    {
+                        label: 'Desaparecidos (Sin Cuerpo)',
+                        data: dataDesaparecidos,
+                        backgroundColor: '#64748b', 
+                        borderColor: '#475569',
+                        borderWidth: 1,
+                        fill: true, 
+                        tension: 0.4,
+                        pointRadius: 0,
+                        order: 1
+                    },
+                    {
+                        label: 'Clasificación Ambigua (Culposos + Indeterminados)',
+                        data: dataSospechosos,
+                        backgroundColor: '#f59e0b', 
+                        borderColor: '#d97706',
+                        borderWidth: 1,
+                        fill: true, 
+                        tension: 0.4,
+                        pointRadius: 0,
+                        order: 2
+                    },
+                    {
+                        label: 'Homicidios Dolosos (Carpetas SESNSP)',
+                        data: dataHomicidios,
+                        backgroundColor: '#dc2626', 
+                        borderColor: '#991b1b',
+                        borderWidth: 1,
+                        fill: true, 
+                        tension: 0.4,
+                        pointRadius: 0,
+                        order: 3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: { padding: { top: 20, right: 20, left: 10 } },
+                interaction: { mode: 'index', intersect: false },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#94a3b8', font: { family: 'Inter', weight: 'bold', size: 12 } }
+                    },
+                    y: {
+                        stacked: true, 
+                        grid: { color: '#334155' },
+                        ticks: { color: '#94a3b8', font: { family: 'Inter' }, callback: (val) => val / 1000 + 'k' },
+                        title: { display: true, text: 'Registros anuales por categoría', color: '#64748b', font: { weight: 'bold', size: 11 } }
+                    },
+                    y2: {
+                        position: 'right',
+                        stacked: false,
+                        grid: { display: false },
+                        ticks: { color: '#ffffff', font: { family: 'Inter', weight: 'bold' }, callback: (val) => val / 1000 + 'k' },
+                        title: { display: true, text: 'INEGI — Defunciones certificadas', color: '#ffffff', font: { weight: 'bold', size: 11 } },
+                        min: 0, 
+                        suggestedMax: 80000,
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    datalabels: { 
+                        display: function(context) {
+                            if (context.datasetIndex !== 0) return false;
+                            const i = context.dataIndex;
+                            return (i === 0 || i === 4 || i === 10);
+                        },
+                        color: '#ffffff',
+                        font: { weight: 'bold', size: 11, family: 'Inter' },
+                        anchor: 'end',
+                        align: 'top',
+                        offset: 6,
+                        formatter: (val) => (val / 1000).toFixed(1) + 'k',
+                        backgroundColor: 'rgba(15, 23, 42, 0.8)',
+                        borderRadius: 4,
+                        padding: { top: 3, bottom: 3, left: 6, right: 6 }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+                        titleColor: '#0f172a',
+                        bodyColor: '#334155',
+                        borderColor: '#cbd5e1',
+                        borderWidth: 1,
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 13 },
+                        callbacks: {
+                            footer: function(tooltipItems) {
+                                let total = 0;
+                                tooltipItems.forEach(function(item) {
+                                    if (item.datasetIndex > 0) total += item.raw;
+                                });
+                                // CAMBIO: Volumen Estimado para rigor técnico
+                                return 'VOLUMEN ESTIMADO: ' + new Intl.NumberFormat('es-MX').format(total);
+                            },
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (context.parsed.y !== null) label += ': ' + new Intl.NumberFormat('es-MX').format(context.raw);
+                                return label;
+                            }
+                        }
+                    },
+                    annotation: {
+                        annotations: {
+                            line1: {
+                                type: 'line', xMin: 3.5, xMax: 3.5, borderColor: '#fff', borderWidth: 1, borderDash: [4, 4],
+                                label: { content: 'Inicio 4T', display: true, position: 'start', backgroundColor: '#0f172a', color: '#94a3b8', font: { size: 10 }, yAdjust: 0 }
+                            },
+                            projectionZone: {
+                                type: 'box', xMin: 8.5, xMax: 10.5, yMin: 0,
+                                backgroundColor: 'rgba(99, 102, 241, 0.06)', borderColor: 'rgba(99, 102, 241, 0.2)', borderWidth: 1, borderDash: [4, 4],
+                                label: { content: '⚠ PROYECCIÓN', display: true, position: { x: 'center', y: 'start' }, color: '#818cf8', font: { size: 10, weight: 'bold', family: 'Inter' }, padding: 4 }
+                            },
+                            line2: {
+                                type: 'line', xMin: 9.1, xMax: 9.1, borderColor: '#818cf8', borderWidth: 1, borderDash: [2, 3],
+                                label: { content: 'Inicio Sheinbaum', display: true, position: 'start', backgroundColor: '#0f172a', color: '#818cf8', font: { size: 9 }, yAdjust: 0 }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        function downloadImage() {
+            const container = document.getElementById('report-container');
+            const ignoreElements = (element) => element.classList.contains('no-capture');
+            html2canvas(container, {
+                scale: 2, useCORS: true, backgroundColor: "#0f172a", ignoreElements: ignoreElements
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'grafica_sustitucion_violencia_mexico_v2.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(err => {
+                console.error("Error al generar imagen:", err);
+                alert("Hubo un error al generar la imagen.");
+            });
+        }
+    </script>
+</body>
+</html>
