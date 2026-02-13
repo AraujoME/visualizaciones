@@ -1,159 +1,51 @@
-<!-- HEADER & BADGES -->
+## 🚨 Investigaciones Destacadas (Latest Releases)
 
-<div align="center">
+### 💀 [¿DÓNDE ESTÁN LOS MUERTOS?](https://araujome.github.io/visualizaciones/donde-estan-los-muertos/) [NUEVO]
 
-📊 SocioNomicsLab
+**Hipótesis de Sustitución Estadística (2015-2025).**
 
-Intelligence for Social Action
+Una auditoría forense que revela la divergencia entre los homicidios reportados por las Fiscalías (SESNSP), los cuerpos certificados por médicos (INEGI) y la crisis de desapariciones (CNB).
 
-</div>
+> **Hallazgo:** La violencia no baja, se desplaza administrativamente hacia categorías ambiguas.
 
-🧐 Sobre el Proyecto
+**Stack:** Chart.js (Áreas Apiladas), Eje Dual.
 
-SocioNomicsLab es una iniciativa de análisis de datos y visualización estratégica dirigida por Eric Araujo Martínez. Este repositorio aloja una colección de herramientas interactivas, auditorías visuales y reportes enfocados en desentrañar la realidad económica, demográfica y social de México y el mundo.
+---
 
-Nuestra misión es combatir la desinformación estadística utilizando técnicas de Periodismo de Datos, OSINT (Open Source Intelligence) y Econometría, transformando cifras oficiales complejas en narrativas visuales claras, rigurosas y accionables.
+### 🏚️ [DESPOJO INMOBILIARIO CDMX](https://araujome.github.io/visualizaciones/despojo-inmobiliario-cdmx/) [2025]
 
-📂 Catálogo de Visualizaciones
+**Realidad vs. Oficialidad.**
 
-Proyecto
+Monitor de incidencia delictiva que contrasta las carpetas de investigación oficiales contra la Cifra Negra (95.1%) estimada por la ENVIPE.
 
-Descripción
+> **Hallazgo:** Por cada carpeta abierta, ocurren ~20 despojos reales (Factor 20.4x).
 
-Tecnologías
+**Stack:** Chart.js, Toggle Interactivo, Proyecciones Lineales.
 
-Demo
+---
 
-⚡ La Gran Divergencia
+## 🗂️ Catálogo de Inteligencia
 
-Comparativa de precios unitarios: Deflación tecnológica (Mercado) vs. Inflación energética (Estado).
+### 💵 Economía y Finanzas
 
-Logarithmic Scales
+- 📊 [**La Resaca del Crédito:**](https://araujome.github.io/visualizaciones/resaca-del-credito/) Monitor de morosidad (IMOR) en los gigantes del retail (Liverpool, Palacio, Sanborns).
+- 📊 [**Tu Deuda Personal:**](https://araujome.github.io/visualizaciones/tu-deuda-personal/) Análisis del SHRFSP per cápita. Cuánto debe cada mexicano realmente (\$139k/hab).
+- 📊 [**La Gran Divergencia:**](https://araujome.github.io/visualizaciones/gran-divergencia/) Comparativa de inflación energética (Estado) vs. deflación tecnológica (Mercado).
 
-🔗 Ver
+### 🌎 Geopolítica y Energía
 
-🎓 La Carrera Educativa
+- 📊 [**Diplomacia del Crudo:**](https://araujome.github.io/visualizaciones/diplomacia-del-crudo/) Auditoría visual (OSINT) de los envíos de petróleo de México a Cuba y su impacto financiero.
+- 📊 [**PIB Global PPA:**](https://araujome.github.io/visualizaciones/pib-global-ppa/) Comparación de poder adquisitivo real entre potencias (China, Rusia, EEUU, México).
 
-Análisis PISA (2012-2022): La brecha estructural entre Latinoamérica y el líder global (Singapur).
+### 🎓 Educación y Laboral
 
-Chart.js UX/UI
+- 📊 [**Mercado Laboral Universitario:**](https://araujome.github.io/visualizaciones/mercado-laboral-universitario/) Matriz de riesgo/retorno (Ingresos vs. Popularidad) de carreras en México.
+- 📊 [**La Carrera Educativa:**](https://araujome.github.io/visualizaciones/carrera-educativa/) Análisis longitudinal de resultados PISA (2012-2022).
+- 📊 [**La Ilusión del Empleo:**](https://araujome.github.io/visualizaciones/ilusion-del-empleo/) Desglose de altas administrativas vs. realidad de bajas patronales en el IMSS.
 
-🔗 Ver
+### 🏥 Salud y Sociedad
 
-👥 Clase Media Global
-
-Estratificación social ajustada por Paridad de Poder Adquisitivo (PPA). ¿Quién pertenece realmente?
-
-Plotly Logic
-
-🔗 Ver
-
-⏳ Pirámide Poblacional
-
-Simulador interactivo de la transición demográfica de México (1950-2050) y el bono demográfico.
-
-D3 Concepts
-
-🔗 Ver
-
-🌍 PIB Global (PPA)
-
-Geopolítica económica: Comparativa de poder adquisitivo entre China, Rusia, EE.UU. y México.
-
-Chart.js
-
-🔗 Ver
-
-💸 Tu Deuda Personal
-
-Evolución histórica y proyección (2025) de la deuda pública mexicana por habitante.
-
-Tailwind
-
-🔗 Ver
-
-🛢️ Diplomacia del Crudo
-
-Auditoría visual de los flujos energéticos (petróleo) de México a Cuba y su impacto en Pemex.
-
-OSINT
-
-🔗 Ver
-
-🧬 Crisis de Mortalidad
-
-Análisis de la brecha generacional en defunciones por cáncer (Menores vs. Adultos).
-
-Health Data
-
-🔗 Ver
-
-💊 Reporte Oncológico
-
-Monitor de precios y desabasto de medicamentos quimioterapéuticos en el mercado privado.
-
-Price Tracking
-
-🔗 Ver
-
-🛠️ Stack Tecnológico
-
-Este portafolio está construido bajo una arquitectura Serverless y Client-Side Rendering (SPA) para garantizar máxima velocidad, portabilidad y transparencia sin dependencia de backends complejos.
-
-Core: HTML5 Semántico + JavaScript ES6+ (Vanilla).
-
-Estilos: Tailwind CSS (Utility-first framework para diseño responsivo).
-
-Visualización: Chart.js 4.x + Plugins (DataLabels, Annotation).
-
-Exportación: html2canvas (Generación de reportes en PNG de alta resolución).
-
-Tipografía: Google Fonts (Familia Inter y Outfit).
-
-🔍 Metodología y Fuentes
-
-Nos regimos por el principio de Rigor Estadístico y Transparencia. Cada visualización incluye una ficha técnica detallada al pie.
-
-Fuentes Primarias Nacionales: INEGI, BANXICO, SHCP, CONAPO, CONEVAL, CFE, IFT, Pemex.
-
-Fuentes Internacionales: Banco Mundial, FMI, OCDE (PISA), Universidad de Texas (Energy Institute).
-
-Procesamiento: Los datos son extraídos, limpiados y normalizados. Las proyecciones (ej. deuda 2025) se basan estrictamente en documentos oficiales de Pre-Criterios Económicos o tendencias inerciales explícitas.
-
-🧑‍💻 Autor
-
-Eric Araujo Martínez
-Economista | MBA (en curso) | Análisis de Datos y Visualización
-📍 Ciudad de México
-
-<div align="center">
-
-</div>
-
-⚖️ Licenciamiento
-
-Este proyecto opera bajo un modelo de Licencia Dual para fomentar el conocimiento abierto respetando la autoría intelectual:
-
-1. Contenido Visual y Datos
-
-<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/"><img alt="Licencia Creative Commons" style="border-width:0" src="https://www.google.com/search?q=https://i.creativecommons.org/l/by-nc/4.0/88x31.png" /></a><br />
-El contenido gráfico, los análisis de texto ("storytelling") y las visualizaciones generadas están bajo una Licencia Creative Commons Atribución-NoComercial 4.0 Internacional.
-
-Puedes: Compartir y adaptar el material.
-
-Debes: Dar crédito visible a Eric Araujo Martínez (@SocioNomicsLab).
-
-No puedes: Usarlo para fines comerciales sin autorización previa.
-
-2. Código Fuente
-
-El código fuente subyacente (HTML, CSS, JS) se distribuye bajo la Licencia MIT. Es software libre para uso educativo, auditoría técnica o desarrollo derivado.
-
-<div align="center">
-
-
-
-
-
-Hecho con ❤️, ☕ y Datos en México.
-</div>
+- 📊 [**Crisis de Mortalidad:**](https://araujome.github.io/visualizaciones/crisis-de-mortalidad/) La brecha generacional en defunciones por cáncer.
+- 📊 [**Reporte Oncológico:**](https://araujome.github.io/visualizaciones/reporte-oncologico/) Monitor de precios y desabasto de quimioterapias en el sector privado.
+- 📊 [**Clase Media Global:**](https://araujome.github.io/visualizaciones/clase-media-global/) Estratificación social ajustada por PPA.
+- 📊 [**Pirámide Poblacional:**](https://araujome.github.io/visualizaciones/piramide-poblacional/) Simulador de la transición demográfica (1960-2050).
