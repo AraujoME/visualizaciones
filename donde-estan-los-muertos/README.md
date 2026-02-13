@@ -124,8 +124,8 @@ Este análisis plantea una hipótesis de sustitución estadística. En rigor inv
 
 ```bash
 git clone https://github.com/AraujoME/visualizaciones.git
-cd visualizaciones
-# Abrir donde-estan-los-muertos.html en cualquier navegador
+cd visualizaciones/donde-estan-los-muertos
+# Abrir index.html en cualquier navegador
 
 **BLOQUE 3** — Pegar inmediatamente después del bloque 2:
 
