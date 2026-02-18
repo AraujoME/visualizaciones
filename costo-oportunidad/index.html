@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
+<html lang="es"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
@@ -21,25 +19,78 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
     
-    <!-- html2canvas -->
+    <!-- html2canvas (solo para captura de imagen) -->
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     
     <!-- Fuentes e Iconos -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
         body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #e2e8f0; }
         .card-shadow { box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.8); }
         
-        /* Toggle Switch Styles */
-        .toggle-checkbox:checked { right: 0; border-color: #a855f7; }
-        .toggle-checkbox:checked + .toggle-label { background-color: #a855f7; }
+        /* Toggle Switch Styles — CORREGIDO */
+        .toggle-track {
+            width: 56px;
+            height: 28px;
+            background-color: #334155;
+            border-radius: 9999px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            flex-shrink: 0;
+            border: 1px solid #475569;
+        }
+        
+        .toggle-thumb {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            border-radius: 9999px;
+            background-color: #94a3b8;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.4);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+                        background-color 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .toggle-input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-input:checked ~ .toggle-track {
+            background-color: #a855f7;
+            border-color: #a855f7;
+        }
+        
+        .toggle-input:checked ~ .toggle-track .toggle-thumb {
+            transform: translateX(28px);
+            background-color: #ffffff;
+        }
+        
+        .toggle-input:focus ~ .toggle-track {
+            outline: 2px solid #a855f7;
+            outline-offset: 2px;
+        }
         
         #report-container { opacity: 0; animation: fadeIn 0.5s ease-out forwards; }
         @keyframes fadeIn { to { opacity: 1; } }
+        
+        @keyframes fadeInLegend { 
+            from { opacity: 0; transform: translateY(5px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+        .animate-fadeIn { 
+            animation: fadeInLegend 0.3s ease-out forwards; 
+        }
     </style>
-</head>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.pointer-events-none{pointer-events:none}.absolute{position:absolute}.relative{position:relative}.right-\[-10\%\]{right:-10%}.top-\[-20\%\]{top:-20%}.z-10{z-index:10}.mb-1{margin-bottom:0.25rem}.mb-10{margin-bottom:2.5rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mr-2{margin-right:0.5rem}.mt-1{margin-top:0.25rem}.mt-4{margin-top:1rem}.mt-8{margin-top:2rem}.block{display:block}.inline-block{display:inline-block}.flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}.h-1\.5{height:0.375rem}.h-10{height:2.5rem}.h-12{height:3rem}.h-8{height:2rem}.h-\[500px\]{height:500px}.h-\[600px\]{height:600px}.h-full{height:100%}.h-3{height:0.75rem}.min-h-screen{min-height:100vh}.w-1\.5{width:0.375rem}.w-10{width:2.5rem}.w-12{width:3rem}.w-\[600px\]{width:600px}.w-full{width:100%}.w-px{width:1px}.w-3{width:0.75rem}.max-w-2xl{max-width:42rem}.max-w-6xl{max-width:72rem}.shrink-0{flex-shrink:0}@keyframes pulse{50%{opacity:.5}}.animate-pulse{animation:pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite}.cursor-pointer{cursor:pointer}.grid-cols-1{grid-template-columns:repeat(1, minmax(0, 1fr))}.flex-col{flex-direction:column}.flex-wrap{flex-wrap:wrap}.items-start{align-items:flex-start}.items-end{align-items:flex-end}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-1{gap:0.25rem}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.gap-6{gap:1.5rem}.overflow-hidden{overflow:hidden}.rounded{border-radius:0.25rem}.rounded-2xl{border-radius:1rem}.rounded-3xl{border-radius:1.5rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-t{border-top-width:1px}.border-amber-500\/20{border-color:rgb(245 158 11 / 0.2)}.border-blue-500\/20{border-color:rgb(59 130 246 / 0.2)}.border-emerald-500\/20{border-color:rgb(16 185 129 / 0.2)}.border-purple-500\/20{border-color:rgb(168 85 247 / 0.2)}.border-purple-500\/30{border-color:rgb(168 85 247 / 0.3)}.border-purple-500\/40{border-color:rgb(168 85 247 / 0.4)}.border-red-500\/20{border-color:rgb(239 68 68 / 0.2)}.border-slate-600{--tw-border-opacity:1;border-color:rgb(71 85 105 / var(--tw-border-opacity, 1))}.border-slate-700{--tw-border-opacity:1;border-color:rgb(51 65 85 / var(--tw-border-opacity, 1))}.border-slate-800{--tw-border-opacity:1;border-color:rgb(30 41 59 / var(--tw-border-opacity, 1))}.border-slate-900{--tw-border-opacity:1;border-color:rgb(15 23 42 / var(--tw-border-opacity, 1))}.bg-amber-500\/10{background-color:rgb(245 158 11 / 0.1)}.bg-black{--tw-bg-opacity:1;background-color:rgb(0 0 0 / var(--tw-bg-opacity, 1))}.bg-blue-500\/10{background-color:rgb(59 130 246 / 0.1)}.bg-emerald-500\/10{background-color:rgb(16 185 129 / 0.1)}.bg-purple-400{--tw-bg-opacity:1;background-color:rgb(192 132 252 / var(--tw-bg-opacity, 1))}.bg-purple-500\/10{background-color:rgb(168 85 247 / 0.1)}.bg-purple-500\/20{background-color:rgb(168 85 247 / 0.2)}.bg-purple-600{--tw-bg-opacity:1;background-color:rgb(147 51 234 / var(--tw-bg-opacity, 1))}.bg-purple-900\/20{background-color:rgb(88 28 135 / 0.2)}.bg-red-500\/10{background-color:rgb(239 68 68 / 0.1)}.bg-slate-700{--tw-bg-opacity:1;background-color:rgb(51 65 85 / var(--tw-bg-opacity, 1))}.bg-slate-800{--tw-bg-opacity:1;background-color:rgb(30 41 59 / var(--tw-bg-opacity, 1))}.bg-slate-800\/80{background-color:rgb(30 41 59 / 0.8)}.bg-slate-900{--tw-bg-opacity:1;background-color:rgb(15 23 42 / var(--tw-bg-opacity, 1))}.bg-slate-900\/50{background-color:rgb(15 23 42 / 0.5)}.bg-slate-900\/60{background-color:rgb(15 23 42 / 0.6)}.bg-slate-950{--tw-bg-opacity:1;background-color:rgb(2 6 23 / var(--tw-bg-opacity, 1))}.bg-gradient-to-r{background-image:linear-gradient(to right, var(--tw-gradient-stops))}.from-slate-900{--tw-gradient-from:#0f172a var(--tw-gradient-from-position);--tw-gradient-to:rgb(15 23 42 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-slate-800{--tw-gradient-to:#1e293b var(--tw-gradient-to-position)}.p-4{padding:1rem}.p-5{padding:1.25rem}.p-6{padding:1.5rem}.p-8{padding:2rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-3{padding-left:0.75rem;padding-right:0.75rem}.px-4{padding-left:1rem;padding-right:1rem}.px-5{padding-left:1.25rem;padding-right:1.25rem}.py-0\.5{padding-top:0.125rem;padding-bottom:0.125rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-2\.5{padding-top:0.625rem;padding-bottom:0.625rem}.pt-4{padding-top:1rem}.text-right{text-align:right}.font-mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-4xl{font-size:2.25rem;line-height:2.5rem}.text-\[10px\]{font-size:10px}.text-\[11px\]{font-size:11px}.text-\[9px\]{font-size:9px}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-black{font-weight:900}.font-bold{font-weight:700}.font-light{font-weight:300}.font-normal{font-weight:400}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.italic{font-style:italic}.leading-none{line-height:1}.leading-relaxed{line-height:1.625}.tracking-\[0\.2em\]{letter-spacing:0.2em}.tracking-tighter{letter-spacing:-0.05em}.tracking-wide{letter-spacing:0.025em}.tracking-wider{letter-spacing:0.05em}.text-amber-400{--tw-text-opacity:1;color:rgb(251 191 36 / var(--tw-text-opacity, 1))}.text-amber-500{--tw-text-opacity:1;color:rgb(245 158 11 / var(--tw-text-opacity, 1))}.text-blue-400{--tw-text-opacity:1;color:rgb(96 165 250 / var(--tw-text-opacity, 1))}.text-blue-500{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.text-emerald-400{--tw-text-opacity:1;color:rgb(52 211 153 / var(--tw-text-opacity, 1))}.text-purple-200{--tw-text-opacity:1;color:rgb(233 213 255 / var(--tw-text-opacity, 1))}.text-purple-300{--tw-text-opacity:1;color:rgb(216 180 254 / var(--tw-text-opacity, 1))}.text-purple-400{--tw-text-opacity:1;color:rgb(192 132 252 / var(--tw-text-opacity, 1))}.text-purple-400\/60{color:rgb(192 132 252 / 0.6)}.text-purple-500{--tw-text-opacity:1;color:rgb(168 85 247 / var(--tw-text-opacity, 1))}.text-red-400{--tw-text-opacity:1;color:rgb(248 113 113 / var(--tw-text-opacity, 1))}.text-red-500{--tw-text-opacity:1;color:rgb(239 68 68 / var(--tw-text-opacity, 1))}.text-slate-200{--tw-text-opacity:1;color:rgb(226 232 240 / var(--tw-text-opacity, 1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139 / var(--tw-text-opacity, 1))}.text-slate-600{--tw-text-opacity:1;color:rgb(71 85 105 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.opacity-20{opacity:0.2}.opacity-70{opacity:0.7}.opacity-90{opacity:0.9}.mix-blend-overlay{mix-blend-mode:overlay}.shadow{--tw-shadow:0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-lg{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.blur-\[120px\]{--tw-blur:blur(120px);filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.filter{filter:var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow)}.backdrop-blur-md{--tw-backdrop-blur:blur(12px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.backdrop-blur-sm{--tw-backdrop-blur:blur(4px);-webkit-backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);backdrop-filter:var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia)}.transition-all{transition-property:all;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-colors{transition-property:color, background-color, border-color, fill, stroke, -webkit-text-decoration-color;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-opacity{transition-property:opacity;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.hover\:border-amber-500\/40:hover{border-color:rgb(245 158 11 / 0.4)}.hover\:border-blue-500\/40:hover{border-color:rgb(59 130 246 / 0.4)}.hover\:border-red-500\/40:hover{border-color:rgb(239 68 68 / 0.4)}.hover\:bg-purple-500:hover{--tw-bg-opacity:1;background-color:rgb(168 85 247 / var(--tw-bg-opacity, 1))}.hover\:bg-purple-900\/30:hover{background-color:rgb(88 28 135 / 0.3)}.hover\:bg-slate-600:hover{--tw-bg-opacity:1;background-color:rgb(71 85 105 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-700:hover{--tw-bg-opacity:1;background-color:rgb(51 65 85 / var(--tw-bg-opacity, 1))}.hover\:text-blue-500:hover{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.hover\:text-purple-400:hover{--tw-text-opacity:1;color:rgb(192 132 252 / var(--tw-text-opacity, 1))}.hover\:text-white:hover{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.hover\:opacity-100:hover{opacity:1}@media (min-width: 768px){.md\:grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.md\:flex-row{flex-direction:row}.md\:p-10{padding:2.5rem}.md\:p-12{padding:3rem}.md\:p-8{padding:2rem}.md\:text-6xl{font-size:3.75rem;line-height:1}}</style></head>
 <body class="p-4 md:p-8 min-h-screen flex flex-col items-center justify-center">
 
     <!-- BOTONERA SUPERIOR -->
@@ -47,9 +98,21 @@
         <a href="https://araujome.github.io/visualizaciones/" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-lg shadow-sm hover:bg-slate-700 border border-slate-600 text-sm font-bold flex items-center gap-2 transition-all">
             <i class="fa-solid fa-arrow-left"></i> Más Estudios
         </a>
-        <button onclick="downloadImage()" class="flex items-center px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg shadow-lg font-bold transition-all text-sm transform hover:scale-105">
-            <i class="fa-solid fa-camera mr-2"></i> Guardar Imagen
-        </button>
+        
+        <!-- BOTONES DE EXPORTACIÓN -->
+        <div class="flex gap-3">
+            <!-- Botón principal: Descargar HTML -->
+            <button id="download-html-btn" onclick="downloadHTML()" aria-label="Descargar visualización interactiva como archivo HTML" class="flex items-center px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg shadow-lg font-bold transition-all text-sm">
+                <i class="fa-solid fa-download mr-2"></i>
+                <span>Descargar Archivo</span>
+            </button>
+            
+            <!-- Botón secundario: Captura de imagen 
+            <button id="screenshot-btn" onclick="downloadScreenshot()" aria-label="Capturar visualización como imagen PNG" class="flex items-center px-4 py-2.5 bg-slate-700 hover:bg-slate-600 text-slate-300 hover:text-white rounded-lg shadow border border-slate-600 font-semibold transition-all text-sm">
+                <i class="fa-solid fa-camera mr-2" id="screenshot-icon"></i>
+                <span id="screenshot-label">Capturar Imagen</span>
+            </button>-->
+        </div>
     </div>
 
     <!-- MAIN DASHBOARD -->
@@ -76,46 +139,64 @@
                 <div class="flex flex-col items-end gap-6">
                     <!-- Redes -->
                     <div class="flex gap-4">
-                        <a href="https://github.com/AraujoME/visualizaciones" target="_blank" class="text-slate-500 hover:text-white transition-colors text-xl"><i class="fa-brands fa-github"></i></a>
-                        <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="text-slate-500 hover:text-blue-500 transition-colors text-xl"><i class="fa-brands fa-linkedin"></i></a>
-                        <a href="https://x.com/SocioNomicsLab" target="_blank" class="text-slate-500 hover:text-white transition-colors text-xl"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://github.com/AraujoME/visualizaciones" target="_blank" aria-label="Repositorio en GitHub" class="text-slate-500 hover:text-white transition-colors text-xl">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" aria-label="Perfil de LinkedIn" class="text-slate-500 hover:text-blue-500 transition-colors text-xl">
+                            <i class="fa-brands fa-linkedin"></i>
+                        </a>
+                        <a href="https://x.com/SocioNomicsLab" target="_blank" aria-label="Perfil en X (Twitter)" class="text-slate-500 hover:text-white transition-colors text-xl">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
                     </div>
                     
-                    <!-- KPI Destacado: DATOS IMCO/SHCP -->
+                    <!-- KPI Destacado -->
                     <div class="inline-block bg-slate-900/50 p-6 rounded-2xl border border-purple-500/30 backdrop-blur-sm text-right">
                         <p class="text-[11px] text-purple-400 uppercase font-bold mb-1">Costo Acumulado (Est.)</p>
-                        <p class="text-4xl font-black text-white">>$500 <span class="text-lg text-slate-500">Mil MDP</span></p>
+                        <p class="text-4xl font-black text-white">&gt;$500 <span class="text-lg text-slate-500">Mil MDP</span></p>
                         <p class="text-xs text-slate-400 mt-1">Fuente: Estimaciones IMCO / SHCP</p>
                     </div>
                 </div>
             </div>
             <!-- Decoración -->
-            <div class="no-capture absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-purple-600 rounded-full mix-blend-overlay filter blur-[120px] opacity-20 pointer-events-none"></div>
+            <div class="no-capture absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-purple-600 rounded-full mix-blend-overlay filter blur-[120px] opacity-20 pointer-events-none" aria-hidden="true"></div>
         </div>
 
         <!-- CONTROLES Y LEYENDA -->
         <div class="bg-slate-800/80 p-5 border-b border-slate-700 flex flex-col md:flex-row justify-between items-center gap-6">
             
-            <!-- Toggle Switch (Sin Tren vs Con Tren) -->
+            <!-- Toggle Switch -->
             <div class="flex items-center gap-3 bg-slate-900/50 px-4 py-2 rounded-full border border-slate-700">
                 <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Ver Recortes (Zoom)</span>
-                <div class="relative inline-block w-14 h-8 align-middle select-none transition duration-200 ease-in">
-                    <input type="checkbox" name="toggle" id="view-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer top-1 left-1 transition-all duration-300 z-20"/>
-                    <label for="view-toggle" class="toggle-label block overflow-hidden h-8 rounded-full bg-slate-600 cursor-pointer border border-slate-600"></label>
-                </div>
+                
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="view-toggle" class="toggle-input" role="switch" aria-checked="false" aria-label="Activar vista de impacto del Tren Maya">
+                    <div class="toggle-track">
+                        <div class="toggle-thumb"></div>
+                    </div>
+                </label>
+                
                 <span class="text-xs font-bold text-purple-400 uppercase tracking-wider">Ver Impacto Tren Maya</span>
             </div>
 
             <!-- Leyenda Dinámica -->
-            <div id="legend-container" class="flex gap-4 text-sm flex-wrap justify-center">
-                <!-- Se llena con JS -->
-            </div>
+            <div id="legend-container" class="flex gap-4 text-sm flex-wrap justify-center"><div class="flex items-center gap-2 animate-fadeIn">
+                    <span class="w-3 h-3 rounded-full" style="background-color: #ef4444"></span>
+                    <span class="text-slate-300 font-bold text-xs">Policía Local</span>
+                </div><div class="flex items-center gap-2 animate-fadeIn">
+                    <span class="w-3 h-3 rounded-full" style="background-color: #f59e0b"></span>
+                    <span class="text-slate-300 font-bold text-xs">Mant. Carretero</span>
+                </div><div class="flex items-center gap-2 animate-fadeIn">
+                    <span class="w-3 h-3 rounded-full" style="background-color: #3b82f6"></span>
+                    <span class="text-slate-300 font-bold text-xs">Capacitación Docente</span>
+                </div></div>
         </div>
 
         <!-- GRÁFICA -->
         <div class="p-6 md:p-10 bg-slate-900 relative">
             <div class="relative h-[500px] w-full">
-                <canvas id="budgetChart" role="img" aria-label="Gráfica comparativa."></canvas>
+                <canvas id="budgetChart" role="img" aria-label="Gráfica comparativa de presupuesto del Tren Maya versus recortes en Policía Local, Mantenimiento Carretero y Capacitación Docente." width="1070" height="500" style="display: block; box-sizing: border-box; height: 500px; width: 1070px;">
+                </canvas>
             </div>
         </div>
 
@@ -125,7 +206,7 @@
             <!-- SECCIÓN 1: METODOLOGÍA -->
             <div class="mb-10 bg-slate-900/60 p-6 rounded-2xl border border-emerald-500/20 flex flex-col md:flex-row gap-6 items-start">
                 <div class="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 shrink-0 text-xl">
-                    <i class="fa-solid fa-calculator"></i>
+                    <i class="fa-solid fa-calculator" aria-hidden="true"></i>
                 </div>
                 <div>
                     <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-wide mb-2">
@@ -141,17 +222,17 @@
             </div>
             
             <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-6 flex items-center gap-2">
-                <i class="fa-solid fa-scale-unbalanced"></i> Balanza Presupuestal: Impacto Social
+                <i class="fa-solid fa-scale-unbalanced" aria-hidden="true"></i> Balanza Presupuestal: Impacto Social
             </h3>
 
-            <!-- CARDS EXPLICATIVAS (Expandidas) -->
+            <!-- CARDS EXPLICATIVAS -->
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
                 
-                <!-- Card 1: Tren Maya (Mega-Obra) -->
+                <!-- Card 1: Tren Maya -->
                 <div class="bg-purple-900/20 p-5 rounded-xl border border-purple-500/40 shadow-lg relative overflow-hidden group hover:bg-purple-900/30 transition-colors h-full">
                     <div class="flex justify-between items-start mb-3">
                         <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400 text-lg">
-                            <i class="fa-solid fa-train-subway"></i>
+                            <i class="fa-solid fa-train-subway" aria-hidden="true"></i>
                         </div>
                         <span class="text-[10px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded font-bold uppercase tracking-wider animate-pulse">Prioridad</span>
                     </div>
@@ -162,11 +243,11 @@
                     </p>
                 </div>
 
-                <!-- Card 2: Seguridad (Recorte) -->
+                <!-- Card 2: Seguridad -->
                 <div class="bg-slate-900 p-5 rounded-xl border border-red-500/20 shadow-sm relative overflow-hidden group hover:border-red-500/40 transition-colors opacity-90 h-full">
                     <div class="flex justify-between items-start mb-3">
                         <div class="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 text-lg">
-                            <i class="fa-solid fa-shield-halved"></i>
+                            <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
                         </div>
                         <span class="text-[10px] bg-red-500/10 text-red-400 px-2 py-0.5 rounded font-bold uppercase tracking-wider">Sacrificado</span>
                     </div>
@@ -176,13 +257,13 @@
                     </p>
                 </div>
 
-                <!-- Card 3: Educación (Recorte) -->
+                <!-- Card 3: Educación -->
                 <div class="bg-slate-900 p-5 rounded-xl border border-blue-500/20 shadow-sm relative overflow-hidden group hover:border-blue-500/40 transition-colors opacity-90 h-full">
                     <div class="flex justify-between items-start mb-3">
                         <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 text-lg">
-                            <i class="fa-solid fa-chalkboard-user"></i>
+                            <i class="fa-solid fa-chalkboard-user" aria-hidden="true"></i>
                         </div>
-                        <span class="text-[10px] bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded font-bold uppercase tracking-wider">Ovidado</span>
+                        <span class="text-[10px] bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded font-bold uppercase tracking-wider">Olvidado</span>
                     </div>
                     <strong class="text-slate-200 block text-sm mb-1">Formación Docente</strong>
                     <p class="text-slate-400 leading-relaxed text-[11px]">
@@ -190,11 +271,11 @@
                     </p>
                 </div>
 
-                <!-- Card 4: Infraestructura (Recorte) -->
+                <!-- Card 4: Infraestructura -->
                 <div class="bg-slate-900 p-5 rounded-xl border border-amber-500/20 shadow-sm relative overflow-hidden group hover:border-amber-500/40 transition-colors opacity-90 h-full">
                     <div class="flex justify-between items-start mb-3">
                         <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500 text-lg">
-                            <i class="fa-solid fa-road-spikes"></i>
+                            <i class="fa-solid fa-road-spikes" aria-hidden="true"></i>
                         </div>
                         <span class="text-[10px] bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded font-bold uppercase tracking-wider">Pausado</span>
                     </div>
@@ -208,7 +289,7 @@
             
             <!-- Fuentes -->
             <div class="mt-8 pt-4 border-t border-slate-800 flex flex-col gap-2 text-[10px] text-slate-500">
-                <div class="flex justify-between items-center">
+                <div class="flex justify-between items-center flex-wrap gap-2">
                     <p><strong>Fuentes Verificadas:</strong> Cuenta Pública 2024 (SHCP), PEF 2025 (SHCP), Estimaciones IMCO y CIEP.</p>
                     <p class="text-purple-400/60">Nota: Valores a precios constantes de 2025.</p>
                 </div>
@@ -230,18 +311,19 @@
                     <div class="flex flex-col gap-1">
                         <span class="text-[11px] font-bold text-slate-500 uppercase">Software</span>
                         <a href="https://opensource.org/licenses/MIT" target="_blank" class="font-mono text-[11px] text-slate-400 flex items-center gap-1 hover:text-purple-400 transition-colors">
-                            <i class="fa-brands fa-github"></i> MIT LICENSE
+                            <i class="fa-brands fa-github" aria-hidden="true"></i> MIT LICENSE
                         </a>
                     </div>
                 </div>
                 <div class="text-right">
                     <p class="text-[11px] text-slate-500 uppercase font-bold mb-1">Análisis y Diseño</p>
                     <p class="text-sm font-bold text-slate-300">Eric Araujo Martínez <span class="text-purple-500">(@SocioNomicsLab)</span></p>
+                    <p class="text-[9px] text-slate-600 mt-1">© 2026 · Contacto: <a href="https://x.com/SocioNomicsLab" target="_blank" class="hover:text-purple-400 transition-colors">@SocioNomicsLab</a></p>
                 </div>
             </div>
         </div>
 
-    </div>
+    </div><!-- /report-container -->
 
     <script>
         Chart.register(ChartDataLabels, window['chartjs-plugin-annotation']);
@@ -252,22 +334,13 @@
         const years = ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025*'];
 
         // --- DATOS (Millones de Pesos Constantes 2025) ---
-        // Fuentes: CIEP, SHCP, Cuenta Pública.
-        
         const dataCarreteras = [18000, 19500, 21000, 17000, 15000, 23000, 19000, 12000, 10000, 8000, 9500, 500, 500]; 
         const dataDocentes = [1800, 1900, 2500, 2800, 2100, 1800, 500, 300, 280, 250, 240, 249, 250];
         const dataFortaseg = [6000, 6200, 6500, 5952, 5500, 5000, 4000, 3000, 0, 0, 0, 0, 0];
         
-        // DATOS REALES DEL TREN MAYA (Actualizados con auditoría)
-        // 2023: Pico de gasto (~143k). 
-        // 2024: Cuenta Pública reporta 29,912 (Ejercido).
-        // 2025: PEF asigna 40,827.
         const realDataTren = [0, 0, 0, 0, 0, 0, 2500, 11000, 38000, 70000, 143000, 29912, 40827];
-        
-        // DATOS VACÍOS (Para iniciar oculto pero presente)
         const zeroDataTren = new Array(13).fill(0);
 
-        // Definición de Datasets Base
         const datasetFortaseg = { 
             label: 'Policía Local', 
             data: dataFortaseg, 
@@ -295,7 +368,7 @@
         };
         const datasetTren = { 
             label: 'Tren Maya', 
-            data: zeroDataTren, // Iniciamos en CERO para poder animar el crecimiento
+            data: zeroDataTren,
             borderColor: '#a855f7', 
             backgroundColor: 'rgba(168, 85, 247, 0.2)', 
             pointRadius: 0, 
@@ -303,16 +376,15 @@
             order: 99
         };
 
-        // Configuraciones de Vista
         const views = {
             recortes: {
-                max: 30000, // Escala baja (Zoom)
+                max: 30000,
                 annotationDisplay: false,
                 borderWidth: 4, 
                 pointRadius: 5
             },
             tren: {
-                max: 160000, // Escala gigante (Macro) - Suficiente para ver el pico de 143k
+                max: 160000,
                 annotationDisplay: true,
                 borderWidth: 2, 
                 pointRadius: 2
@@ -320,8 +392,8 @@
         };
 
         let currentViewKey = 'recortes';
+        let toggleTimer = null;
 
-        // Inicializar Gráfica
         const chart = new Chart(ctx, {
             type: 'line',
             data: {
@@ -338,7 +410,7 @@
                 maintainAspectRatio: false,
                 layout: { padding: { top: 30, right: 30, left: 10, bottom: 0 } },
                 animation: {
-                    duration: 1000, // Duración base
+                    duration: 1000,
                     easing: 'easeInOutCubic'
                 },
                 interaction: { mode: 'index', intersect: false },
@@ -372,7 +444,7 @@
                             label: function(context) {
                                 let label = context.dataset.label || '';
                                 if (label) label += ': ';
-                                if (context.parsed.y !== null && context.parsed.y > 0) { // Ocultar tooltip si es 0
+                                if (context.parsed.y !== null && context.parsed.y > 0) {
                                     label += new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumSignificantDigits: 3 }).format(context.parsed.y) + ' mdp';
                                 }
                                 return label;
@@ -385,14 +457,12 @@
                             const isTrain = context.dataset.label === 'Tren Maya';
                             const val = context.dataset.data[i];
 
-                            if (val === 0) return false; // No mostrar etiqueta si es 0
+                            if (val === 0) return false;
                             
-                            // Vista Tren
                             if (currentViewKey === 'tren') {
-                                if (isTrain) return (i === 10 || i === 11 || i === 12); // Mostrar pico y cierre
+                                if (isTrain) return (i === 10 || i === 11 || i === 12);
                                 return (i === 12); 
                             }
-                            // Vista Recortes
                             return (i === 0 || i === 7 || i === 12);
                         },
                         color: (ctx) => ctx.dataset.borderColor,
@@ -404,9 +474,13 @@
                     annotation: {
                         annotations: {
                             boxAMLO: {
-                                type: 'box', xMin: 5.5, xMax: 11.5, yMin: 0, yMax: 'max',
+                                type: 'box', 
+                                xMin: 5.5, 
+                                xMax: 11.5, 
+                                yMin: 0, 
+                                yMax: 160000,
                                 backgroundColor: 'rgba(168, 85, 247, 0.05)',
-                                borderRightWidth: 0,
+                                borderWidth: 0,
                                 label: { 
                                     content: 'Explosión de Gasto (Tren Maya)', 
                                     display: false, 
@@ -422,11 +496,9 @@
             }
         });
 
-        // Actualizar Leyenda HTML
         function updateLegend() {
             legendContainer.innerHTML = '';
-            chart.data.datasets.forEach((ds, index) => {
-                // Si estamos en modo recortes y es el tren, no lo mostramos en leyenda aunque técnicamente existe en 0
+            chart.data.datasets.forEach((ds) => {
                 if (currentViewKey === 'recortes' && ds.label === 'Tren Maya') return;
 
                 const item = document.createElement('div');
@@ -440,26 +512,24 @@
             });
         }
         
-        const style = document.createElement('style');
-        style.innerHTML = `
-            @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-            .animate-fadeIn { animation: fadeIn 0.3s ease-out forwards; }
-        `;
-        document.head.appendChild(style);
-        
         updateLegend();
 
-        // Lógica del Toggle (COREOGRAFÍA DRAMÁTICA EN DOS TIEMPOS)
+        // Toggle con fix de race condition
         viewToggle.addEventListener('change', function() {
             const isTurningOn = this.checked;
             currentViewKey = isTurningOn ? 'tren' : 'recortes';
             const config = views[currentViewKey];
+            
+            this.setAttribute('aria-checked', isTurningOn ? 'true' : 'false');
+
+            if (toggleTimer) {
+                clearTimeout(toggleTimer);
+                toggleTimer = null;
+            }
 
             if (isTurningOn) {
-                // --- FASE 1: APLASTAMIENTO (Escala Y sube, Tren sigue plano en 0) ---
                 chart.options.scales.y.max = config.max;
                 
-                // Adelgazamos líneas
                 chart.data.datasets.forEach(ds => {
                     if (ds.label !== 'Tren Maya') {
                         ds.borderWidth = config.borderWidth;
@@ -467,30 +537,26 @@
                     }
                 });
                 
-                chart.update(); // PRIMER UPDATE: Las líneas caen.
+                chart.update();
 
-                // --- FASE 2: EMERGENCIA (Entran los datos reales) ---
-                setTimeout(() => {
-                    // Inyectamos los datos reales para forzar la animación de crecimiento
+                toggleTimer = setTimeout(() => {
                     chart.data.datasets[0].data = realDataTren;
                     
                     if (chart.options.plugins.annotation.annotations.boxAMLO) {
                         chart.options.plugins.annotation.annotations.boxAMLO.label.display = true;
                     }
                     updateLegend();
-                    chart.update(); // SEGUNDO UPDATE: El tren crece desde el suelo.
-                }, 1000); // Esperamos a que termine el aplastamiento
+                    chart.update();
+                    toggleTimer = null;
+                }, 1000);
 
             } else {
-                // --- APAGAR (Tren se va a 0, luego escala baja) ---
-                
-                // 1. Tren a cero
                 chart.data.datasets[0].data = zeroDataTren;
-                chart.update(); // El tren se encoge
+                chart.update();
 
-                setTimeout(() => {
-                    // 2. Restaurar escala y grosor
+                toggleTimer = setTimeout(() => {
                     chart.options.scales.y.max = config.max;
+                    
                     if (chart.options.plugins.annotation.annotations.boxAMLO) {
                         chart.options.plugins.annotation.annotations.boxAMLO.label.display = false;
                     }
@@ -503,23 +569,83 @@
                     });
                     
                     updateLegend();
-                    chart.update(); // Las líneas rebotan hacia arriba
-                }, 500); // Breve pausa para ver el tren desaparecer
+                    chart.update();
+                    toggleTimer = null;
+                }, 500);
             }
         });
 
-        function downloadImage() {
+        // ══════════════════════════════════════════════════════════════
+        // FUNCIÓN 1: DESCARGAR HTML COMPLETO (PRINCIPAL)
+        // ══════════════════════════════════════════════════════════════
+        
+        function downloadHTML() {
+            try {
+                // Obtener el HTML completo de la página
+                const htmlContent = document.documentElement.outerHTML;
+                
+                // Crear blob con el contenido HTML
+                const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+                
+                // Crear link de descarga
+                const link = document.createElement('a');
+                link.download = 'costo_oportunidad_tren_maya.html';
+                link.href = URL.createObjectURL(blob);
+                
+                // Disparar descarga
+                link.click();
+                
+                // Limpiar URL object
+                setTimeout(() => URL.revokeObjectURL(link.href), 100);
+                
+            } catch (err) {
+                console.error('Error al descargar HTML:', err);
+                alert('No se pudo descargar el archivo. Por favor, intenta nuevamente.');
+            }
+        }
+
+        // ══════════════════════════════════════════════════════════════
+        // FUNCIÓN 2: CAPTURA DE PANTALLA (SECUNDARIA)
+        // ══════════════════════════════════════════════════════════════
+        
+        async function downloadScreenshot() {
+            const btn = document.getElementById('screenshot-btn');
+            const icon = document.getElementById('screenshot-icon');
+            const label = document.getElementById('screenshot-label');
             const container = document.getElementById('report-container');
-            const ignoreElements = (element) => element.classList.contains('no-capture');
-            html2canvas(container, {
-                scale: 2, useCORS: true, backgroundColor: "#0f172a", ignoreElements: ignoreElements
-            }).then(canvas => {
+            
+            // Estado de carga
+            btn.disabled = true;
+            btn.classList.add('opacity-60');
+            icon.className = 'fa-solid fa-spinner fa-spin mr-2';
+            label.textContent = 'Capturando...';
+            
+            try {
+                const canvas = await html2canvas(container, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#0f172a',
+                    logging: false,
+                    ignoreElements: (el) => el.classList.contains('no-capture')
+                });
+                
                 const link = document.createElement('a');
                 link.download = 'costo_oportunidad_tren_maya.png';
                 link.href = canvas.toDataURL('image/png');
                 link.click();
-            });
+                
+            } catch (err) {
+                console.error('Error al capturar imagen:', err);
+                alert('No se pudo generar la imagen. Prueba con "Descargar Archivo" en su lugar.');
+            } finally {
+                // Restaurar botón
+                btn.disabled = false;
+                btn.classList.remove('opacity-60');
+                icon.className = 'fa-solid fa-camera mr-2';
+                label.textContent = 'Capturar Imagen';
+            }
         }
     </script>
-</body>
-</html>
+
+
+</body></html>
