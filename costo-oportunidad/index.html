@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Meta Tags -->
+    <meta property="og:title" content="PRIORIDADES — Costo de Oportunidad (Tren Maya vs. Servicios)">
+    <meta property="og:description" content="Comparativa interactiva: Auditoría del gasto en la Mega-Obra vs. recortes en Seguridad, Educación y Carreteras.">
+    <meta property="og:type" content="article">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@SocioNomicsLab">
+
+    <title>Costo de Oportunidad | SocioNomics Lab</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+    
+    <!-- html2canvas -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    
+    <!-- Fuentes e Iconos -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #0f172a; color: #e2e8f0; }
+        .card-shadow { box-shadow: 0 20px 60px -15px rgba(0, 0, 0, 0.8); }
+        
+        /* Toggle Switch Styles */
+        .toggle-checkbox:checked { right: 0; border-color: #a855f7; }
+        .toggle-checkbox:checked + .toggle-label { background-color: #a855f7; }
+        
+        #report-container { opacity: 0; animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { to { opacity: 1; } }
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen flex flex-col items-center justify-center">
+
+    <!-- BOTONERA SUPERIOR -->
+    <div class="max-w-6xl w-full mb-6 flex justify-between items-center gap-4 no-print">
+        <a href="https://araujome.github.io/visualizaciones/" class="px-4 py-2 bg-slate-800 text-slate-300 rounded-lg shadow-sm hover:bg-slate-700 border border-slate-600 text-sm font-bold flex items-center gap-2 transition-all">
+            <i class="fa-solid fa-arrow-left"></i> Más Estudios
+        </a>
+        <button onclick="downloadImage()" class="flex items-center px-5 py-2.5 bg-purple-600 hover:bg-purple-500 text-white rounded-lg shadow-lg font-bold transition-all text-sm transform hover:scale-105">
+            <i class="fa-solid fa-camera mr-2"></i> Guardar Imagen
+        </button>
+    </div>
+
+    <!-- MAIN DASHBOARD -->
+    <div id="report-container" class="max-w-6xl w-full bg-slate-900 rounded-3xl card-shadow overflow-hidden border border-slate-700 relative">
+        
+        <!-- HEADER -->
+        <div class="p-8 md:p-12 relative overflow-hidden border-b border-slate-800 bg-gradient-to-r from-slate-900 to-slate-800">
+            <div class="relative z-10 flex flex-col md:flex-row justify-between items-start gap-6">
+                <div>
+                    <!-- BRANDING SOCIONOMICS LAB -->
+                    <div class="inline-flex items-center gap-3 bg-purple-500/10 border border-purple-500/20 px-3 py-1 rounded-full backdrop-blur-md mb-4">
+                        <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span>
+                        <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-purple-200">Intelligence Unit</span>
+                    </div>
+                    
+                    <h1 class="text-4xl md:text-6xl font-black text-white mb-2 tracking-tighter leading-none">
+                        EL COSTO DE <br><span class="text-purple-500">OPORTUNIDAD</span>
+                    </h1>
+                    <p class="text-slate-400 text-lg font-light max-w-2xl mt-4 leading-relaxed">
+                        Auditoría Presupuestal: <strong>Tren Maya</strong> vs. Recortes en Seguridad, Educación e Infraestructura (2013-2025).
+                    </p>
+                </div>
+                
+                <div class="flex flex-col items-end gap-6">
+                    <!-- Redes -->
+                    <div class="flex gap-4">
+                        <a href="https://github.com/AraujoME/visualizaciones" target="_blank" class="text-slate-500 hover:text-white transition-colors text-xl"><i class="fa-brands fa-github"></i></a>
+                        <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="text-slate-500 hover:text-blue-500 transition-colors text-xl"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://x.com/SocioNomicsLab" target="_blank" class="text-slate-500 hover:text-white transition-colors text-xl"><i class="fa-brands fa-x-twitter"></i></a>
+                    </div>
+                    
+                    <!-- KPI Destacado: DATOS IMCO/SHCP -->
+                    <div class="inline-block bg-slate-900/50 p-6 rounded-2xl border border-purple-500/30 backdrop-blur-sm text-right">
+                        <p class="text-[11px] text-purple-400 uppercase font-bold mb-1">Costo Acumulado (Est.)</p>
+                        <p class="text-4xl font-black text-white">>$500 <span class="text-lg text-slate-500">Mil MDP</span></p>
+                        <p class="text-xs text-slate-400 mt-1">Fuente: Estimaciones IMCO / SHCP</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Decoración -->
+            <div class="no-capture absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-purple-600 rounded-full mix-blend-overlay filter blur-[120px] opacity-20 pointer-events-none"></div>
+        </div>
+
+        <!-- CONTROLES Y LEYENDA -->
+        <div class="bg-slate-800/80 p-5 border-b border-slate-700 flex flex-col md:flex-row justify-between items-center gap-6">
+            
+            <!-- Toggle Switch (Sin Tren vs Con Tren) -->
+            <div class="flex items-center gap-3 bg-slate-900/50 px-4 py-2 rounded-full border border-slate-700">
+                <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Ver Recortes (Zoom)</span>
+                <div class="relative inline-block w-14 h-8 align-middle select-none transition duration-200 ease-in">
+                    <input type="checkbox" name="toggle" id="view-toggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer top-1 left-1 transition-all duration-300 z-20"/>
+                    <label for="view-toggle" class="toggle-label block overflow-hidden h-8 rounded-full bg-slate-600 cursor-pointer border border-slate-600"></label>
+                </div>
+                <span class="text-xs font-bold text-purple-400 uppercase tracking-wider">Ver Impacto Tren Maya</span>
+            </div>
+
+            <!-- Leyenda Dinámica -->
+            <div id="legend-container" class="flex gap-4 text-sm flex-wrap justify-center">
+                <!-- Se llena con JS -->
+            </div>
+        </div>
+
+        <!-- GRÁFICA -->
+        <div class="p-6 md:p-10 bg-slate-900 relative">
+            <div class="relative h-[500px] w-full">
+                <canvas id="budgetChart" role="img" aria-label="Gráfica comparativa."></canvas>
+            </div>
+        </div>
+
+        <!-- ANÁLISIS E INTERPRETACIÓN -->
+        <div class="p-8 bg-slate-950 border-t border-slate-800">
+            
+            <!-- SECCIÓN 1: METODOLOGÍA -->
+            <div class="mb-10 bg-slate-900/60 p-6 rounded-2xl border border-emerald-500/20 flex flex-col md:flex-row gap-6 items-start">
+                <div class="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 shrink-0 text-xl">
+                    <i class="fa-solid fa-calculator"></i>
+                </div>
+                <div>
+                    <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-wide mb-2">
+                        Metodología: ¿Qué son "Precios Constantes"?
+                    </h3>
+                    <p class="text-slate-300 text-sm leading-relaxed mb-2">
+                        Es la forma honesta de medir el dinero. Un peso de 2013 no vale lo mismo que uno de 2025 debido a la inflación. Si comparamos solo los números impresos en los billetes (Precios Corrientes), parecería que el presupuesto siempre sube, aunque en realidad compremos menos.
+                    </p>
+                    <p class="text-slate-400 text-xs italic">
+                        <strong>La analogía del Carrito:</strong> Imagina que en 2013 llenabas el carrito del súper con $1,000. Hoy, esos mismos $1,000 solo llenan la mitad. Para esta gráfica, hemos "inflado" los pesos del pasado para que sean equivalentes al poder adquisitivo de 2025. Así revelamos que muchos "aumentos" anunciados son, en realidad, recortes en capacidad de compra.
+                    </p>
+                </div>
+            </div>
+            
+            <h3 class="text-sm font-bold text-slate-300 uppercase tracking-wide mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-scale-unbalanced"></i> Balanza Presupuestal: Impacto Social
+            </h3>
+
+            <!-- CARDS EXPLICATIVAS (Expandidas) -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+                
+                <!-- Card 1: Tren Maya (Mega-Obra) -->
+                <div class="bg-purple-900/20 p-5 rounded-xl border border-purple-500/40 shadow-lg relative overflow-hidden group hover:bg-purple-900/30 transition-colors h-full">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center text-purple-400 text-lg">
+                            <i class="fa-solid fa-train-subway"></i>
+                        </div>
+                        <span class="text-[10px] bg-purple-500/20 text-purple-300 px-2 py-0.5 rounded font-bold uppercase tracking-wider animate-pulse">Prioridad</span>
+                    </div>
+                    <strong class="text-purple-200 block text-sm mb-1">Tren Maya</strong>
+                    <p class="text-2xl font-black text-white mb-2">$500+ <span class="text-xs font-normal text-slate-400">Mil MDP (Acum.)</span></p>
+                    <p class="text-slate-300 leading-relaxed text-[11px]">
+                        El costo de oportunidad de esta obra es histórico. El monto acumulado (estimado SHCP/IMCO) equivale a financiar el subsidio de seguridad (FORTASEG) para todos los municipios del país durante <strong>125 años</strong>.
+                    </p>
+                </div>
+
+                <!-- Card 2: Seguridad (Recorte) -->
+                <div class="bg-slate-900 p-5 rounded-xl border border-red-500/20 shadow-sm relative overflow-hidden group hover:border-red-500/40 transition-colors opacity-90 h-full">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center text-red-500 text-lg">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <span class="text-[10px] bg-red-500/10 text-red-400 px-2 py-0.5 rounded font-bold uppercase tracking-wider">Sacrificado</span>
+                    </div>
+                    <strong class="text-slate-200 block text-sm mb-1">Policía Local (FORTASEG)</strong>
+                    <p class="text-slate-400 leading-relaxed text-[11px]">
+                        Este fondo permitía a los municipios comprar patrullas, chalecos y pagar controles de confianza. Al eliminarlo (-100%), se abandonó la seguridad civil de proximidad, dejando a las policías locales inoperantes frente al delito común.
+                    </p>
+                </div>
+
+                <!-- Card 3: Educación (Recorte) -->
+                <div class="bg-slate-900 p-5 rounded-xl border border-blue-500/20 shadow-sm relative overflow-hidden group hover:border-blue-500/40 transition-colors opacity-90 h-full">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center text-blue-500 text-lg">
+                            <i class="fa-solid fa-chalkboard-user"></i>
+                        </div>
+                        <span class="text-[10px] bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded font-bold uppercase tracking-wider">Ovidado</span>
+                    </div>
+                    <strong class="text-slate-200 block text-sm mb-1">Formación Docente</strong>
+                    <p class="text-slate-400 leading-relaxed text-[11px]">
+                        Se priorizó la transferencia directa (becas) sobre la calidad educativa. El programa para capacitar y actualizar maestros sufrió un recorte del 86%. Tenemos alumnos con dinero en el bolsillo, pero en aulas con docentes sin herramientas pedagógicas modernas.
+                    </p>
+                </div>
+
+                <!-- Card 4: Infraestructura (Recorte) -->
+                <div class="bg-slate-900 p-5 rounded-xl border border-amber-500/20 shadow-sm relative overflow-hidden group hover:border-amber-500/40 transition-colors opacity-90 h-full">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center text-amber-500 text-lg">
+                            <i class="fa-solid fa-road-spikes"></i>
+                        </div>
+                        <span class="text-[10px] bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded font-bold uppercase tracking-wider">Pausado</span>
+                    </div>
+                    <strong class="text-slate-200 block text-sm mb-1">Mantenimiento Carretero</strong>
+                    <p class="text-slate-400 leading-relaxed text-[11px]">
+                        En 2024, Hacienda "reservó" (congeló) los recursos para mantenimiento de carreteras federales. El impacto no es solo estético: baches y deterioro aumentan los accidentes fatales y encarecen la logística de alimentos y mercancías en todo el país.
+                    </p>
+                </div>
+
+            </div>
+            
+            <!-- Fuentes -->
+            <div class="mt-8 pt-4 border-t border-slate-800 flex flex-col gap-2 text-[10px] text-slate-500">
+                <div class="flex justify-between items-center">
+                    <p><strong>Fuentes Verificadas:</strong> Cuenta Pública 2024 (SHCP), PEF 2025 (SHCP), Estimaciones IMCO y CIEP.</p>
+                    <p class="text-purple-400/60">Nota: Valores a precios constantes de 2025.</p>
+                </div>
+                <p><strong>Detalle Tren Maya:</strong> 2024 (Ejercido: $29,912 MDP), 2025 (Asignado: ~$40,827 MDP). Costo acumulado incluye fideicomisos y asignaciones a SEDENA/Turismo.</p>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="bg-black p-6 border-t border-slate-900">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex items-center gap-6 opacity-70 hover:opacity-100 transition-opacity">
+                    <div class="flex flex-col gap-1">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase">Contenido</span>
+                        <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">
+                            <img src="https://licensebuttons.net/l/by-nc/4.0/80x15.png" alt="CC BY-NC">
+                        </a>
+                    </div>
+                    <div class="w-px h-8 bg-slate-800"></div>
+                    <div class="flex flex-col gap-1">
+                        <span class="text-[11px] font-bold text-slate-500 uppercase">Software</span>
+                        <a href="https://opensource.org/licenses/MIT" target="_blank" class="font-mono text-[11px] text-slate-400 flex items-center gap-1 hover:text-purple-400 transition-colors">
+                            <i class="fa-brands fa-github"></i> MIT LICENSE
+                        </a>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-[11px] text-slate-500 uppercase font-bold mb-1">Análisis y Diseño</p>
+                    <p class="text-sm font-bold text-slate-300">Eric Araujo Martínez <span class="text-purple-500">(@SocioNomicsLab)</span></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        Chart.register(ChartDataLabels, window['chartjs-plugin-annotation']);
+
+        const ctx = document.getElementById('budgetChart').getContext('2d');
+        const viewToggle = document.getElementById('view-toggle');
+        const legendContainer = document.getElementById('legend-container');
+        const years = ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025*'];
+
+        // --- DATOS (Millones de Pesos Constantes 2025) ---
+        // Fuentes: CIEP, SHCP, Cuenta Pública.
+        
+        const dataCarreteras = [18000, 19500, 21000, 17000, 15000, 23000, 19000, 12000, 10000, 8000, 9500, 500, 500]; 
+        const dataDocentes = [1800, 1900, 2500, 2800, 2100, 1800, 500, 300, 280, 250, 240, 249, 250];
+        const dataFortaseg = [6000, 6200, 6500, 5952, 5500, 5000, 4000, 3000, 0, 0, 0, 0, 0];
+        
+        // DATOS REALES DEL TREN MAYA (Actualizados con auditoría)
+        // 2023: Pico de gasto (~143k). 
+        // 2024: Cuenta Pública reporta 29,912 (Ejercido).
+        // 2025: PEF asigna 40,827.
+        const realDataTren = [0, 0, 0, 0, 0, 0, 2500, 11000, 38000, 70000, 143000, 29912, 40827];
+        
+        // DATOS VACÍOS (Para iniciar oculto pero presente)
+        const zeroDataTren = new Array(13).fill(0);
+
+        // Definición de Datasets Base
+        const datasetFortaseg = { 
+            label: 'Policía Local', 
+            data: dataFortaseg, 
+            borderColor: '#ef4444', 
+            backgroundColor: '#ef4444', 
+            pointBackgroundColor: '#7f1d1d',
+            order: 1 
+        };
+        const datasetCarreteras = { 
+            label: 'Mant. Carretero', 
+            data: dataCarreteras, 
+            borderColor: '#f59e0b', 
+            backgroundColor: '#f59e0b', 
+            pointBackgroundColor: '#78350f', 
+            borderDash: [5,5],
+            order: 1
+        };
+        const datasetDocentes = { 
+            label: 'Capacitación Docente', 
+            data: dataDocentes, 
+            borderColor: '#3b82f6', 
+            backgroundColor: '#3b82f6', 
+            pointBackgroundColor: '#172554',
+            order: 1
+        };
+        const datasetTren = { 
+            label: 'Tren Maya', 
+            data: zeroDataTren, // Iniciamos en CERO para poder animar el crecimiento
+            borderColor: '#a855f7', 
+            backgroundColor: 'rgba(168, 85, 247, 0.2)', 
+            pointRadius: 0, 
+            fill: true, 
+            order: 99
+        };
+
+        // Configuraciones de Vista
+        const views = {
+            recortes: {
+                max: 30000, // Escala baja (Zoom)
+                annotationDisplay: false,
+                borderWidth: 4, 
+                pointRadius: 5
+            },
+            tren: {
+                max: 160000, // Escala gigante (Macro) - Suficiente para ver el pico de 143k
+                annotationDisplay: true,
+                borderWidth: 2, 
+                pointRadius: 2
+            }
+        };
+
+        let currentViewKey = 'recortes';
+
+        // Inicializar Gráfica
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: years,
+                datasets: [datasetTren, datasetFortaseg, datasetCarreteras, datasetDocentes].map(ds => ({
+                    ...ds, 
+                    borderWidth: views.recortes.borderWidth, 
+                    pointRadius: views.recortes.pointRadius, 
+                    tension: 0.3
+                }))
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: { padding: { top: 30, right: 30, left: 10, bottom: 0 } },
+                animation: {
+                    duration: 1000, // Duración base
+                    easing: 'easeInOutCubic'
+                },
+                interaction: { mode: 'index', intersect: false },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: { color: '#94a3b8', font: { family: 'Inter', size: 11 } }
+                    },
+                    y: {
+                        min: 0,
+                        max: views.recortes.max, 
+                        grid: { color: '#334155', borderDash: [5, 5] },
+                        ticks: { 
+                            color: '#94a3b8', 
+                            callback: (val) => '$' + (val/1000).toFixed(0) + 'k',
+                            font: { family: 'Inter' }
+                        },
+                        title: { display: true, text: 'Millones de Pesos (Constantes 2025)', color: '#64748b' }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                        titleColor: '#f1f5f9',
+                        bodyColor: '#cbd5e1',
+                        borderColor: '#475569',
+                        borderWidth: 1,
+                        padding: 10,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) label += ': ';
+                                if (context.parsed.y !== null && context.parsed.y > 0) { // Ocultar tooltip si es 0
+                                    label += new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumSignificantDigits: 3 }).format(context.parsed.y) + ' mdp';
+                                }
+                                return label;
+                            }
+                        }
+                    },
+                    datalabels: {
+                        display: function(context) {
+                            const i = context.dataIndex;
+                            const isTrain = context.dataset.label === 'Tren Maya';
+                            const val = context.dataset.data[i];
+
+                            if (val === 0) return false; // No mostrar etiqueta si es 0
+                            
+                            // Vista Tren
+                            if (currentViewKey === 'tren') {
+                                if (isTrain) return (i === 10 || i === 11 || i === 12); // Mostrar pico y cierre
+                                return (i === 12); 
+                            }
+                            // Vista Recortes
+                            return (i === 0 || i === 7 || i === 12);
+                        },
+                        color: (ctx) => ctx.dataset.borderColor,
+                        font: { weight: 'bold', size: 10 },
+                        align: 'top',
+                        offset: 4,
+                        formatter: (val) => '$' + (val/1000).toFixed(0) + 'k'
+                    },
+                    annotation: {
+                        annotations: {
+                            boxAMLO: {
+                                type: 'box', xMin: 5.5, xMax: 11.5, yMin: 0, yMax: 'max',
+                                backgroundColor: 'rgba(168, 85, 247, 0.05)',
+                                borderRightWidth: 0,
+                                label: { 
+                                    content: 'Explosión de Gasto (Tren Maya)', 
+                                    display: false, 
+                                    position: {x: 'center', y: 'start'}, 
+                                    color: '#d8b4fe', 
+                                    font: {size: 10, weight:'bold'}, 
+                                    yAdjust: 10 
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Actualizar Leyenda HTML
+        function updateLegend() {
+            legendContainer.innerHTML = '';
+            chart.data.datasets.forEach((ds, index) => {
+                // Si estamos en modo recortes y es el tren, no lo mostramos en leyenda aunque técnicamente existe en 0
+                if (currentViewKey === 'recortes' && ds.label === 'Tren Maya') return;
+
+                const item = document.createElement('div');
+                item.className = 'flex items-center gap-2 animate-fadeIn';
+                const shape = ds.label === 'Tren Maya' ? 'rounded-sm' : 'rounded-full';
+                item.innerHTML = `
+                    <span class="w-3 h-3 ${shape}" style="background-color: ${ds.borderColor}"></span>
+                    <span class="text-slate-300 font-bold text-xs">${ds.label}</span>
+                `;
+                legendContainer.appendChild(item);
+            });
+        }
+        
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+            .animate-fadeIn { animation: fadeIn 0.3s ease-out forwards; }
+        `;
+        document.head.appendChild(style);
+        
+        updateLegend();
+
+        // Lógica del Toggle (COREOGRAFÍA DRAMÁTICA EN DOS TIEMPOS)
+        viewToggle.addEventListener('change', function() {
+            const isTurningOn = this.checked;
+            currentViewKey = isTurningOn ? 'tren' : 'recortes';
+            const config = views[currentViewKey];
+
+            if (isTurningOn) {
+                // --- FASE 1: APLASTAMIENTO (Escala Y sube, Tren sigue plano en 0) ---
+                chart.options.scales.y.max = config.max;
+                
+                // Adelgazamos líneas
+                chart.data.datasets.forEach(ds => {
+                    if (ds.label !== 'Tren Maya') {
+                        ds.borderWidth = config.borderWidth;
+                        ds.pointRadius = config.pointRadius;
+                    }
+                });
+                
+                chart.update(); // PRIMER UPDATE: Las líneas caen.
+
+                // --- FASE 2: EMERGENCIA (Entran los datos reales) ---
+                setTimeout(() => {
+                    // Inyectamos los datos reales para forzar la animación de crecimiento
+                    chart.data.datasets[0].data = realDataTren;
+                    
+                    if (chart.options.plugins.annotation.annotations.boxAMLO) {
+                        chart.options.plugins.annotation.annotations.boxAMLO.label.display = true;
+                    }
+                    updateLegend();
+                    chart.update(); // SEGUNDO UPDATE: El tren crece desde el suelo.
+                }, 1000); // Esperamos a que termine el aplastamiento
+
+            } else {
+                // --- APAGAR (Tren se va a 0, luego escala baja) ---
+                
+                // 1. Tren a cero
+                chart.data.datasets[0].data = zeroDataTren;
+                chart.update(); // El tren se encoge
+
+                setTimeout(() => {
+                    // 2. Restaurar escala y grosor
+                    chart.options.scales.y.max = config.max;
+                    if (chart.options.plugins.annotation.annotations.boxAMLO) {
+                        chart.options.plugins.annotation.annotations.boxAMLO.label.display = false;
+                    }
+                    
+                    chart.data.datasets.forEach(ds => {
+                        if (ds.label !== 'Tren Maya') {
+                            ds.borderWidth = config.borderWidth;
+                            ds.pointRadius = config.pointRadius;
+                        }
+                    });
+                    
+                    updateLegend();
+                    chart.update(); // Las líneas rebotan hacia arriba
+                }, 500); // Breve pausa para ver el tren desaparecer
+            }
+        });
+
+        function downloadImage() {
+            const container = document.getElementById('report-container');
+            const ignoreElements = (element) => element.classList.contains('no-capture');
+            html2canvas(container, {
+                scale: 2, useCORS: true, backgroundColor: "#0f172a", ignoreElements: ignoreElements
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'costo_oportunidad_tren_maya.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
