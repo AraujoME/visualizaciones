@@ -72,9 +72,17 @@
             <i class="fa-solid fa-arrow-left"></i> Más Estudios
         </a>
         
-        <button onclick="downloadImage()" class="px-4 md:px-6 py-2 bg-indigo-600 text-white rounded-full font-bold shadow-md hover:bg-indigo-700 transition-all flex items-center gap-2 text-xs md:text-sm">
-            <i class="fa-solid fa-image"></i> Descargar Gráfica
-        </button>
+        <div class="flex gap-2 md:gap-3 flex-wrap justify-center sm:justify-end">
+            <!-- Botón Principal: Descargar HTML -->
+            <button onclick="downloadHTML()" class="px-4 md:px-6 py-2 bg-indigo-600 text-white rounded-full font-bold shadow-md hover:bg-indigo-500 transition-all flex items-center gap-2 text-xs md:text-sm">
+                <i class="fa-solid fa-download"></i> Descargar Archivo
+            </button>
+            
+            <!-- Botón Secundario: Captura de Imagen -->
+            <button onclick="downloadImage()" class="px-4 md:px-5 py-2 bg-slate-700 text-slate-300 hover:text-white rounded-full font-semibold shadow hover:bg-slate-600 transition-all flex items-center gap-2 text-xs md:text-sm border border-slate-600">
+                <i class="fa-solid fa-camera"></i> <span class="hidden sm:inline">Capturar Imagen</span><span class="sm:hidden">Imagen</span>
+            </button>
+        </div>
     </div>
 
     <!-- CONTENEDOR PRINCIPAL (Área de Captura) -->
@@ -575,6 +583,29 @@
             chart.update();
         });
 
+        // ══════════════════════════════════════════════════════════════
+        // FUNCIÓN 1: DESCARGAR HTML COMPLETO
+        // ══════════════════════════════════════════════════════════════
+        
+        function downloadHTML() {
+            try {
+                const htmlContent = document.documentElement.outerHTML;
+                const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+                const link = document.createElement('a');
+                link.download = 'mercado_laboral_carreras_mexico.html';
+                link.href = URL.createObjectURL(blob);
+                link.click();
+                setTimeout(() => URL.revokeObjectURL(link.href), 100);
+            } catch (err) {
+                console.error('Error al descargar HTML:', err);
+                alert('No se pudo descargar el archivo. Por favor, intenta nuevamente.');
+            }
+        }
+
+        // ══════════════════════════════════════════════════════════════
+        // FUNCIÓN 2: CAPTURA DE IMAGEN
+        // ══════════════════════════════════════════════════════════════
+        
         function downloadImage() {
             const container = document.getElementById('capture-area');
             html2canvas(container, {
@@ -586,6 +617,9 @@
                 link.download = `mapa_carreras_${yearDisplay.textContent}.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
+            }).catch(err => {
+                console.error('Error al capturar imagen:', err);
+                alert('No se pudo generar la imagen. Prueba con "Descargar Archivo" en su lugar.');
             });
         }
 
