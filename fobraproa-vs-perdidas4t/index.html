@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyección Financiera: FOBAPROA vs Pérdidas Estatales</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <!-- Plugin Datalabels -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+    <!-- Librería para capturar pantalla -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <!-- Google Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+   
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        @media print {
+            body { background-color: white; }
+            .no-print { display: none !important; }
+            .shadow-xl { box-shadow: none !important; }
+            .border { border: none !important; }
+            #report-container { margin: 0; width: 100%; box-shadow: none; border: none; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 p-4 md:p-8 text-slate-800">
+
+    <!-- BARRA DE HERRAMIENTAS -->
+    <div class="max-w-5xl mx-auto mb-6 flex flex-col sm:flex-row justify-between items-center gap-4 no-print">
+        <div class="flex gap-4">
+            <a href="https://araujome.github.io/visualizaciones/" class="text-slate-500 hover:text-slate-800 font-bold text-sm transition-colors flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Volver al índice
+            </a>
+            <a href="https://github.com/araujome/visualizaciones" target="_blank" class="text-slate-500 hover:text-slate-900 font-bold text-sm transition-colors flex items-center gap-2">
+                <i class="fa-brands fa-github text-lg" aria-hidden="true"></i> Repositorio GitHub
+            </a>
+        </div>
+
+        <div class="flex gap-3">
+            <button onclick="downloadImage()" class="flex items-center px-5 py-2.5 bg-white text-slate-700 rounded-lg shadow-sm hover:shadow-md border border-slate-200 font-semibold transition-all text-sm group" aria-label="Descargar gráfica como imagen PNG">
+                <i class="fa-solid fa-download mr-2 text-slate-400 group-hover:text-slate-600" aria-hidden="true"></i> Guardar Imagen
+            </button>
+        </div>
+    </div>
+
+    <!-- REPORT CONTAINER -->
+    <div id="report-container" class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
+       
+        <!-- ENCABEZADO -->
+        <div class="bg-slate-900 p-8 md:p-10 text-white relative overflow-hidden">
+            <!-- Decoración de fondo simplificada -->
+            <div class="absolute inset-0 opacity-10" aria-hidden="true">
+                <div class="absolute top-0 right-0 w-64 h-64 bg-rose-600 rounded-full blur-3xl"></div>
+                <div class="absolute bottom-0 left-0 w-64 h-64 bg-purple-600 rounded-full blur-3xl"></div>
+            </div>
+            
+            <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="bg-rose-600 text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">Update 2025</span>
+                        <p class="text-slate-400 font-bold text-xs uppercase tracking-widest">@SocioNomicsLab</p>
+                    </div>
+                    <h1 class="text-3xl md:text-5xl font-black mb-2 tracking-tight leading-tight">El Costo Real de la<br><span class="text-rose-400">Deuda Pública</span></h1>
+                    <p class="text-slate-300 text-sm md:text-base font-medium mt-2 max-w-2xl">
+                        Comparativa actualizada: Costo histórico del FOBAPROA vs. Escenario proyectado si el gobierno asume formalmente las pérdidas en Pemex, CFE y NAIM (2019-2025).
+                    </p>
+                </div>
+                
+                <div class="flex gap-4 text-xl md:text-2xl text-slate-400">
+                    <a href="https://github.com/araujome" target="_blank" class="hover:text-white transition-colors" aria-label="Perfil de GitHub"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="hover:text-blue-400 transition-colors" aria-label="Perfil de LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="https://x.com/SocioNomicsLab" target="_blank" class="hover:text-white transition-colors" aria-label="Perfil de X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+                </div>
+            </div>
+            
+            <div class="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-rose-500 via-orange-400 to-slate-900" aria-hidden="true"></div>
+        </div>
+
+        <!-- NOTA EXPLICATIVA: ¿Qué significa "convertir en deuda pública"? -->
+        <div class="bg-blue-50 px-8 py-5 border-b border-blue-100 flex gap-4 items-start">
+            <i class="fa-solid fa-circle-info text-blue-600 text-xl mt-0.5" aria-hidden="true"></i>
+            <div>
+                <h3 class="text-sm font-bold text-blue-900 uppercase tracking-wide mb-2">¿Qué significa "asumir como deuda pública formal"?</h3>
+                <div class="text-sm text-blue-800 leading-relaxed space-y-2">
+                    <p><strong>Actualmente (2025):</strong> Las pérdidas de Pemex/CFE están en sus <em>balances contables</em>, no son deuda pública oficial.</p>
+                    
+                    <p><strong>Escenario "FOBAPROA 2.0":</strong> Si estas empresas no pueden pagar sus obligaciones, el gobierno tendría que:</p>
+                    <ul class="list-disc list-inside ml-4 space-y-1">
+                        <li><strong>Emitir bonos soberanos</strong> para cubrir las pérdidas (deuda pública formal)</li>
+                        <li><strong>Pagar intereses</strong> durante 20-30 años (como pasó con IPAB-FOBAPROA)</li>
+                        <li><strong>Resultado:</strong> El costo total se multiplica 1.5-2x por los intereses</li>
+                    </ul>
+
+                    <p><strong>Alternativa:</strong> No formalizar la deuda, pero seguir inyectando capital año tras año (costo fiscal similar, menos transparente).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- NOTA ALERTA -->
+        <div class="bg-rose-50 px-8 py-5 border-b border-rose-100 flex gap-4 items-start">
+            <i class="fa-solid fa-scale-unbalanced-flip text-rose-600 text-xl mt-0.5" aria-hidden="true"></i>
+            <div>
+                <h3 class="text-sm font-bold text-rose-900 uppercase tracking-wide">Actualización de Datos (2025) - ESCENARIO PROYECTADO</h3>
+                <p class="text-sm text-rose-800 mt-1 leading-relaxed text-justify">
+                    Nuevos reportes financieros (BMV/ASF) documentan pérdidas acumuladas en empresas estatales de <strong>$2.1 Billones de pesos</strong>. 
+                    <strong>Esta gráfica proyecta</strong> el costo total si el gobierno formalizara estas pérdidas mediante bonos (similar al modelo IPAB). 
+                    Bajo ese escenario, el pago de intereses a 20 años elevaría el costo total a <strong>$5.25 Billones</strong>, superando al rescate bancario de los 90.
+                </p>
+            </div>
+        </div>
+
+        <!-- GRÁFICA -->
+        <div class="p-6 md:p-10 bg-white">
+            <div class="relative h-[50vh] md:h-[60vh] w-full">
+                <canvas id="debtChart" role="img" aria-label="Gráfica de barras comparando el costo del FOBAPROA con la proyección de pérdidas estatales de Pemex, CFE y NAIM. Muestra cómo los intereses superan al capital original."></canvas>
+            </div>
+        </div>
+
+        <!-- TABLA DE DATOS (RESPONSIVE) -->
+        <div class="px-4 md:px-8 py-8 bg-slate-50 border-t border-slate-200">
+            <div class="flex items-center gap-2 mb-4">
+                <i class="fa-solid fa-table-list text-slate-400" aria-hidden="true"></i>
+                <h3 class="text-lg font-bold text-slate-800">Desglose Financiero (Billones de Pesos $MXN)</h3>
+            </div>
+            
+            <!-- VISTA DESKTOP: Tabla Tradicional -->
+            <div class="hidden md:block overflow-hidden rounded-xl border border-slate-200 shadow-sm bg-white">
+                <table class="min-w-full text-sm text-left">
+                    <thead class="bg-slate-100 text-slate-500 font-bold uppercase text-xs">
+                        <tr>
+                            <th class="px-6 py-4">Concepto</th>
+                            <th class="px-6 py-4 text-right">Capital Original</th>
+                            <th class="px-6 py-4 text-right text-rose-600">Intereses</th>
+                            <th class="px-6 py-4 text-right text-slate-900 bg-slate-200/50">Costo Total</th>
+                            <th class="px-6 py-4 text-center">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        <tr class="hover:bg-slate-50 transition-colors">
+                            <td class="px-6 py-4 font-bold text-slate-700">
+                                🏦 FOBAPROA-IPAB
+                                <span class="block text-xs font-normal text-slate-400 mt-0.5">Rescate bancario (1995-2024)</span>
+                            </td>
+                            <td class="px-6 py-4 text-right text-slate-600">$0.55 B</td>
+                            <td class="px-6 py-4 text-right text-rose-600 font-medium">+$2.45 B</td>
+                            <td class="px-6 py-4 text-right font-black text-slate-800 bg-slate-50">$3.00 B</td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="bg-green-100 text-green-800 text-xs font-bold px-2 py-1 rounded">REAL</span>
+                            </td>
+                        </tr>
+                        <tr class="hover:bg-rose-50/30 transition-colors relative">
+                            <td class="px-6 py-4 font-bold text-slate-700 border-l-4 border-rose-500">
+                                📉 Pemex + CFE + NAIM
+                                <span class="block text-xs font-normal text-slate-400 mt-0.5">Pérdidas acumuladas (2019-2025)</span>
+                            </td>
+                            <td class="px-6 py-4 text-right text-slate-600 font-bold">$2.10 B</td>
+                            <td class="px-6 py-4 text-right text-rose-600 font-bold">+$3.15 B*</td>
+                            <td class="px-6 py-4 text-right font-black text-rose-900 bg-rose-50 text-base">$5.25 B</td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="bg-amber-100 text-amber-800 text-xs font-bold px-2 py-1 rounded">PROYECCIÓN</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- VISTA MÓVIL: Cards Interactivas -->
+            <div class="md:hidden space-y-4">
+                <!-- Card 1: Fobaproa -->
+                <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 relative overflow-hidden">
+                    <div class="flex justify-between items-start mb-3">
+                        <div>
+                            <h4 class="font-bold text-slate-700 flex items-center gap-1"><i class="fa-solid fa-building-columns text-slate-400"></i> FOBAPROA-IPAB</h4>
+                            <p class="text-[11px] text-slate-400">Rescate bancario (1995-2024)</p>
+                        </div>
+                        <span class="bg-green-100 text-green-800 text-[10px] font-bold px-2 py-0.5 rounded">REAL</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-sm border-t border-slate-100 pt-3">
+                        <div>
+                            <p class="text-[10px] text-slate-400 uppercase">Capital Original</p>
+                            <p class="font-medium text-slate-600">$0.55 Billones</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] text-slate-400 uppercase">Intereses Pagados</p>
+                            <p class="font-medium text-rose-600">+$2.45 Billones</p>
+                        </div>
+                    </div>
+                    <div class="mt-3 bg-slate-50 p-2 rounded flex justify-between items-center border border-slate-100">
+                        <span class="text-xs font-bold text-slate-500 uppercase">Costo Total</span>
+                        <span class="font-black text-slate-800">$3.00 Billones</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Proyección -->
+                <div class="bg-rose-50 rounded-xl border border-rose-200 shadow-sm p-4 relative overflow-hidden">
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-rose-500"></div>
+                    <div class="flex justify-between items-start mb-3 pl-2">
+                        <div>
+                            <h4 class="font-bold text-slate-800 flex items-center gap-1"><i class="fa-solid fa-chart-line text-rose-500"></i> Pemex + CFE + NAIM</h4>
+                            <p class="text-[11px] text-slate-500">Pérdidas acumuladas (2019-2025)</p>
+                        </div>
+                        <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded">PROYECCIÓN</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-sm border-t border-rose-100 pt-3 pl-2">
+                        <div>
+                            <p class="text-[10px] text-slate-500 uppercase">Capital a Cubrir</p>
+                            <p class="font-bold text-slate-700">$2.10 Billones</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] text-slate-500 uppercase">Intereses (Est.)</p>
+                            <p class="font-bold text-rose-600">+$3.15 Billones*</p>
+                        </div>
+                    </div>
+                    <div class="mt-3 bg-white p-2 rounded flex justify-between items-center border border-rose-100 ml-2">
+                        <span class="text-xs font-bold text-rose-900 uppercase">Costo Total Proyectado</span>
+                        <span class="font-black text-rose-700 text-lg">$5.25 Billones</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fuentes y Notas -->
+            <div class="mt-6 space-y-4 text-[10px] text-slate-500 leading-relaxed border-t border-slate-200 pt-4">
+                
+                <!-- Fuentes -->
+                <div class="bg-white p-4 rounded-lg border border-slate-200">
+                    <strong class="text-slate-700 uppercase block mb-2">📚 Fuentes Oficiales (2024-2025):</strong>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li><strong>FOBAPROA:</strong> CEFP (Saldo Histórico IPAB) y SHCP (Costo Financiero de la Deuda). Total pagado ~$1.3B en intereses, deuda restante ~$1.1B.</li>
+                        <li><strong>Pérdidas Pemex/CFE:</strong> Estados Financieros Consolidados (BMV 4T-2024, 1T-2025) reportando pérdidas acumuladas históricas de ~$1.8B.</li>
+                        <li><strong>NAIM:</strong> ASF (Auditoría Superior de la Federación) - Costo de cancelación ajustado ~$331 mil mdp.</li>
+                    </ul>
+                </div>
+
+                <!-- Metodología Proyección -->
+                <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                    <strong class="text-amber-900 uppercase block mb-2">⚠️ Metodología de Proyección (*):</strong>
+                    <p class="text-amber-800">
+                        <strong>Escenario hipotético:</strong> Si el gobierno emitiera bonos soberanos para cubrir los $2.1B en pérdidas (similar al modelo IPAB-FOBAPROA):
+                    </p>
+                    <ul class="list-disc list-inside mt-2 space-y-1 text-amber-800">
+                        <li><strong>Plazo:</strong> 20 años (estándar para deuda de largo plazo)</li>
+                        <li><strong>Tasa de interés:</strong> 9.0% anual (promedio actual de bonos Pemex/Gobierno MX)</li>
+                        <li><strong>Resultado:</strong> Intereses compuestos generan +$3.15B adicionales</li>
+                        <li><strong>Costo total proyectado:</strong> $5.25B (2.5x el capital original)</li>
+                    </ul>
+                    <p class="mt-2 font-bold text-amber-900">
+                        ⚡ IMPORTANTE: Esto es un ESCENARIO PROYECTADO, no una deuda actual. Las pérdidas aún están en balances de empresas estatales. No se incluyen deudas de corto plazo a proveedores ni déficits de sistemas de pensiones por requerir metodologías actuariales distintas.
+                    </p>
+                </div>
+
+                <!-- ¿Qué pasaría si NO se formaliza? -->
+                <div class="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <strong class="text-blue-900 uppercase block mb-2">🤔 ¿Qué pasa si NO se convierte en deuda pública formal?</strong>
+                    <p class="text-blue-800">
+                        El gobierno tiene dos opciones:
+                    </p>
+                    <ul class="list-decimal list-inside mt-2 space-y-1 text-blue-800">
+                        <li><strong>Formalizar vía bonos</strong> (como FOBAPROA): Transparente, pero caro por intereses</li>
+                        <li><strong>Inyecciones anuales de capital</strong>: Menos visible, pero el costo fiscal es similar o mayor</li>
+                    </ul>
+                    <p class="mt-2 font-bold text-blue-900">
+                        En ambos casos, el costo lo paga el erario público. La diferencia es la transparencia contable.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- FOOTER: Licencias y Créditos -->
+        <div class="bg-slate-100 px-8 py-6 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-4">
+            
+            <!-- Licencias -->
+            <div class="flex items-center gap-4">
+                <div class="flex flex-col">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase mb-1">Licencia de Contenido</span>
+                    <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" class="opacity-70 hover:opacity-100 transition-opacity">
+                        <img alt="Licencia Creative Commons" style="border-width:0" src="https://licensebuttons.net/l/by-nc/4.0/88x31.png" width="80" />
+                    </a>
+                </div>
+                <div class="h-8 w-px bg-slate-300"></div>
+                <div class="flex flex-col">
+                    <span class="text-[9px] font-bold text-slate-400 uppercase mb-1">Open Source</span>
+                    <a href="https://opensource.org/license/MIT" target="_blank" class="text-xs font-bold text-slate-600 hover:text-rose-600 flex items-center gap-1 transition-colors">
+                        <i class="fa-brands fa-github"></i> MIT License
+                    </a>
+                </div>
+            </div>
+
+            <!-- Autoría -->
+            <div class="text-center md:text-right">
+                <p class="text-xs font-bold text-slate-600">Elaborado por <span class="text-rose-600">Eric Araujo Martínez</span></p>
+                <div class="flex justify-center md:justify-end gap-3 mt-1.5 text-slate-400">
+                    <a href="https://x.com/SocioNomicsLab" target="_blank" class="hover:text-slate-800 transition-colors"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="hover:text-blue-700 transition-colors"><i class="fa-brands fa-linkedin"></i></a>
+                    <a href="https://github.com/araujome" target="_blank" class="hover:text-slate-900 transition-colors"><i class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        Chart.register(ChartDataLabels);
+
+        const ctx = document.getElementById('debtChart').getContext('2d');
+        const isMobile = window.innerWidth < 768;
+
+        const labels = [
+            ['FOBAPROA-IPAB', '(Histórico 1995-2024)'],
+            ['Pemex/CFE/NAIM', '(Proyección si se formaliza)']
+        ];
+       
+        const dataPrincipal = [0.55, 2.10]; 
+        const dataInterest = [2.45, 3.15];  
+
+        const chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Capital Original (Pérdida)',
+                        data: dataPrincipal,
+                        backgroundColor: '#64748b',
+                        borderColor: '#475569',
+                        borderWidth: 0,
+                        borderRadius: 4,
+                        barPercentage: 0.6,
+                        stack: 'Stack 0'
+                    },
+                    {
+                        label: 'Intereses (Costo Financiero)',
+                        data: dataInterest,
+                        backgroundColor: '#e11d48',
+                        borderColor: '#be123c',
+                        borderWidth: 0,
+                        borderRadius: 4,
+                        barPercentage: 0.6,
+                        stack: 'Stack 0'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: { padding: { top: 30 } },
+                plugins: {
+                    legend: { 
+                        position: 'bottom',
+                        labels: {
+                            font: { family: 'Inter', size: isMobile ? 11 : 12, weight: '600' },
+                            usePointStyle: true,
+                            padding: 20,
+                            color: '#475569'
+                        }
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(15, 23, 42, 0.95)',
+                        titleFont: { family: 'Inter', size: 14, weight: 'bold' },
+                        bodyFont: { family: 'Inter', size: 13 },
+                        padding: 16,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                return ' ' + context.dataset.label + ': $' + context.raw.toFixed(2) + ' Billones';
+                            },
+                            footer: function(tooltipItems) {
+                                let total = 0;
+                                tooltipItems.forEach(function(tooltipItem) {
+                                    total += tooltipItem.raw;
+                                });
+                                return '\nCOSTO TOTAL: $' + total.toFixed(2) + ' Billones';
+                            }
+                        }
+                    },
+                    datalabels: {
+                        color: '#fff',
+                        font: { 
+                            family: 'Inter', 
+                            weight: '800',
+                            size: isMobile ? 11 : 14
+                        },
+                        formatter: function(value) {
+                            return '$' + value + 'B';
+                        },
+                        anchor: 'center',
+                        align: 'center',
+                        textShadowBlur: 4,
+                        textShadowColor: 'rgba(0,0,0,0.3)'
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        border: { display: false },
+                        ticks: { 
+                            font: { family: 'Inter', weight: '700', size: isMobile ? 11 : 13 },
+                            color: '#334155'
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        border: { display: false },
+                        grid: { color: '#f1f5f9' },
+                        title: { 
+                            display: true, 
+                            text: 'Billones de Pesos ($MXN)', 
+                            font: { family: 'Inter', weight: '600', size: 12 },
+                            color: '#94a3b8'
+                        },
+                        suggestedMax: 6.0,
+                        ticks: {
+                            callback: function(value) { return '$' + value + 'B'; },
+                            color: '#64748b',
+                            font: { weight: '500' }
+                        }
+                    }
+                }
+            }
+        });
+
+        function downloadImage() {
+            const container = document.getElementById('report-container');
+            
+            // Opciones mejoradas para html2canvas
+            html2canvas(container, {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: "#ffffff",
+                logging: false,
+                windowWidth: container.scrollWidth,
+                windowHeight: container.scrollHeight,
+                onclone: function(clonedDoc) {
+                    // Asegurar que los elementos absolute se rendericen
+                    const clonedContainer = clonedDoc.getElementById('report-container');
+                    clonedContainer.style.transform = 'none';
+                }
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'analisis_deuda_publica_2025.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
