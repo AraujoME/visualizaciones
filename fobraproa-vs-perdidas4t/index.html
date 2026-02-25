@@ -10,8 +10,6 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
     <!-- Plugin Datalabels -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
-    <!-- Librería para capturar pantalla -->
-    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <!-- Google Fonts & Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -41,8 +39,8 @@
         </div>
 
         <div class="flex gap-3">
-            <button onclick="downloadImage()" class="flex items-center px-5 py-2.5 bg-white text-slate-700 rounded-lg shadow-sm hover:shadow-md border border-slate-200 font-semibold transition-all text-sm group" aria-label="Descargar gráfica como imagen PNG">
-                <i class="fa-solid fa-download mr-2 text-slate-400 group-hover:text-slate-600" aria-hidden="true"></i> Guardar Imagen
+            <button onclick="downloadHTML()" class="flex items-center px-5 py-2.5 bg-rose-600 text-white rounded-lg shadow-md hover:bg-rose-500 font-bold transition-all text-sm group" aria-label="Descargar análisis completo como archivo HTML">
+                <i class="fa-solid fa-download mr-2" aria-hidden="true"></i> Descargar Archivo
             </button>
         </div>
     </div>
@@ -235,15 +233,30 @@
                     </ul>
                 </div>
 
-                <!-- Metodología Proyección -->
+                <!-- Metodología Proyección CON LINK A GOOGLE SHEETS -->
                 <div class="bg-amber-50 p-4 rounded-lg border border-amber-200">
                     <strong class="text-amber-900 uppercase block mb-2">⚠️ Metodología de Proyección (*):</strong>
+                    
+                    <!-- BOTÓN DE TRANSPARENCIA CON LINK A GOOGLE SHEETS -->
+                    <div class="mb-3 p-3 bg-white rounded border border-amber-300">
+                        <p class="text-xs text-amber-900 mb-2">
+                            <strong>📊 Transparencia total:</strong> Todos los cálculos están disponibles públicamente para verificación independiente.
+                        </p>
+                        <a href="https://docs.google.com/spreadsheets/d/1Tz_524lb-7--OCP35ZxiY-OjWJtO6Gxy/edit?usp=sharing&ouid=114890350759937571259&rtpof=true&sd=true" 
+                           target="_blank" 
+                           class="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-600 text-white text-xs font-bold rounded hover:bg-emerald-700 transition-colors">
+                            <i class="fa-solid fa-table"></i>
+                            Ver tabla de amortización completa (Google Sheets)
+                        </a>
+                    </div>
+                    
                     <p class="text-amber-800">
                         <strong>Escenario hipotético:</strong> Si el gobierno emitiera bonos soberanos para cubrir los $2.1B en pérdidas (similar al modelo IPAB-FOBAPROA):
                     </p>
                     <ul class="list-disc list-inside mt-2 space-y-1 text-amber-800">
                         <li><strong>Plazo:</strong> 20 años (estándar para deuda de largo plazo)</li>
                         <li><strong>Tasa de interés:</strong> 9.0% anual (promedio actual de bonos Pemex/Gobierno MX)</li>
+                        <li><strong>Método:</strong> Amortización francesa (cuota anual constante)</li>
                         <li><strong>Resultado:</strong> Intereses compuestos generan +$2.50B adicionales</li>
                         <li><strong>Costo total proyectado:</strong> $4.60B (2.2x el capital original)</li>
                     </ul>
@@ -424,29 +437,20 @@
             }
         });
 
-        function downloadImage() {
-            const container = document.getElementById('report-container');
-            
-            // Opciones mejoradas para html2canvas
-            html2canvas(container, {
-                scale: 2,
-                useCORS: true,
-                allowTaint: true,
-                backgroundColor: "#ffffff",
-                logging: false,
-                windowWidth: container.scrollWidth,
-                windowHeight: container.scrollHeight,
-                onclone: function(clonedDoc) {
-                    // Asegurar que los elementos absolute se rendericen
-                    const clonedContainer = clonedDoc.getElementById('report-container');
-                    clonedContainer.style.transform = 'none';
-                }
-            }).then(canvas => {
+        // FUNCIÓN: Descargar archivo HTML completo
+        function downloadHTML() {
+            try {
+                const htmlContent = document.documentElement.outerHTML;
+                const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
                 const link = document.createElement('a');
-                link.download = 'analisis_deuda_publica_2025.png';
-                link.href = canvas.toDataURL('image/png');
+                link.download = 'fobaproa_vs_perdidas_estatales_2025.html';
+                link.href = URL.createObjectURL(blob);
                 link.click();
-            });
+                setTimeout(() => URL.revokeObjectURL(link.href), 100);
+            } catch (err) {
+                console.error('Error al descargar HTML:', err);
+                alert('No se pudo descargar el archivo. Por favor, intenta nuevamente.');
+            }
         }
     </script>
 </body>
