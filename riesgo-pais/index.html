@@ -25,15 +25,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <style>
-        /* Estética "Investment Bank Terminal" */
         body { 
             font-family: 'Inter', sans-serif; 
             background-color: #050810; 
-            color: #e2e8f0; /* Mejor contraste base */
+            color: #e2e8f0; 
         }
         .font-mono { font-family: 'JetBrains Mono', monospace; }
         
-        /* Efecto Glow Sutil para tarjetas */
         .glass-panel {
             background: rgba(15, 23, 42, 0.75);
             backdrop-filter: blur(20px);
@@ -42,16 +40,21 @@
             box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
         }
 
-        /* Animación del Ticker de precios */
         @keyframes ticker {
             0% { transform: translateX(0); }
             100% { transform: translateX(-50%); }
         }
         .ticker-wrap { overflow: hidden; white-space: nowrap; box-sizing: border-box; }
-        .ticker-move { display: inline-block; animation: ticker 30s linear infinite; }
+        .ticker-move { display: inline-block; animation: ticker 35s linear infinite; }
         .ticker-item { display: inline-block; padding: 0 2rem; }
         
-        /* Accesibilidad: Reducir movimiento si el usuario lo prefiere */
+        .ticker-wrap:hover .ticker-move { animation-play-state: paused; cursor: default; }
+        
+        @media (max-width: 640px) {
+            .ticker-move { animation-duration: 20s; }
+            .ticker-item { font-size: 10px; padding: 0 1rem; }
+        }
+
         @media (prefers-reduced-motion: reduce) {
             .ticker-move { animation: none; transform: translateX(0); white-space: normal; }
             .ticker-wrap { overflow: auto; }
@@ -60,21 +63,19 @@
 </head>
 <body class="p-2 md:p-8 min-h-screen flex flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-900 via-[#050810] to-black">
 
-    <!-- BARRA DE NAVEGACIÓN Y HERRAMIENTAS -->
     <nav class="max-w-7xl w-full mb-6 flex flex-col sm:flex-row justify-between items-center gap-4 no-print" aria-label="Navegación y exportación">
         <a href="https://araujome.github.io/visualizaciones/" 
-           class="px-5 py-2.5 bg-slate-800/60 text-slate-200 rounded-lg hover:bg-slate-700 border border-slate-600 text-sm font-bold flex items-center gap-2 transition-all backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#050810]"
-           aria-label="Volver al índice principal de visualizaciones">
-            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Volver al Hub
+           class="px-5 py-2.5 bg-slate-800/60 text-slate-200 rounded-lg hover:bg-slate-700 border border-slate-600 text-sm font-bold flex items-center gap-2 transition-all backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#050810]">
+            <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Más Estudios
         </a>
         
         <div class="flex items-center gap-3 w-full sm:w-auto">
             <button id="btn-html" onclick="downloadHTML()" 
                     class="flex-1 sm:flex-none flex items-center justify-center px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-600 font-bold transition-all text-sm group shadow-lg focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-[#050810] disabled:opacity-50 disabled:cursor-not-allowed"
-                    aria-label="Descargar el código fuente interactivo en HTML" aria-live="polite">
-                <i class="fa-solid fa-code mr-2 group-hover:scale-110 transition-transform btn-icon" aria-hidden="true"></i>
+                    aria-label="Descargar visualización completa como archivo interactivo" aria-live="polite">
+                <i class="fa-solid fa-download mr-2 group-hover:-translate-y-0.5 transition-transform btn-icon" aria-hidden="true"></i>
                 <i class="fa-solid fa-spinner fa-spin mr-2 hidden loader-icon" aria-hidden="true"></i>
-                <span class="btn-text">Descargar HTML</span>
+                <span class="btn-text">Descargar Archivo</span>
             </button>
             
             <button id="btn-pdf" onclick="downloadPDF()" 
@@ -87,10 +88,8 @@
         </div>
     </nav>
 
-    <!-- CONTENEDOR PRINCIPAL DEL REPORTE -->
     <main id="report-container" class="max-w-7xl w-full glass-panel rounded-2xl overflow-hidden relative">
         
-        <!-- TICKER FINANCIERO SUPERIOR -->
         <aside class="bg-black border-b border-slate-800 py-2.5 ticker-wrap font-mono text-[11px] font-bold text-slate-400" aria-label="Cinta de datos financieros en tiempo real">
             <div class="ticker-move">
                 <span class="ticker-item"><span class="text-white">EMBI+ LATEST (BPS)</span></span>
@@ -101,7 +100,6 @@
                 <span class="ticker-item">🇦🇷 ARG <span class="text-emerald-400">850 ▼</span></span>
                 <span class="ticker-item" aria-label="Venezuela fuera de escala">🇻🇪 VEN <span class="text-slate-500">22000 --</span></span>
                 
-                <!-- Clon para bucle continuo -->
                 <span class="ticker-item ml-12" aria-hidden="true"><span class="text-white">EMBI+ LATEST (BPS)</span></span>
                 <span class="ticker-item" aria-hidden="true">🇲🇽 MEX <span class="text-red-400">360 ▲</span></span>
                 <span class="ticker-item" aria-hidden="true">🇨🇴 COL <span class="text-red-400">320 ▲</span></span>
@@ -112,7 +110,6 @@
             </div>
         </aside>
 
-        <!-- HEADER TERMINAL -->
         <header class="p-8 md:px-12 md:py-10 relative overflow-hidden border-b border-slate-800">
             <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
                 <div>
@@ -128,41 +125,50 @@
                     </p>
                 </div>
 
-                <!-- Branding -->
                 <div class="text-left md:text-right w-full md:w-auto border-t border-slate-700 pt-4 md:border-0 md:pt-0">
                     <p class="font-mono text-xl font-black tracking-tighter text-white">SocioNomics<span class="text-blue-500">Lab</span></p>
-                    <p class="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Terminal View V.26</p>
+                    <p class="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Terminal View V.28</p>
                 </div>
             </div>
         </header>
 
-        <!-- ALERTA DE DATOS (Prevención de errores de lectura) -->
+        <!-- ALERTA VENEZUELA -->
         <div class="bg-blue-900/30 border-b border-blue-800/50 px-8 py-3 flex items-start sm:items-center gap-3" role="alert" aria-live="polite">
             <i class="fa-solid fa-circle-info text-blue-400 mt-0.5 sm:mt-0" aria-hidden="true"></i>
             <p class="text-xs text-blue-200 leading-snug">
-                <strong class="text-blue-100">Nota Analítica:</strong> Los datos de Venezuela 🇻🇪 están ocultos por defecto para preservar la legibilidad de la escala general (superan los 20,000 puntos). Selecciona su nombre en la leyenda para visualizarlos.
+                <strong class="text-blue-100">Nota de Visualización:</strong> Los datos de Venezuela 🇻🇪 están ocultos por defecto para preservar la escala de la gráfica (superan los 20,000 pts). Actívalos en la leyenda.
             </p>
         </div>
 
-        <!-- SECCIÓN DE LA GRÁFICA -->
+        <!-- ESCUDO DE CREDIBILIDAD (HONESTIDAD BRUTAL) -->
+        <div class="bg-amber-900/30 border-b border-amber-800/50 px-8 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 justify-between" role="alert">
+            <div class="flex items-start gap-3">
+                <i class="fa-solid fa-triangle-exclamation text-amber-500 mt-0.5" aria-hidden="true"></i>
+                <p class="text-xs text-amber-200 leading-snug max-w-3xl">
+                    <strong class="text-amber-100 block mb-1 uppercase tracking-wide">Transparencia de Datos y Limitaciones Metodológicas</strong>
+                    Los valores presentados <strong>NO son un feed oficial de J.P. Morgan</strong>. Son aproximaciones interanuales reconstruidas a partir de fuentes académicas y prensa especializada (Bloomberg, Reuters). Los años 2025-2026 son <strong>proyecciones</strong> de consenso. 
+                </p>
+            </div>
+            <!-- ENLACE AL GOOGLE SHEET ACTUALIZADO -->
+            <a href="https://docs.google.com/spreadsheets/d/1YoL1FadcMW9lCabS4SLVieNxv_Yn1FG3/edit?usp=sharing&ouid=114890350759937571259&rtpof=true&sd=true" target="_blank" class="shrink-0 inline-flex items-center gap-2 px-4 py-2 bg-amber-600/20 hover:bg-amber-600/40 border border-amber-600/50 text-amber-100 text-xs font-bold rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500">
+                <i class="fa-solid fa-table"></i> Ver Sábana de Datos
+            </a>
+        </div>
+
         <section class="p-6 md:p-10 relative bg-[#080b13]" aria-labelledby="chart-heading">
             <h2 id="chart-heading" class="sr-only">Gráfica interactiva de Riesgo País</h2>
             <div class="relative h-[500px] md:h-[550px] w-full">
-                <!-- Accesibilidad: El aria-label describe el contenido para lectores de pantalla -->
-                <canvas id="riskChart" role="img" aria-label="Gráfico de líneas que muestra la evolución histórica del riesgo país. Costa Rica presenta la tendencia más favorable disminuyendo a 190 puntos. Argentina muestra una mejora reciente a 850 puntos. México y Colombia mantienen una tendencia estable pero elevada, rondando los 360 y 320 puntos respectivamente."></canvas>
+                <canvas id="riskChart" role="img" aria-label="Gráfico de líneas que muestra la evolución histórica del riesgo país."></canvas>
             </div>
         </section>
 
-        <!-- PANELES EXPLICATIVOS -->
         <section class="grid grid-cols-1 md:grid-cols-2 gap-px bg-slate-800" aria-label="Información sobre Riesgo País">
-            
-            <!-- Bloque 1: ¿Qué es? -->
             <article class="bg-[#0f1423] p-8 md:p-10 transition-colors hover:bg-[#13192b]">
                 <h3 class="text-sm font-bold text-white uppercase tracking-widest mb-4 flex items-center gap-3">
                     <span class="w-8 h-px bg-blue-500" aria-hidden="true"></span> ¿Qué es el Riesgo País?
                 </h3>
                 <p class="text-sm text-slate-300 leading-relaxed text-justify mb-5">
-                    El <strong>EMBI (Emerging Markets Bond Index)</strong>, calculado por J.P. Morgan, mide la "sobretasa" que un país debe pagar por emitir deuda frente a los bonos del Tesoro de EE.UU. (considerados de riesgo cero). 
+                    El <strong>EMBI (Emerging Markets Bond Index)</strong> mide la "sobretasa" que un país debe pagar por emitir deuda frente a los bonos del Tesoro de EE.UU. (considerados de riesgo cero). 
                 </p>
                 <div class="bg-black/50 p-4 rounded-lg border border-slate-700 font-mono text-[11px] sm:text-xs">
                     <p class="text-slate-400 mb-2">Fórmula básica:</p>
@@ -171,7 +177,6 @@
                 </div>
             </article>
 
-            <!-- Bloque 2: Impacto -->
             <article class="bg-[#0f1423] p-8 md:p-10 transition-colors hover:bg-[#13192b]">
                 <h3 class="text-sm font-bold text-white uppercase tracking-widest mb-4 flex items-center gap-3">
                     <span class="w-8 h-px bg-red-500" aria-hidden="true"></span> El Impacto en tu Bolsillo
@@ -199,12 +204,10 @@
             </article>
         </section>
 
-        <!-- CONTEXTO PAÍSES (Mini Tarjetas) -->
         <section class="bg-[#0b0f19] p-8 border-t border-slate-800" aria-label="Resumen de países">
             <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6 text-center">Resumen Geopolítico Actual (2026)</h3>
             
             <div class="grid grid-cols-2 md:grid-cols-5 gap-4 text-center">
-                <!-- Tarjetas de países -->
                 <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700 hover:border-emerald-500/60 transition-all hover:-translate-y-1 hover:shadow-lg focus-within:ring-2 focus-within:ring-emerald-500" tabindex="0">
                     <p class="text-3xl mb-2" aria-hidden="true">🇲🇽</p>
                     <p class="text-xs font-bold text-white uppercase tracking-wide">México</p>
@@ -223,7 +226,7 @@
                     <p class="text-[10px] text-emerald-400 mt-2 leading-tight font-medium">El mejor alumno. Disciplina fiscal desplomó el riesgo a <200 pts.</p>
                 </div>
                 
-                <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700 hover:border-blue-500/60 transition-all hover:-translate-y-1 hover:shadow-lg focus-within:ring-2 focus-within:ring-blue-500" tabindex="0">
+                <div class="p-4 rounded-xl bg-slate-800/40 border border-slate-700 hover:border-violet-500/60 transition-all hover:-translate-y-1 hover:shadow-lg focus-within:ring-2 focus-within:ring-violet-500" tabindex="0">
                     <p class="text-3xl mb-2" aria-hidden="true">🇵🇦</p>
                     <p class="text-xs font-bold text-white uppercase tracking-wide">Panamá</p>
                     <p class="text-[10px] text-red-400 mt-2 leading-tight font-medium">Perdió Grado de Inversión; subió de 140 a ~300 pts.</p>
@@ -237,74 +240,63 @@
             </div>
         </section>
 
-        <!-- FOOTER: REDES, FUENTES Y LICENCIAS -->
-        <footer class="bg-black p-8 border-t border-slate-900 flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
-            
-            <!-- Licencias -->
-            <div class="flex items-center gap-5 opacity-60 hover:opacity-100 transition-opacity">
-                <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" 
-                   aria-label="Ver licencia Creative Commons Atribución No Comercial"
-                   class="focus:outline-none focus:ring-2 focus:ring-slate-500 rounded">
-                    <img src="https://licensebuttons.net/l/by-nc/4.0/80x15.png" alt="Licencia CC BY-NC 4.0">
-                </a>
-                <div class="w-px h-6 bg-slate-700" aria-hidden="true"></div>
-                <a href="https://opensource.org/license/MIT" target="_blank" 
-                   class="font-mono text-[10px] text-slate-400 hover:text-blue-400 transition-colors flex items-center gap-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded p-1"
-                   aria-label="Ver licencia MIT de software libre">
-                    <i class="fa-brands fa-github text-sm" aria-hidden="true"></i> MIT LICENSE
-                </a>
-            </div>
-
-            <!-- Autor, Redes y Fuentes -->
-            <div class="flex flex-col items-start md:items-end w-full md:w-auto">
-                <div class="flex flex-col items-start md:items-end mb-4">
-                    <p class="text-[10px] text-slate-500 uppercase tracking-widest mb-3 font-mono">Data & Design</p>
-                    <div class="flex items-center gap-5 mb-3" aria-label="Redes sociales del autor">
-                        <a href="https://github.com/araujome" target="_blank" class="text-slate-500 hover:text-white transition-colors focus:outline-none focus:text-white" aria-label="Perfil de GitHub"><i class="fa-brands fa-github text-xl" aria-hidden="true"></i></a>
-                        <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="text-slate-500 hover:text-[#0a66c2] transition-colors focus:outline-none focus:text-[#0a66c2]" aria-label="Perfil de LinkedIn"><i class="fa-brands fa-linkedin text-xl" aria-hidden="true"></i></a>
-                        <a href="https://x.com/SocioNomicsLab" target="_blank" class="text-slate-500 hover:text-white transition-colors focus:outline-none focus:text-white" aria-label="Perfil de X (Twitter)"><i class="fa-brands fa-x-twitter text-xl" aria-hidden="true"></i></a>
+        <!-- FOOTER ACTUALIZADO CON RIGOR ACADÉMICO -->
+        <footer class="bg-black border-t border-slate-900">
+            <div class="p-8 border-b border-slate-900/50">
+                <div class="w-full bg-[#050810] p-5 rounded-lg border border-slate-800 shadow-inner">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-server text-blue-500 text-xs"></i>
+                        <span class="text-blue-500 font-mono text-[11px] font-bold">DISCLAIMER_LEGAL_&_METODOLOGÍA:</span>
                     </div>
-                    <p class="text-sm font-bold text-slate-200">Eric Araujo Martínez</p>
-                </div>
-                
-                <!-- Fuentes de datos estilo Terminal -->
-                <div class="w-full max-w-sm bg-[#050810] p-4 rounded-lg border border-slate-800 mt-2 text-left md:text-right shadow-inner">
-                    <p class="text-[10px] text-slate-400 font-mono leading-relaxed">
-                        <span class="text-blue-500 font-bold">>_ DATA_SOURCES:</span><br>
-                        <strong>J.P. Morgan EMBI+</strong> (Emerging Markets Bond Index) | <strong>Bancos Centrales Locales</strong> | Proyecciones de mercado a 2026.
+                    <p class="text-[11px] text-slate-400 font-mono leading-relaxed">
+                        EMBI y J.P. Morgan son marcas registradas de JPMorgan Chase & Co. Este proyecto es una visualización de datos independiente sin afiliación comercial. Para obtener datos en tiempo real y oficiales, se requiere una suscripción institucional a J.P. Morgan o Bloomberg Terminal. La matriz de datos utilizada aquí proviene exclusivamente de repositorios abiertos, reportes periodísticos e investigaciones académicas detalladas en la hoja de cálculo adjunta.
                     </p>
                 </div>
             </div>
 
+            <div class="p-8 flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="flex flex-wrap justify-center items-center gap-5 opacity-60 hover:opacity-100 transition-opacity">
+                    <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" aria-label="Ver licencia CC BY-NC 4.0">
+                        <img src="https://licensebuttons.net/l/by-nc/4.0/80x15.png" alt="Licencia CC BY-NC 4.0">
+                    </a>
+                    <div class="hidden sm:block w-px h-6 bg-slate-700" aria-hidden="true"></div>
+                    <a href="https://opensource.org/license/MIT" target="_blank" class="font-mono text-[10px] text-slate-400 hover:text-blue-400 transition-colors flex items-center gap-1.5">
+                        <i class="fa-brands fa-github text-sm" aria-hidden="true"></i> MIT LICENSE
+                    </a>
+                </div>
+
+                <div class="flex flex-col items-center md:items-end">
+                    <p class="text-sm font-bold text-slate-200 mb-2">Eric Araujo Martínez</p>
+                    <div class="flex items-center gap-4">
+                        <a href="https://github.com/araujome" target="_blank" class="text-slate-500 hover:text-white transition-colors"><i class="fa-brands fa-github text-lg"></i></a>
+                        <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="text-slate-500 hover:text-[#0a66c2] transition-colors"><i class="fa-brands fa-linkedin text-lg"></i></a>
+                        <a href="https://x.com/SocioNomicsLab" target="_blank" class="text-slate-500 hover:text-white transition-colors"><i class="fa-brands fa-x-twitter text-lg"></i></a>
+                    </div>
+                </div>
+            </div>
         </footer>
 
     </main>
 
     <script>
-        // Registrar plugins
         Chart.register(ChartDataLabels, window['chartjs-plugin-annotation']);
 
         const ctx = document.getElementById('riskChart').getContext('2d');
 
-        // AÑOS (Desde inicio de Peña Nieto full year hasta actual)
         const years = ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025', '2026'];
 
-        // DATOS (EMBI en Puntos Base - Aproximaciones históricas de fin de año)
         const dataMex = [155, 180, 230, 230, 190, 240, 290, 360, 350, 390, 350, 320, 340, 360];
         const dataCol = [165, 190, 280, 230, 190, 250, 190, 250, 350, 400, 330, 300, 310, 320];
         const dataCri = [250, 300, 400, 420, 390, 500, 400, 600, 450, 400, 250, 220, 200, 190];
         const dataPan = [170, 180, 200, 180, 150, 170, 140, 180, 200, 250, 250, 260, 280, 300];
         const dataArg = [800, 700, 450, 450, 350, 800, 1700, 1300, 1700, 2200, 1900, 1200, 900, 850];
-        
-        // VENEZUELA (Fuera de proporciones)
         const dataVen = [1000, 2500, 3000, 2500, 5000, 6000, 15000, 25000, 30000, 35000, 35000, 20000, 22000, 22000];
 
-        // Configuración de Estilo Neón
         const neonEffect = {
             borderWidth: 3,
             pointRadius: 0,
             pointHoverRadius: 6,
-            tension: 0.3, // Curvas suaves
+            tension: 0.3, 
         };
 
         const chart = new Chart(ctx, {
@@ -315,7 +307,7 @@
                     {
                         label: '🇲🇽 México',
                         data: dataMex,
-                        borderColor: '#10b981', // Emerald
+                        borderColor: '#10b981', 
                         backgroundColor: '#10b981',
                         ...neonEffect,
                         order: 2
@@ -323,7 +315,7 @@
                     {
                         label: '🇨🇴 Colombia',
                         data: dataCol,
-                        borderColor: '#f59e0b', // Amber
+                        borderColor: '#f59e0b', 
                         backgroundColor: '#f59e0b',
                         ...neonEffect,
                         order: 3
@@ -331,24 +323,24 @@
                     {
                         label: '🇨🇷 Costa Rica',
                         data: dataCri,
-                        borderColor: '#06b6d4', // Cyan
+                        borderColor: '#06b6d4', 
                         backgroundColor: '#06b6d4',
                         ...neonEffect,
-                        borderDash: [5, 5], // Diferenciar visualmente sin depender solo del color
+                        borderDash: [5, 5], 
                         order: 4
                     },
                     {
                         label: '🇵🇦 Panamá',
                         data: dataPan,
-                        borderColor: '#3b82f6', // Blue
-                        backgroundColor: '#3b82f6',
+                        borderColor: '#8b5cf6', 
+                        backgroundColor: '#8b5cf6',
                         ...neonEffect,
                         order: 5
                     },
                     {
                         label: '🇦🇷 Argentina',
                         data: dataArg,
-                        borderColor: '#f8fafc', // White
+                        borderColor: '#f8fafc', 
                         backgroundColor: '#f8fafc',
                         ...neonEffect,
                         borderWidth: 2,
@@ -357,12 +349,12 @@
                     {
                         label: '🇻🇪 Venezuela (Default)',
                         data: dataVen,
-                        borderColor: '#ef4444', // Red
+                        borderColor: '#ef4444', 
                         backgroundColor: '#ef4444',
                         borderWidth: 4,
                         pointRadius: 0,
                         tension: 0.1,
-                        hidden: true, // Oculto para no dañar escala base
+                        hidden: true, 
                         order: 1
                     }
                 ]
@@ -377,27 +369,16 @@
                 },
                 scales: {
                     x: {
-                        grid: { 
-                            color: 'rgba(51, 65, 85, 0.4)', 
-                            drawBorder: false
-                        },
-                        ticks: { 
-                            color: '#94a3b8', 
-                            font: { family: 'JetBrains Mono', size: 11 } 
-                        }
+                        grid: { color: 'rgba(51, 65, 85, 0.4)', drawBorder: false },
+                        ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 11 } }
                     },
                     y: {
                         beginAtZero: true,
-                        grid: { 
-                            color: 'rgba(51, 65, 85, 0.4)', 
-                            drawBorder: false
-                        },
+                        grid: { color: 'rgba(51, 65, 85, 0.4)', drawBorder: false },
                         ticks: { 
                             color: '#94a3b8',
                             font: { family: 'JetBrains Mono', size: 12 },
-                            callback: function(value) {
-                                return value.toLocaleString() + ' bps';
-                            }
+                            callback: function(value) { return value.toLocaleString() + ' bps'; }
                         }
                     }
                 },
@@ -410,13 +391,8 @@
                             usePointStyle: true,
                             padding: 20
                         },
-                        // Accesibilidad en la leyenda
-                        onHover: function(event, legendItem, legend) {
-                            event.native.target.style.cursor = 'pointer';
-                        },
-                        onLeave: function(event, legendItem, legend) {
-                            event.native.target.style.cursor = 'default';
-                        }
+                        onHover: function(event) { event.native.target.style.cursor = 'pointer'; },
+                        onLeave: function(event) { event.native.target.style.cursor = 'default'; }
                     },
                     tooltip: {
                         backgroundColor: 'rgba(15, 23, 42, 0.95)',
@@ -434,14 +410,12 @@
                             }
                         }
                     },
-                    datalabels: {
-                        display: false 
-                    },
+                    datalabels: { display: false },
                     annotation: {
                         annotations: {
                             lineAMLO: {
                                 type: 'line',
-                                xMin: 5, // 2018
+                                xMin: 5, 
                                 xMax: 5,
                                 borderColor: 'rgba(255,255,255,0.3)',
                                 borderWidth: 1,
@@ -462,15 +436,9 @@
             }
         });
 
-        // Configuración visual avanzada para las líneas
         Chart.defaults.elements.line.borderCapStyle = 'round';
         Chart.defaults.elements.line.borderJoinStyle = 'round';
 
-        // --- FUNCIONES DE INTERFAZ DE USUARIO (Manejo de Estado) ---
-
-        /**
-         * Maneja el estado de carga (UX/UI Heurística: Visibilidad del estado del sistema)
-         */
         function setButtonLoadingState(btnId, isLoading) {
             const btn = document.getElementById(btnId);
             if (!btn) return;
@@ -478,7 +446,7 @@
             const icon = btn.querySelector('.btn-icon');
             const loader = btn.querySelector('.loader-icon');
             const textSpan = btn.querySelector('.btn-text');
-            const originalText = btnId === 'btn-pdf' ? 'Exportar a PDF' : 'Descargar HTML';
+            const originalText = btnId === 'btn-pdf' ? 'Exportar a PDF' : 'Descargar Archivo';
 
             if (isLoading) {
                 btn.disabled = true;
@@ -495,19 +463,15 @@
             }
         }
 
-        // FUNCIÓN EXPORTAR PDF
         async function downloadPDF() {
             setButtonLoadingState('btn-pdf', true);
-            
             try {
                 const container = document.getElementById('report-container');
                 const ticker = document.querySelector('.ticker-wrap');
                 
-                // UX Fix: La animación CSS de marquesina a veces rompe html2canvas
                 const originalDisplay = ticker.style.display;
                 ticker.style.display = 'none';
 
-                // Scale 3 para alta fidelidad (texto nítido)
                 const canvas = await html2canvas(container, {
                     scale: 3,
                     useCORS: true,
@@ -518,7 +482,6 @@
                 const imgData = canvas.toDataURL('image/jpeg', 1.0);
                 const { jsPDF } = window.jspdf;
                 
-                // Formato exacto para evitar márgenes blancos
                 const pdf = new jsPDF({
                     orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
                     unit: 'px',
@@ -528,9 +491,7 @@
                 pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height);
                 pdf.save('terminal_riesgo_pais_latam.pdf');
                 
-                // Restaurar UI
                 ticker.style.display = originalDisplay;
-                
             } catch (error) {
                 console.error("Error al generar PDF:", error);
                 alert("Ocurrió un problema al generar el archivo. Por favor, inténtelo de nuevo.");
@@ -539,11 +500,8 @@
             }
         }
 
-        // FUNCIÓN EXPORTAR HTML
         function downloadHTML() {
             setButtonLoadingState('btn-html', true);
-            
-            // Usamos setTimeout para permitir que el DOM se actualice y muestre el "Procesando..."
             setTimeout(() => {
                 try {
                     const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
@@ -562,7 +520,7 @@
                 } finally {
                     setButtonLoadingState('btn-html', false);
                 }
-            }, 300); // Ligero delay para UX
+            }, 300); 
         }
     </script>
 </body>
