@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Informe Macroeconómico: Análisis de la divergencia entre Inversión Extranjera Directa y de Cartera en México (2013-2026).">
+    <meta name="author" content="SocioNomics Lab | Eric Araujo Martínez">
+    <title>Divergencia de Capitales | Informe SocioNomics</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- LIBRERÍAS DE GRÁFICAS (Con defer para optimizar carga inicial) -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js" defer></script>
+
+    <!-- Fuentes (Inter para UI, Merriweather para texto editorial, JetBrains para datos) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700;900&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --font-ui: 'Inter', sans-serif;
+            --font-editorial: 'Merriweather', serif;
+            --font-data: 'JetBrains Mono', monospace;
+        }
+        body { 
+            font-family: var(--font-ui); 
+            background-color: #020617; 
+            color: #cbd5e1; 
+            line-height: 1.6;
+        }
+        .font-editorial { font-family: var(--font-editorial); }
+        .font-data { font-family: var(--font-data); }
+
+        article p {
+            font-family: var(--font-editorial);
+            font-size: 1.125rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #cbd5e1;
+        }
+        article p strong { color: #f8fafc; font-weight: 700; }
+        article h2 {
+            font-family: var(--font-ui);
+            font-size: 1.75rem;
+            font-weight: 800;
+            color: #f8fafc;
+            margin-top: 3rem;
+            margin-bottom: 1rem;
+            letter-spacing: -0.025em;
+        }
+        #reading-progress {
+            position: fixed; top: 0; left: 0; width: 0%; height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6); z-index: 50; transition: width 0.1s ease;
+        }
+        blockquote {
+            border-left: 4px solid #3b82f6; padding-left: 1.5rem; margin: 2rem 0;
+            font-style: italic; color: #94a3b8; font-size: 1.25rem;
+        }
+        .chart-container {
+            background: #0f172a; border: 1px solid #1e293b; border-radius: 12px;
+            padding: 1.5rem; margin: 3rem 0; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        /* Accesibilidad: Ocultar visualmente pero mantener para Screen Readers */
+        .sr-only {
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+            overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-blue-500/30 selection:text-blue-200 relative">
+
+    <div id="reading-progress"></div>
+
+    <!-- NAVEGACIÓN GLOBAL -->
+    <nav class="sticky top-0 z-40 bg-[#020617]/80 backdrop-blur-md border-b border-slate-800 transition-all duration-300">
+        <div class="max-w-4xl mx-auto px-6 py-4 flex justify-between items-center overflow-x-auto no-scrollbar">
+            <a href="https://socionomicslab.org" class="text-white font-black tracking-tighter text-xl group flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-1 shrink-0">
+                SocioNomics<span class="text-blue-500">Lab</span>
+            </a>
+            
+            <div class="flex items-center gap-2 md:gap-3 no-print">
+                <a href="https://socionomicslab.org" class="text-slate-400 hover:text-white transition-colors text-sm font-bold mr-2 hidden sm:block">
+                    <i class="fa-solid fa-arrow-left mr-1"></i> Más Estudios
+                </a>
+                <button onclick="downloadCSV()" class="p-2 text-emerald-400 hover:text-emerald-300 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500 rounded" aria-label="Descargar datos en CSV" title="Descargar Datos (CSV)">
+                    <i class="fa-solid fa-file-csv"></i> <span class="hidden md:inline text-sm font-bold ml-1">Datos</span>
+                </button>
+                <button onclick="downloadHTML()" class="flex items-center gap-2 px-4 py-2 bg-blue-600/20 text-blue-400 border border-blue-500/30 rounded-full hover:bg-blue-600 hover:text-white transition-all text-sm font-bold focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <i class="fa-solid fa-code"></i> <span class="hidden sm:inline">Descargar HTML</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ÁREA DEL REPORTE -->
+    <main id="report-content" class="max-w-4xl mx-auto px-6 py-12 md:py-20">
+        
+        <header class="mb-16 border-b border-slate-800 pb-12">
+            <div class="flex items-center gap-3 mb-6">
+                <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 text-[10px] font-bold uppercase tracking-widest font-data">Research Report</span>
+                <span class="text-slate-400 text-sm"><i class="fa-regular fa-clock mr-1"></i> 5 min de lectura</span>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-[1.1] tracking-tight mb-6">
+                La Gran Divergencia: Ladrillos vs. Golondrinas en México.
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-slate-400 font-light leading-relaxed mb-8">
+                Análisis del comportamiento asimétrico entre la Inversión Extranjera Directa y la Inversión de Cartera frente a los cambios de régimen político (2013-2026).
+            </p>
+
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold text-xl shadow-lg">EA</div>
+                <div>
+                    <p class="text-white font-bold text-sm">Eric Araujo Martínez</p>
+                    <p class="text-slate-400 text-xs uppercase tracking-widest font-data mt-0.5">Analista Principal | Marzo 2026</p>
+                    <a href="mailto:contacto@socionomicslab.org" class="text-blue-500 hover:text-blue-400 transition-colors text-[11px] font-ui mt-1 inline-flex items-center gap-1.5 font-medium">
+                        <i class="fa-regular fa-envelope"></i> contacto@socionomicslab.org
+                    </a>
+                </div>
+            </div>
+
+            <!-- BOTONES PARA COMPARTIR EN REDES -->
+            <div class="flex items-center gap-3 mt-8 pt-6 border-t border-slate-800/50 no-print">
+                <span class="text-xs text-slate-400 font-bold uppercase tracking-widest">Compartir análisis:</span>
+                <a href="https://twitter.com/intent/tweet?text=La%20Gran%20Divergencia:%20Ladrillos%20vs%20Golondrinas%20en%20M%C3%A9xico.%20An%C3%A1lisis%20de%20@SocioNomicsLab&url=https://socionomicslab.org" target="_blank" class="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:bg-[#1DA1F2] transition-all hover:scale-110" aria-label="Compartir en X">
+                    <i class="fa-brands fa-x-twitter"></i>
+                </a>
+                <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://socionomicslab.org" target="_blank" class="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:bg-[#0A66C2] transition-all hover:scale-110" aria-label="Compartir en LinkedIn">
+                    <i class="fa-brands fa-linkedin-in"></i>
+                </a>
+                <a href="https://api.whatsapp.com/send?text=Interesante%20an%C3%A1lisis%20sobre%20la%20fuga%20de%20capitales%20y%20la%20ca%C3%ADda%20de%20nuevas%20inversiones%20en%20M%C3%A9xico:%20https://socionomicslab.org" target="_blank" class="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:bg-[#25D366] transition-all hover:scale-110" aria-label="Compartir por WhatsApp">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </a>
+            </div>
+        </header>
+
+        <article class="prose-lg">
+            <p>
+                Para comprender la verdadera salud financiera de México y su posición frente a los mercados globales, es un error metodológico observar la "inversión extranjera" como un monolito. El comportamiento del capital foráneo en nuestro país cuenta dos historias diametralmente opuestas, dependiendo del horizonte de tiempo y la liquidez de los activos adquiridos. 
+            </p>
+            <p>
+                En el argot financiero institucional, esta dualidad se resume en el contraste entre <strong>"Los Ladrillos"</strong> (Inversión Extranjera Directa - IED) y <strong>"Las Golondrinas"</strong> (Inversión de Cartera). Al analizar los flujos desde el inicio del sexenio de Enrique Peña Nieto hasta la consolidación de la administración de Claudia Sheinbaum en 2026, los datos del Banco de México revelan una <strong>divergencia significativa en la composición</strong> del capital entrante.
+            </p>
+
+            <h2>1. La Ilusión de Resiliencia en la IED ("Los Ladrillos")</h2>
+            <p>
+                La Inversión Extranjera Directa comprende el capital destinado a la economía real: apertura de fábricas, infraestructura y fusiones empresariales de largo plazo. Es un capital "anclado" que no puede abandonar el país de la noche a la mañana.
+            </p>
+            <p>
+                A primera vista, el indicador oficial sugiere una economía invulnerable. Desde 2013, México ha promediado flujos superiores a los <strong>$32 mil millones de dólares anuales</strong>. El gobierno federal utiliza sistemáticamente este indicador como prueba irrefutable de la confianza internacional en sus políticas públicas.
+            </p>
+            
+            <blockquote>
+                "El volumen de la IED oculta un cambio estructural: el capital nuevo se ha contraído severamente. El crecimiento actual se sostiene por la reinversión inercial de utilidades de empresas atrapadas en sus propias operaciones logísticas."
+            </blockquote>
+
+            <p>
+                Sin embargo, un análisis detallado de los componentes de la IED publicados por la Secretaría de Economía desarma esta narrativa. Para entender la gravedad de la situación, es vital aclarar que la IED se divide en tres rubros: 1) Nuevas Inversiones, 2) Reinversión de Utilidades y 3) Cuentas entre Compañías.
+            </p>
+            <p>
+                Hacia finales de 2024, los reportes evidenciaron un hecho insólito: <strong>en el tercer trimestre, el rubro de "Cuentas entre compañías" registró un flujo neto negativo</strong>. Esto significa que salió más dinero foráneo (filiales pagando deudas masivas a sus matrices en el exterior para extraer liquidez de México) del que entró.
+            </p>
+            
+            <div class="bg-red-900/10 border-l-4 border-red-500 p-6 my-6 rounded-r-lg">
+                <h4 class="text-red-400 font-bold text-sm uppercase tracking-widest mb-2 font-data">El Colapso del Capital Nuevo: Una Alerta Temprana</h4>
+                <p class="text-slate-300 text-base leading-relaxed m-0 font-ui">
+                    Hoy, <strong>más del 74%</strong> del volumen total de la IED es simplemente "Reinversión de Utilidades". En contraste, considerando los datos preliminares disponibles, las <strong>Nuevas Inversiones</strong> —que representan la llegada de empresas que antes no existían en el país trayendo capital verdaderamente fresco— <strong>han caído a su nivel más bajo desde 2006</strong>, de acuerdo con la serie histórica consolidada por el Banco de México y la Secretaría de Economía. 
+                    <br><br>
+                    Esto matiza fuertemente el discurso triunfalista: el "Nearshoring" no está atrayendo oleadas masivas de nuevas fábricas. Lo que mantiene la cifra agregada alta es que las empresas previamente instaladas deben reinvertir para sobrevivir en la cadena de suministro norteamericana, mientras que el ecosistema internacional frena la inyección de capital inicial frente a la incertidumbre institucional.
+                </p>
+            </div>
+
+            <!-- GRÁFICA 1 -->
+            <div class="chart-container">
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <h3 class="text-white font-bold text-xl mb-1">Evolución del Capital Fresco</h3>
+                        <p class="text-slate-400 text-sm font-data">Composición de la IED (miles de millones de USD)</p>
+                    </div>
+                </div>
+                <div class="relative h-[350px] w-full">
+                    <canvas id="iedCompositionChart" role="img" aria-label="Gráfica de barras apiladas mostrando la composición de la IED. Las nuevas inversiones caen a mínimos históricos." aria-describedby="iedCompositionTable"></canvas>
+                </div>
+                <!-- ACCESIBILIDAD WCAG -->
+                <table id="iedCompositionTable" class="sr-only">
+                    <caption>Composición de la Inversión Extranjera Directa (miles de millones de USD)</caption>
+                    <thead>
+                        <tr><th>Año</th><th>Nuevas Inversiones</th><th>Reinversión de Utilidades</th><th>Cuentas entre Compañías</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2018</td><td>12.0</td><td>11.5</td><td>10.6</td></tr>
+                        <tr><td>2019</td><td>9.5</td><td>17.5</td><td>7.5</td></tr>
+                        <tr><td>2020</td><td>6.5</td><td>15.5</td><td>6.2</td></tr>
+                        <tr><td>2021</td><td>10.5</td><td>14.5</td><td>6.5</td></tr>
+                        <tr><td>2022</td><td>16.0</td><td>16.0</td><td>4.3</td></tr>
+                        <tr><td>2023</td><td>4.8</td><td>27.0</td><td>4.3</td></tr>
+                        <tr><td>2024</td><td>0.9</td><td>30.5</td><td>-0.4</td></tr>
+                        <tr><td>2025*</td><td>0.5</td><td>28.0</td><td>-0.5</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>2. El Éxodo del Capital Golondrino ("La Cartera")</h2>
+            <p>
+                Mientras "los ladrillos" no pueden huir, "las golondrinas" vuelan al primer indicio de tormenta. La Inversión Extranjera de Cartera es el dinero líquido internacional invertido en bonos gubernamentales (Cetes) y acciones de la Bolsa Mexicana de Valores. Es altamente elástico y reacciona en tiempo real al riesgo político y macroeconómico.
+            </p>
+
+            <!-- GRÁFICA 2 -->
+            <div class="chart-container mt-12 mb-8">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h3 class="text-white font-bold text-xl mb-1">Evolución Comparada de Capitales Extranjeros</h3>
+                        <p class="text-slate-400 text-sm font-data">Flujos netos en miles de millones de USD (mmd) (2013-2025*)</p>
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-emerald-500"></span><span class="text-xs text-slate-300">IED (Ladrillos)</span></div>
+                        <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-orange-500"></span><span class="text-xs text-slate-300">Cartera (Golondrinas)</span></div>
+                    </div>
+                </div>
+                <div class="relative h-[400px] w-full">
+                    <canvas id="capitalChart" role="img" aria-label="Gráfica de barras comparando IED y Cartera. Se observa fuga histórica de cartera entre 2020 y 2022." aria-describedby="capitalTable"></canvas>
+                </div>
+                <!-- ACCESIBILIDAD WCAG -->
+                <table id="capitalTable" class="sr-only">
+                    <caption>Comparativa de IED vs Inversión de Cartera (miles de millones de USD)</caption>
+                    <thead>
+                        <tr><th>Año</th><th>IED (Ladrillos)</th><th>Cartera (Golondrinas)</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>2013</td><td>47.5</td><td>14.5</td></tr>
+                        <tr><td>2014</td><td>30.2</td><td>12.0</td></tr>
+                        <tr><td>2015</td><td>35.9</td><td>5.0</td></tr>
+                        <tr><td>2016</td><td>31.2</td><td>2.0</td></tr>
+                        <tr><td>2017</td><td>34.0</td><td>10.0</td></tr>
+                        <tr><td>2018</td><td>34.1</td><td>-2.0</td></tr>
+                        <tr><td>2019</td><td>34.5</td><td>2.5</td></tr>
+                        <tr><td>2020</td><td>28.2</td><td>-15.0</td></tr>
+                        <tr><td>2021</td><td>31.5</td><td>-20.0</td></tr>
+                        <tr><td>2022</td><td>36.3</td><td>-4.0</td></tr>
+                        <tr><td>2023</td><td>36.1</td><td>5.0</td></tr>
+                        <tr><td>2024</td><td>31.0</td><td>-5.0</td></tr>
+                        <tr><td>2025*</td><td>28.0</td><td>-2.0</td></tr>
+                    </tbody>
+                </table>
+                <p class="text-right text-[10px] text-slate-500 font-data mt-4 border-t border-slate-800 pt-2">
+                    Fuente: Elaboración propia SocioNomics Lab con datos de BANXICO (MBP6). *Proyección 2025.
+                </p>
+            </div>
+
+            <p>
+                La gráfica superior ilustra con brutal claridad este fenómeno. Durante el sexenio de Peña Nieto (2013-2018), los flujos de entrada promediaron números positivos constantes. La ruptura estructural ocurre en la transición de 2018 y se agrava considerablemente entre 2020 y 2022.
+            </p>
+            <p>
+                En ese periodo trienal, México sufrió una de las <strong>fugas de capitales extranjeros más severas de los registros recientes</strong>, acumulando salidas netas por más de 39 mmd USD en activos de cartera.
+            </p>
+
+            <div class="bg-blue-900/10 border border-blue-800/30 rounded-lg p-6 my-8">
+                <h4 class="text-blue-400 font-bold text-sm uppercase tracking-widest mb-2 font-data">El Escudo de Banxico y el "Súper Peso"</h4>
+                <p class="text-slate-300 m-0 font-ui text-base leading-relaxed">
+                    Si el mercado financiero no resintió una devaluación dramática durante este éxodo, fue por un blindaje multifactorial. El "Súper Peso" que se observó en la recuperación posterior fue resultado de un cóctel macroeconómico: un flujo masivo e histórico de remesas, un déficit fiscal que hasta 2023 se mantuvo moderado, y fundamentalmente, <strong>el costo de mantener un diferencial de tasas récord frente a la Fed (tasa Banxico al 11.25%)</strong>. Esta agresiva política monetaria logró anclar los capitales golondrinos en 2023 pagando premios altísimos, demostrando que la apreciación cambiaria fue más un fenómeno financiero y de remesas que un síntoma de auge productivo.
+                </p>
+            </div>
+
+            <h2>3. El Costo Estructural: La Trampa Económica</h2>
+            <p>
+                Desde la perspectiva de la teoría macroeconómica, la dependencia absoluta de la "Reinversión de Utilidades" y el colapso de las "Nuevas Inversiones" no es un triunfo de retención empresarial, sino el preámbulo de un estancamiento. La ausencia prolongada de capital fresco desencadena tres fenómenos estructurales letales para una economía en desarrollo:
+            </p>
+            <ul class="space-y-4 mb-8 text-base">
+                <li class="flex items-start gap-3">
+                    <i class="fa-solid fa-microchip text-blue-500 mt-1.5"></i>
+                    <div>
+                        <strong class="text-slate-200">El fin del "Spillover" Tecnológico:</strong> El capital nuevo no solo trae dólares, trae innovación. Si solo reinvierten las empresas tradicionales (ej. autopartes de combustión), el país sigue ensamblando tecnología del pasado. Al no fundarse nuevas corporaciones de vanguardia (ej. ecosistemas de semiconductores o IA), se anula la transferencia de <em>Know-How</em> hacia las universidades y proveedores locales.
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i class="fa-solid fa-chart-line text-orange-500 mt-1.5"></i>
+                    <div>
+                        <strong class="text-slate-200">La Trampa de los Ingresos Medios:</strong> Al no ingresar nuevos jugadores globales que compitan por el talento local, los salarios se estancan. La economía se conforma como un ecosistema cerrado de manufactura de bajo valor agregado, alejando los centros de Investigación y Desarrollo (I+D) hacia otros países emergentes.
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <i class="fa-solid fa-people-group text-emerald-500 mt-1.5"></i>
+                    <div>
+                        <strong class="text-slate-200">Desperdicio del Bono Demográfico:</strong> La reinversión de utilidades sirve, en el mejor de los casos, para retener los empleos existentes. Sin embargo, para absorber al casi millón de jóvenes que ingresan anualmente a la Población Económicamente Activa (PEA) en México, es matemáticamente obligatoria la apertura de nuevas industrias. Sin ellas, el excedente laboral desemboca inevitablemente en la informalidad o la migración.
+                    </div>
+                </li>
+            </ul>
+
+            <h2>Conclusión</h2>
+            <p>
+                Hacia 2026, el entorno macroeconómico hereda una asimetría compleja. La dependencia casi absoluta en la reinversión de utilidades de empresas ya establecidas enmascara un mercado interno deprimido en la captación de nuevos jugadores globales, mitigando el alcance real del fenómeno de relocalización. 
+            </p>
+            <p>
+                Paralelamente, la Inversión de Cartera sigue mostrando vulnerabilidad a los choques institucionales y al estrechamiento del diferencial de tasas con Estados Unidos. Para consolidar el crecimiento a largo plazo, México requerirá transformar esta resiliencia inercial en certidumbre estructural que atraiga nuevamente tanto el capital de riesgo líquido como la primera piedra de nuevas industrias.
+            </p>
+        </article>
+
+        <!-- NOTAS METODOLÓGICAS Y FUENTES -->
+        <section class="mt-20 pt-10 border-t border-slate-800">
+            <h3 class="text-white font-bold text-lg mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-microscope text-slate-500"></i> Metodología y Fuentes
+            </h3>
+            <div class="bg-[#0f1423] rounded-xl p-6 border border-slate-800 text-sm text-slate-400 space-y-4">
+                <p>
+                    <strong>[1] Inversión Extranjera Directa (IED):</strong> Datos observados (2013-2024) extraídos de los reportes trimestrales del <a href="https://www.gob.mx/se/acciones-y-programas/competitividad-y-normatividad-inversion-extranjera-directa" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 hover:underline">Registro Nacional de Inversiones Extranjeras (RNIE)</a> de la Secretaría de Economía. La caída de "Nuevas Inversiones" refleja la serie histórica homologada oficial. Las cifras recientes están sujetas a revisiones preliminares rutinarias.
+                </p>
+                <p>
+                    <strong>[2] Inversión de Cartera:</strong> <span class="text-slate-300">Fuente primaria:</span> <a href="https://www.banxico.org.mx/SieInternet/consultarDirectorioInternetAction.do?sector=1&accion=consultarCuadro&idCuadro=CE148&locale=es" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300 hover:underline">Banco de México (Banxico) - Sistema de Información Económica (SIE)</a>. Metodología: Balanza de Pagos Sexta Edición (MBP6) > Cuenta Financiera > Inversión de Cartera > Pasivos. Valores negativos representan salida neta de capital foráneo del país.
+                </p>
+                <p>
+                    <strong>[3] Proyecciones (2025*):</strong> Las cifras marcadas con asterisco son <strong>estimaciones propias no consolidadas</strong> calculadas por SocioNomics Lab a partir de promedios móviles, flujos preliminares y expectativas del mercado (Encuesta Citibanamex), dado que la publicación oficial definitiva del año en curso se encuentra en proceso de revisión institucional.
+                </p>
+                <p>
+                    <strong>[4] Contexto Global COVID-19:</strong> La fuga de capitales de cartera (2020-2021) coincide con el ciclo global de aversión al riesgo hacia mercados emergentes documentado en los <em>Working Papers</em> del FMI (IMF Portfolio Flows), aunque la prima de riesgo (EMBI) evidencia que la incertidumbre institucional interna prolongó la salida en el caso mexicano.
+                </p>
+                <p>
+                    <strong>[5] Marco Teórico y Literatura:</strong> El análisis sobre las externalidades ("Spillovers") y el estancamiento productivo se fundamenta en los modelos de <em>Crecimiento Endógeno</em> (Romer, 1990; Lucas, 1988), la definición de la <em>Trampa de los Ingresos Medios</em> del Banco Mundial, y los estándares del <strong>World Investment Report (UNCTAD)</strong> sobre el impacto diferencial entre el capital foráneo nuevo y el reinvertido.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="bg-black border-t border-slate-900 py-12 mt-12 no-print">
+        <div class="max-w-4xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <p class="font-black tracking-tighter text-xl text-white mb-1">SocioNomics<span class="text-blue-500">Lab</span></p>
+                <p class="text-[10px] text-slate-500 uppercase tracking-widest font-data">Research & Data Intelligence © 2026</p>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" class="opacity-50 hover:opacity-100 transition-opacity" title="Licencia Creative Commons" aria-label="Licencia Creative Commons">
+                    <img src="https://licensebuttons.net/l/by-nc/4.0/80x15.png" alt="CC BY-NC 4.0">
+                </a>
+                <div class="w-px h-6 bg-slate-800"></div>
+                <div class="flex items-center gap-4">
+                    <a href="mailto:contacto@socionomicslab.org" class="text-slate-500 hover:text-blue-500 transition-colors text-sm font-data mr-2 flex items-center gap-2" aria-label="Correo de contacto">
+                        <i class="fa-regular fa-envelope"></i> <span class="hidden md:inline">contacto@socionomicslab.org</span>
+                    </a>
+                    <a href="https://github.com/araujome" target="_blank" class="text-slate-500 hover:text-white transition-colors" aria-label="GitHub"><i class="fa-brands fa-github text-lg"></i></a>
+                    <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="text-slate-500 hover:text-blue-500 transition-colors" aria-label="LinkedIn"><i class="fa-brands fa-linkedin text-lg"></i></a>
+                    <a href="https://x.com/SocioNomicsLab" target="_blank" class="text-slate-500 hover:text-white transition-colors" aria-label="Twitter"><i class="fa-brands fa-x-twitter text-lg"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPTS LÓGICOS -->
+    <script>
+        // DOMContentLoaded asegura que los scripts deferidos de ChartJS ya estén disponibles
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // 1. BARRA DE PROGRESO DE LECTURA
+            window.addEventListener('scroll', () => {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                document.getElementById("reading-progress").style.width = scrolled + "%";
+            });
+
+            // 2. CONFIGURACIÓN DE LAS GRÁFICAS (Chart.js)
+            Chart.register(ChartDataLabels, window['chartjs-plugin-annotation']);
+
+            // --- GRÁFICA 1: COMPOSICIÓN DE LA IED ---
+            const ctxComp = document.getElementById('iedCompositionChart').getContext('2d');
+            const yearsComp = ['2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025*'];
+            
+            const dataNuevas = [12.0, 9.5, 6.5, 10.5, 16.0, 4.8, 0.9, 0.5]; 
+            const dataReinversion = [11.5, 17.5, 15.5, 14.5, 16.0, 27.0, 30.5, 28.0]; 
+            const dataCuentas = [10.6, 7.5, 6.2, 6.5, 4.3, 4.3, -0.4, -0.5]; 
+
+            new Chart(ctxComp, {
+                type: 'bar',
+                data: {
+                    labels: yearsComp,
+                    datasets: [
+                        { label: 'Nuevas Inversiones', data: dataNuevas, backgroundColor: '#ef4444', barPercentage: 0.6 },
+                        { label: 'Reinversión de Utilidades', data: dataReinversion, backgroundColor: '#10b981', barPercentage: 0.6 },
+                        { label: 'Cuentas entre Compañías', data: dataCuentas, backgroundColor: '#64748b', barPercentage: 0.6 }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    scales: {
+                        x: { stacked: true, grid: { display: false }, ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono'} } },
+                        y: { stacked: true, grid: { color: 'rgba(51, 65, 85, 0.3)' }, ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono'} } }
+                    },
+                    plugins: {
+                        legend: { position: 'top', labels: { color: '#cbd5e1', usePointStyle: true, boxWidth: 8, font: { family: 'Inter', size: 12 } } },
+                        tooltip: { backgroundColor: 'rgba(2, 6, 23, 0.95)', titleFont: { family: 'Inter' }, bodyFont: { family: 'JetBrains Mono' } },
+                        datalabels: { display: false } 
+                    }
+                }
+            });
+
+            // --- GRÁFICA 2: IED vs CARTERA ---
+            const ctx = document.getElementById('capitalChart').getContext('2d');
+            const years = ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025*'];
+            const dataIED = [47.5, 30.2, 35.9, 31.2, 34.0, 34.1, 34.5, 28.2, 31.5, 36.3, 36.1, 31.0, 28.0];
+            const dataCartera = [14.5, 12.0, 5.0, 2.0, 10.0, -2.0, 2.5, -15.0, -20.0, -4.0, 5.0, -5.0, -2.0];
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: years,
+                    datasets: [
+                        {
+                            label: 'IED (Ladrillos)', data: dataIED, backgroundColor: '#10b981', borderRadius: 4, barPercentage: 0.6,
+                            datalabels: {
+                                align: 'top', anchor: 'end', color: '#34d399', font: { family: 'JetBrains Mono', size: 10 },
+                                formatter: (val) => val.toFixed(1)
+                            }
+                        },
+                        {
+                            label: 'Cartera (Golondrinas)', data: dataCartera,
+                            backgroundColor: (context) => context.raw < 0 ? '#ef4444' : '#f59e0b',
+                            borderRadius: 4, barPercentage: 0.6,
+                            datalabels: {
+                                align: (context) => context.raw < 0 ? 'bottom' : 'top',
+                                anchor: (context) => context.raw < 0 ? 'start' : 'end',
+                                color: (context) => context.raw < 0 ? '#f87171' : '#fbbf24',
+                                font: { family: 'JetBrains Mono', size: 10 },
+                                formatter: (val) => val > 0 ? '+' + val.toFixed(1) : val.toFixed(1)
+                            }
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false, layout: { padding: { top: 30, bottom: 10 } },
+                    plugins: {
+                        legend: { display: false }, 
+                        tooltip: {
+                            backgroundColor: 'rgba(2, 6, 23, 0.95)', titleFont: { family: 'Inter', size: 14, weight: 'bold' },
+                            bodyFont: { family: 'JetBrains Mono', size: 13 }, borderColor: '#1e293b', borderWidth: 1, padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    let prefix = context.raw > 0 ? '+$' : '-$';
+                                    return context.dataset.label + ': ' + prefix + Math.abs(context.raw).toFixed(1) + ' mmd USD';
+                                }
+                            }
+                        },
+                        annotation: {
+                            annotations: {
+                                lineZero: { type: 'line', yMin: 0, yMax: 0, borderColor: '#475569', borderWidth: 1 },
+                                lineTransition: {
+                                    type: 'line', xMin: 5.5, xMax: 5.5, borderColor: '#334155', borderWidth: 2, borderDash: [4, 4],
+                                    label: { content: 'Transición 2018', display: true, position: 'end', backgroundColor: 'transparent', color: '#94a3b8', font: { family: 'Inter', size: 11 } }
+                                },
+                                boxFlight: {
+                                    type: 'box', xMin: 6.5, xMax: 9.5, yMin: -25, yMax: 0,
+                                    backgroundColor: 'rgba(239, 68, 68, 0.05)', borderColor: 'rgba(239, 68, 68, 0.2)', borderWidth: 1, drawTime: 'afterDatasetsDraw', 
+                                    label: { content: 'FUGA HISTÓRICA', display: true, position: 'center', color: '#ffffff', font: { family: 'Inter', size: 16, weight: '900' } }
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { font: { family: 'JetBrains Mono', size: 11 }, color: '#64748b' } },
+                        y: {
+                            grid: { color: 'rgba(51, 65, 85, 0.3)', borderDash: [2, 4] },
+                            suggestedMin: -25, suggestedMax: 50,
+                            ticks: { font: { family: 'JetBrains Mono', size: 11 }, color: '#64748b', callback: function(value) { return '$' + value + ' mmd'; } }
+                        }
+                    }
+                }
+            });
+        });
+
+        // 3. FUNCIONES DE EXPORTACIÓN Y UTILIDADES
+
+        function downloadHTML() {
+            const htmlContent = "<!DOCTYPE html>\n" + document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url; link.download = 'informe_divergencia_capitales.html';
+            document.body.appendChild(link); link.click(); document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+
+        function downloadCSV() {
+            // \uFEFF es el BOM (Byte Order Mark) asegura que Excel lea UTF-8 y acentos correctamente
+            const csvContent = "\uFEFFAnio,IED_Nuevas_Inversiones(mmd),IED_Reinversion(mmd),IED_Cuentas_Companias(mmd),Inversion_Cartera_Neta(mmd)\n"
+                + "2018,12.0,11.5,10.6,-2.0\n"
+                + "2019,9.5,17.5,7.5,2.5\n"
+                + "2020,6.5,15.5,6.2,-15.0\n"
+                + "2021,10.5,14.5,6.5,-20.0\n"
+                + "2022,16.0,16.0,4.3,-4.0\n"
+                + "2023,4.8,27.0,4.3,5.0\n"
+                + "2024,0.9,30.5,-0.4,-5.0\n"
+                + "2025(Est),0.5,28.0,-0.5,-2.0";
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.setAttribute("href", url);
+            link.setAttribute("download", "socionomics_datos_capitales_mexico.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
