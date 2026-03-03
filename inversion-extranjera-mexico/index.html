@@ -128,6 +128,12 @@
             <!-- BOTONES PARA COMPARTIR EN REDES -->
             <div class="flex items-center gap-3 mt-8 pt-6 border-t border-slate-800/50 no-print">
                 <span class="text-xs text-slate-400 font-bold uppercase tracking-widest">Compartir análisis:</span>
+                
+                <!-- Botón de Copiar Enlace -->
+                <button onclick="copyToClipboard(this)" class="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-700 transition-all hover:scale-110 focus:outline-none" aria-label="Copiar enlace" title="Copiar enlace">
+                    <i class="fa-solid fa-link"></i>
+                </button>
+
                 <a href="https://twitter.com/intent/tweet?text=La%20Gran%20Divergencia:%20Ladrillos%20vs%20Golondrinas%20en%20M%C3%A9xico.%20An%C3%A1lisis%20de%20@SocioNomicsLab&url=https://socionomicslab.org" target="_blank" class="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 hover:text-white hover:bg-[#1DA1F2] transition-all hover:scale-110" aria-label="Compartir en X">
                     <i class="fa-brands fa-x-twitter"></i>
                 </a>
@@ -505,6 +511,28 @@
             link.click();
             document.body.removeChild(link);
             URL.revokeObjectURL(url);
+        }
+
+        function copyToClipboard(buttonElement) {
+            // Crear input temporal para copiar
+            const tempInput = document.createElement("input");
+            tempInput.value = window.location.href; // Copia la URL actual
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            
+            // Usar execCommand por compatibilidad con iframes
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            // Cambiar icono temporalmente a palomita verde
+            const originalHTML = buttonElement.innerHTML;
+            buttonElement.innerHTML = '<i class="fa-solid fa-check text-emerald-400"></i>';
+            buttonElement.classList.add('bg-slate-700');
+            
+            setTimeout(() => {
+                buttonElement.innerHTML = originalHTML;
+                buttonElement.classList.remove('bg-slate-700');
+            }, 2000);
         }
     </script>
 </body>
