@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Meta Tags -->
+    <title>Brief de Riesgo: Reconfiguración de Pasivos PEMEX | SocioNomics Lab</title>
+    <meta name="description" content="Análisis Institucional: Brecha entre la Deuda Financiera Oficial de PEMEX y el Riesgo Fiscal Consolidado (RFC-SL) al Q4 2025.">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        .data-font { font-family: 'JetBrains Mono', monospace; }
+        .report-card { background: white; border: 1px solid #e2e8f0; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .hero-metric { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; }
+        
+        /* Tooltip de copiado */
+        .copy-feedback {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #10b981;
+            color: white;
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+        .copy-feedback.show { opacity: 1; }
+
+        /* Optimizaciones de Impresión */
+        @media print {
+            body { background-color: white; }
+            .no-print { display: none !important; }
+            .report-card { border: none; box-shadow: none; page-break-inside: avoid; break-inside: avoid; }
+            .hero-metric { background: white !important; color: black !important; border: 2px solid #cbd5e1 !important; page-break-inside: avoid; }
+            .hero-metric * { color: black !important; }
+            canvas { max-width: 100% !important; page-break-inside: avoid; }
+            .print-border { border: 1px solid #e2e8f0 !important; }
+            .bg-slate-900 { background: white !important; color: black !important; border: 1px solid #ccc !important;}
+            .bg-slate-900 h3 { color: black !important; border-color: #ccc !important;}
+            .text-slate-400, .text-slate-300, .text-emerald-400 { color: #475569 !important; }
+        }
+    </style>
+</head>
+<body class="antialiased text-slate-800">
+
+    <!-- Top Navigation Institucional -->
+    <nav class="bg-white border-b border-slate-200 px-6 py-3 flex justify-between items-center sticky top-0 z-50 no-print shadow-sm">
+        <a href="https://socionomicslab.org" class="flex items-center gap-3 hover:opacity-80 transition">
+            <div class="w-8 h-8 bg-slate-900 text-emerald-400 rounded flex items-center justify-center font-bold">
+                <i class="fa-solid fa-chart-line"></i>
+            </div>
+            <div>
+                <span class="font-bold text-slate-900 tracking-tight block leading-none">SocioNomics Lab</span>
+                <span class="text-[10px] text-slate-500 font-semibold uppercase tracking-wider">Unidad de Inteligencia</span>
+            </div>
+        </a>
+        <div class="flex gap-3">
+            <!-- Botón Exportar HTML con UI State -->
+            <button onclick="downloadHTML(this)" class="text-sm font-medium text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded transition flex items-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed" title="Descargar este reporte como archivo web">
+                <i class="fa-solid fa-code"></i> <span class="hidden sm:inline">Exportar HTML</span>
+            </button>
+            <a href="https://socionomicslab.org" class="text-sm font-medium text-white bg-slate-900 hover:bg-slate-800 px-4 py-1.5 rounded transition flex items-center gap-2">
+                <i class="fa-solid fa-grid-2"></i> <span class="hidden sm:inline">Ver más reportes</span> <i class="fa-solid fa-arrow-right text-xs ml-1"></i>
+            </a>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Encabezado del Reporte -->
+        <header class="mb-8 border-b border-slate-300 pb-6">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider border border-amber-200">Uso Corporativo</span>
+                        <span class="text-xs text-slate-500 font-medium"><i class="fa-regular fa-calendar mr-1"></i> Q1 2026 (Datos al cierre 2025)</span>
+                    </div>
+                    <h1 class="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Brief de Riesgo: Reconfiguración de Pasivos de PEMEX</h1>
+                    <p class="text-slate-600 mt-2 text-lg max-w-3xl">Análisis estructural del diferencial entre la deuda financiera oficial y la transferencia real de riesgo al balance soberano.</p>
+                </div>
+                <div class="text-left md:text-right shrink-0">
+                    <p class="text-xs text-slate-500 uppercase font-bold tracking-wider mb-1">Clasificación</p>
+                    <p class="data-font font-bold text-slate-800 text-lg">RIESGO FISCAL</p>
+                </div>
+            </div>
+
+            <!-- Autoría y Redes (Estilo Think Tank) -->
+            <div class="mt-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 border-t border-slate-200 pt-5">
+                
+                <!-- Autor -->
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-full bg-slate-200 border border-slate-300 flex items-center justify-center text-slate-600 overflow-hidden">
+                        <i class="fa-solid fa-user-tie text-lg"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-bold text-slate-900">Eric Araujo Martínez</p>
+                        <p class="text-xs text-slate-500 font-medium uppercase tracking-wide">Investigador Principal</p>
+                    </div>
+                </div>
+
+                <!-- Botones de Compartir -->
+                <div class="flex items-center gap-2 no-print">
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mr-2">Compartir:</span>
+                    
+                    <button onclick="shareTwitter()" class="w-9 h-9 rounded-full border border-slate-200 bg-white text-slate-600 hover:border-slate-400 hover:text-black hover:shadow-sm flex items-center justify-center transition" title="Compartir en X">
+                        <svg viewBox="0 0 24 24" aria-hidden="true" class="w-[14px] h-[14px] fill-current"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 5.96H5.078z"></path></svg>
+                    </button>
+                    
+                    <button onclick="shareFacebook()" class="w-9 h-9 rounded-full border border-slate-200 bg-white text-slate-600 hover:border-[#1877F2] hover:text-[#1877F2] hover:shadow-sm flex items-center justify-center transition" title="Compartir en Facebook">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </button>
+                    
+                    <button onclick="shareLinkedIn()" class="w-9 h-9 rounded-full border border-slate-200 bg-white text-slate-600 hover:border-[#0A66C2] hover:text-[#0A66C2] hover:shadow-sm flex items-center justify-center transition" title="Compartir en LinkedIn">
+                        <i class="fa-brands fa-linkedin-in"></i>
+                    </button>
+                    
+                    <div class="relative">
+                        <button onclick="copyLink()" class="w-9 h-9 rounded-full border border-slate-200 bg-slate-50 text-slate-600 hover:bg-emerald-50 hover:border-emerald-500 hover:text-emerald-600 hover:shadow-sm flex items-center justify-center transition" title="Copiar enlace">
+                            <i class="fa-solid fa-link"></i>
+                        </button>
+                        <span id="copyFeedback" class="copy-feedback">¡Copiado!</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- HERO PANEL: El Indicador Propietario -->
+        <div class="hero-metric print-border rounded-xl p-6 md:p-8 mb-8 shadow-lg relative overflow-hidden border border-slate-700">
+            <div class="absolute -top-10 -right-10 opacity-5 pointer-events-none no-print">
+                <i class="fa-solid fa-shield-halved text-[12rem]"></i>
+            </div>
+            
+            <h2 class="text-emerald-400 text-sm font-bold uppercase tracking-widest mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-microscope"></i> Métrica Propietaria: Índice RFC-SL
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative z-10">
+                <!-- Dato Oficial -->
+                <div class="border-l-2 border-slate-600 pl-4">
+                    <p class="text-slate-400 text-xs uppercase font-semibold mb-1">Deuda Financiera Oficial (BMV)</p>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-2xl text-slate-300">$</span>
+                        <span class="text-4xl font-bold data-font text-white">84.5</span>
+                        <span class="text-sm text-slate-400 ml-1 font-bold">MMD</span>
+                    </div>
+                    <p class="text-emerald-500 text-xs mt-2 font-medium"><i class="fa-solid fa-arrow-down mr-1"></i>Reportado en balance oficial</p>
+                </div>
+
+                <!-- El Gap -->
+                <div class="border-l-2 border-amber-500/50 pl-4 bg-slate-800/30 rounded-r-lg py-2 -my-2">
+                    <p class="text-amber-400 text-xs uppercase font-semibold mb-1">Pasivos Ocultos / Transferidos</p>
+                    <div class="flex items-baseline gap-1">
+                        <span class="text-2xl text-amber-500">+ $</span>
+                        <span class="text-4xl font-bold data-font text-amber-400">36.1</span>
+                        <span class="text-sm text-amber-500 ml-1 font-bold">MMD</span>
+                    </div>
+                    <p class="text-slate-300 text-xs mt-2 leading-tight">Proveedores ($24.1 MMD) + Rescate SHCP ($12.0 MMD)</p>
+                </div>
+
+                <!-- Indicador SocioNomics (Sin Tooltip flotante) -->
+                <div class="border-l-4 border-emerald-500 pl-4 bg-emerald-900/20 rounded-r-lg py-2 -my-2 relative">
+                    <p class="text-emerald-300 text-xs uppercase font-bold tracking-wider mb-1">
+                        Riesgo Fiscal Consolidado
+                    </p>
+                    <div class="flex items-baseline gap-1 mt-1">
+                        <span class="text-2xl sm:text-3xl text-emerald-400">$</span>
+                        <span class="text-4xl sm:text-5xl font-extrabold data-font text-white">120.6</span>
+                        <span class="text-sm sm:text-base text-emerald-400 ml-1 font-bold">MMD</span>
+                    </div>
+                    <p class="text-emerald-200 text-xs mt-2">La exposición real del Estado Mexicano.</p>
+                </div>
+            </div>
+
+            <!-- Módulo Macro-Sistémico -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8 border-t border-slate-700/50 pt-6 relative z-10">
+                <div class="bg-slate-800/40 rounded-lg p-4 border border-slate-700">
+                    <p class="text-slate-400 text-[10px] uppercase font-bold mb-1 flex items-center gap-1"><i class="fa-solid fa-chart-pie"></i> Impacto Macro</p>
+                    <p class="text-white font-medium text-sm flex items-end gap-2">
+                        <span class="text-emerald-400 font-bold text-xl data-font">~6.7%</span> del PIB
+                    </p>
+                </div>
+                <div class="bg-slate-800/40 rounded-lg p-4 border border-slate-700">
+                    <p class="text-slate-400 text-[10px] uppercase font-bold mb-1 flex items-center gap-1"><i class="fa-solid fa-landmark"></i> Deuda Soberana</p>
+                    <p class="text-white font-medium text-sm flex items-end gap-2">
+                        <span class="text-emerald-400 font-bold text-xl data-font">~12.0%</span> del Total
+                    </p>
+                </div>
+                <div class="bg-slate-800/40 rounded-lg p-4 border border-slate-700">
+                    <p class="text-slate-400 text-[10px] uppercase font-bold mb-1 flex items-center gap-1"><i class="fa-solid fa-users"></i> Costo de Absorción</p>
+                    <p class="text-white font-medium text-sm flex items-end gap-2">
+                        <span class="text-emerald-400 font-bold text-xl data-font">$927</span> USD Per Cápita
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido a 2 Columnas -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Columna Principal (Análisis Técnico) -->
+            <div class="lg:col-span-2 space-y-8">
+                
+                <section class="report-card p-6 md:p-8 print-border">
+                    <h3 class="text-xl font-bold text-slate-900 border-b border-slate-200 pb-3 mb-5">1. Resumen Ejecutivo</h3>
+                    <div class="prose prose-slate max-w-none text-slate-700 leading-relaxed">
+                        <p class="mb-4">El anuncio gubernamental de una deuda financiera de $84,500 millones de dólares (la más baja en 11 años) al cierre de 2025 es <strong>contablemente preciso, pero estructuralmente incompleto</strong>. La mejora en el balance de Petróleos Mexicanos no obedece a un incremento en la rentabilidad operativa o flujo de caja libre, sino a una reconfiguración de pasivos intra-sector público.</p>
+                        <p>Nuestro modelo <strong>Riesgo Fiscal Consolidado (RFC-SL)</strong> demuestra que el pasivo no se extinguió, sino que fue absorbido por el balance soberano y diferido hacia la cadena de suministro, resultando en una exposición real de <strong>120.6 mil millones de dólares (MMD)</strong>.</p>
+                    </div>
+                </section>
+
+                <section class="report-card p-6 md:p-8 print-border">
+                    <h3 class="text-xl font-bold text-slate-900 border-b border-slate-200 pb-3 mb-5">2. Mecanismos de Reconfiguración de Pasivos</h3>
+                    
+                    <div class="space-y-8">
+                        <!-- Mecanismo A -->
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-lg flex items-center gap-2 mb-2">
+                                <span class="bg-slate-200 text-slate-600 w-6 h-6 flex items-center justify-center rounded text-sm">A</span> 
+                                Transferencia de Riesgo Soberano (SHCP)
+                            </h4>
+                            <p class="text-slate-600 mb-3 leading-relaxed">La reducción principal en la deuda financiera de la petrolera se logró mediante la inyección directa de capital por parte de la Secretaría de Hacienda. En 2025, el Gobierno Federal emitió notas precapitalizadas (P-Caps) por un valor estimado de <strong>$12.0 MMD</strong>. Este movimiento traslada el riesgo crediticio directamente al soberano, mejorando el indicador corporativo a costa del espacio fiscal del país.</p>
+                        </div>
+
+                        <!-- Mecanismo B -->
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-lg flex items-center gap-2 mb-2">
+                                <span class="bg-slate-200 text-slate-600 w-6 h-6 flex items-center justify-center rounded text-sm">B</span> 
+                                Expansión del Pasivo Comercial
+                            </h4>
+                            <p class="text-slate-600 mb-3 leading-relaxed">Pemex ha utilizado el diferimiento de pagos a proveedores y contratistas como un mecanismo de fondeo alternativo que no clasifica como "deuda financiera". Al cierre de 2025, este rubro alcanzó los <strong>434,400 millones de pesos (aprox. $24.1 MMD)</strong>. Aunque la creación del <em>Fondo Ónix</em> ($30,000 millones MXN) mitiga el riesgo de liquidez inmediato, el pasivo permanece intacto en el riesgo sistémico del sector privado.</p>
+                        </div>
+
+                        <!-- Mecanismo C -->
+                        <div>
+                            <h4 class="font-bold text-slate-800 text-lg flex items-center gap-2 mb-2">
+                                <span class="bg-slate-200 text-slate-600 w-6 h-6 flex items-center justify-center rounded text-sm">C</span> 
+                                Distorsión Contable por Volatilidad Cambiaria
+                            </h4>
+                            <p class="text-slate-600 mb-4 leading-relaxed">La reportada disminución del 94% en las pérdidas netas está altamente influenciada por factores exógenos. La empresa registró una <strong>utilidad cambiaria contable de 195,000 millones de pesos</strong>. Este efecto es un apunte en libros (<em>non-cash item</em>) que no implica ingresos de efectivo, enmascarando las presiones operativas estructurales.</p>
+                            
+                            <!-- Gráfica Efecto Cambiario -->
+                            <div class="bg-slate-50 border border-slate-200 rounded-lg p-4 mt-4 no-print">
+                                <h5 class="text-center font-semibold text-slate-700 text-sm mb-2">Descomposición de Rentabilidad 2025 (Estimación MXN)</h5>
+                                <div class="relative h-48 w-full">
+                                    <canvas id="exchangeChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+
+            <!-- Columna Lateral (Dashboards y Datos Duros) -->
+            <div class="space-y-8">
+                
+                <!-- Gráfica RFC-SL y Desglose Matemático -->
+                <section class="report-card p-6 bg-slate-900 text-white print-border">
+                    <h3 class="text-lg font-bold text-white border-b border-slate-700 pb-2 mb-4">Composición del Índice RFC-SL</h3>
+                    <p class="text-slate-400 text-xs mb-4">Brecha entre deuda reportada y pasivos reales absorbidos.</p>
+                    
+                    <div class="relative h-56 w-full mb-6">
+                        <canvas id="rfcChart"></canvas>
+                    </div>
+
+                    <!-- Caja de Aclaración de Fórmula y MMD Permanente -->
+                    <div class="bg-slate-800 rounded-lg p-4 border border-slate-700 text-sm">
+                        <strong class="text-emerald-400 block mb-2 border-b border-slate-700 pb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-calculator"></i> Desglose de la Fórmula
+                        </strong>
+                        <ul class="space-y-2 text-slate-300">
+                            <li class="flex justify-between items-center">
+                                <span>Deuda Oficial BMV:</span> 
+                                <span class="font-bold data-font text-white">$84.5</span>
+                            </li>
+                            <li class="flex justify-between items-center">
+                                <span>Deuda Proveedores:</span> 
+                                <span class="font-bold data-font text-white">$24.1</span>
+                            </li>
+                            <li class="flex justify-between items-center border-b border-slate-700 pb-2">
+                                <span>Rescate SHCP:</span> 
+                                <span class="font-bold data-font text-white">$12.0</span>
+                            </li>
+                            <li class="flex justify-between items-center pt-1 text-emerald-400 font-bold">
+                                <span>Total RFC-SL:</span> 
+                                <span class="data-font">$120.6 MMD</span>
+                            </li>
+                        </ul>
+                        <p class="text-[10px] text-slate-400 mt-3 pt-2 border-t border-slate-700/50 italic text-center">
+                            * MMD = Mil Millones de Dólares
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Implicaciones -->
+                <section class="report-card p-6 border-t-4 border-amber-500 print-border">
+                    <h3 class="text-lg font-bold text-slate-900 mb-4"><i class="fa-solid fa-triangle-exclamation text-amber-500 mr-2"></i>Implicaciones de Riesgo</h3>
+                    <ul class="space-y-4 text-sm text-slate-700">
+                        <li class="flex gap-3">
+                            <i class="fa-solid fa-arrow-right text-slate-400 mt-1"></i>
+                            <div>
+                                <strong class="block text-slate-900">Calificación Soberana</strong>
+                                La migración de deuda aumenta la probabilidad de presión sobre la calificación crediticia de México en el mediano plazo.
+                            </div>
+                        </li>
+                        <li class="flex gap-3">
+                            <i class="fa-solid fa-arrow-right text-slate-400 mt-1"></i>
+                            <div>
+                                <strong class="block text-slate-900">Flujo de Caja Libre Negativo</strong>
+                                Proyectamos presiones de liquidez operativas por ~$7,000 millones de dólares anuales sostenidos hacia 2029.
+                            </div>
+                        </li>
+                        <li class="flex gap-3">
+                            <i class="fa-solid fa-arrow-right text-slate-400 mt-1"></i>
+                            <div>
+                                <strong class="block text-slate-900">Costo Fiscal de Oportunidad</strong>
+                                La renuncia recaudatoria sistemática limita el margen de maniobra del Estado para gasto en infraestructura pública.
+                            </div>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Metodología -->
+                <section class="report-card p-6 bg-slate-50 print-border">
+                    <h3 class="text-xs uppercase tracking-widest font-bold text-slate-500 mb-3">Notas Metodológicas</h3>
+                    <p class="text-xs text-slate-600 mb-2 leading-relaxed">
+                        <strong>Fuentes:</strong> Reportes consolidados BMV (4T 2025), Comunicados SHCP, Ley de Ingresos de la Federación. Estimaciones macroeconómicas al cierre de 2025.
+                    </p>
+                    <p class="text-[10px] text-slate-500 border-t border-slate-200 pt-2 mt-2 leading-relaxed">
+                        <strong>Disclaimer:</strong> Documento de inteligencia estratégica B2B. No constituye recomendación de inversión. Las cifras del RFC-SL son estimaciones basadas en conciliación de pasivos públicos.
+                    </p>
+                </section>
+
+            </div>
+
+        </div>
+        
+        <!-- Footer -->
+        <footer class="mt-12 border-t border-slate-200 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500 no-print pb-12">
+            <div class="text-center md:text-left mb-4 md:mb-0">
+                <p class="font-bold text-slate-800 mb-1">SocioNomics Lab</p>
+                <p>&copy; 2026 Inteligencia Estratégica Independiente.</p>
+            </div>
+            
+            <div class="flex gap-5 text-lg items-center">
+                <a href="https://socionomicslab.org" title="Página Principal" class="hover:text-slate-900 transition"><i class="fa-solid fa-globe"></i></a>
+                <a href="https://x.com/SocioNomicsLab" target="_blank" title="X (Twitter)" class="hover:text-slate-900 transition flex items-center">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" class="w-[18px] h-[18px] fill-current"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.008 5.96H5.078z"></path></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" title="LinkedIn" class="hover:text-[#0A66C2] transition"><i class="fa-brands fa-linkedin"></i></a>
+                <a href="mailto:contacto@socionomicslab.org" title="Contacto" class="hover:text-slate-900 transition"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- Lógica de Gráficas y UI -->
+    <script>
+        // Registrar plugin para etiquetas de datos
+        Chart.register(ChartDataLabels);
+
+        // Configuración global Chart.js
+        Chart.defaults.font.family = "'Inter', sans-serif";
+        Chart.defaults.color = '#94a3b8';
+
+        // 1. Gráfica RFC-SL
+        const ctxRfc = document.getElementById('rfcChart').getContext('2d');
+        new Chart(ctxRfc, {
+            type: 'bar',
+            data: {
+                labels: ['Oficial BMV', 'Oculto/Trans.', 'Total RFC-SL'],
+                datasets: [
+                    {
+                        label: 'Deuda Oficial',
+                        data: [84.5, 0, 84.5],
+                        backgroundColor: '#3b82f6',
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Deuda a Proveedores',
+                        data: [0, 24.1, 24.1],
+                        backgroundColor: '#f59e0b',
+                        borderRadius: 4
+                    },
+                    {
+                        label: 'Rescate SHCP',
+                        data: [0, 12.0, 12.0],
+                        backgroundColor: '#ef4444',
+                        borderRadius: 4
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { stacked: true, grid: { display: false } },
+                    y: { 
+                        stacked: true, 
+                        grid: { color: '#334155', borderDash: [5, 5] },
+                        ticks: { callback: function(value) { return '$' + value + ' MMD'; } }
+                    }
+                },
+                plugins: {
+                    legend: { display: true, position: 'bottom', labels: { color: '#cbd5e1', usePointStyle: true, boxWidth: 8, font: {size: 10} } },
+                    tooltip: { mode: 'index', intersect: false },
+                    datalabels: {
+                        color: '#ffffff',
+                        font: { weight: 'bold', family: "'JetBrains Mono', monospace", size: 10 },
+                        formatter: function(value, context) {
+                            return value > 0 ? value : '';
+                        }
+                    }
+                }
+            }
+        });
+
+        // 2. Gráfica Efecto Cambiario
+        const ctxExchange = document.getElementById('exchangeChart').getContext('2d');
+        new Chart(ctxExchange, {
+            type: 'bar',
+            data: {
+                labels: ['Flujo Op. (Estimado)', 'Utilidad Cambiaria (Contable)'],
+                datasets: [{
+                    data: [-150, 195], 
+                    backgroundColor: ['#ef4444', '#10b981'],
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    datalabels: {
+                        color: '#fff',
+                        font: { weight: 'bold', size: 11 },
+                        formatter: function(value) {
+                            return value > 0 ? '+' + value + ' MMD MXN' : value + ' MMD MXN';
+                        },
+                        anchor: 'center',
+                        align: 'center'
+                    }
+                },
+                scales: {
+                    x: { grid: { color: '#e2e8f0' }, ticks: { display: false } },
+                    y: { grid: { display: false } }
+                }
+            }
+        });
+
+        // --- Lógica de Redes Sociales ---
+        const pageUrl = 'https://socionomicslab.org/risk-brief-pemex.html';
+        const pageTitle = 'Brief de Riesgo: Reconfiguración de Pasivos PEMEX por SocioNomics Lab';
+
+        function shareTwitter() {
+            window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(pageTitle)}`, '_blank', 'width=600,height=400');
+        }
+
+        function shareFacebook() {
+            window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`, '_blank', 'width=600,height=400');
+        }
+
+        function shareLinkedIn() {
+            window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(pageUrl)}`, '_blank', 'width=600,height=600');
+        }
+
+        // --- Función de Copiado Moderna (Async) ---
+        async function copyLink() {
+            try {
+                await navigator.clipboard.writeText(pageUrl);
+                showFeedback('¡Copiado!');
+            } catch (err) {
+                // Fallback para navegadores antiguos
+                const tempInput = document.createElement('input');
+                tempInput.value = pageUrl;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                try {
+                    document.execCommand('copy');
+                    showFeedback('¡Copiado!');
+                } catch(e) {
+                    showFeedback('Error al copiar');
+                }
+                document.body.removeChild(tempInput);
+            }
+        }
+
+        function showFeedback(message) {
+            const feedback = document.getElementById('copyFeedback');
+            feedback.textContent = message;
+            feedback.classList.add('show');
+            setTimeout(() => feedback.classList.remove('show'), 2000);
+        }
+
+        // --- Función para Descargar el HTML (Con Micro-interacción) ---
+        function downloadHTML(btn) {
+            const originalHTML = btn.innerHTML;
+            
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span class="hidden sm:inline">Generando...</span>';
+            
+            setTimeout(() => {
+                const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+                const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+                
+                const downloadLink = document.createElement('a');
+                downloadLink.href = URL.createObjectURL(blob);
+                downloadLink.download = 'brief_riesgo_pemex_socionomics.html';
+                
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+                URL.revokeObjectURL(downloadLink.href);
+                
+                btn.disabled = false;
+                btn.innerHTML = originalHTML;
+            }, 600);
+        }
+    </script>
+</body>
+</html>
