@@ -6,8 +6,6 @@
 
 > **Dashboard institucional de análisis de riesgo fiscal** | Índice propietario RFC-SL (Riesgo Fiscal Consolidado - SocioNomics Lab)
 
-Preview(preview.png)
-
 ---
 
 ## 🎯 ¿Qué es este proyecto?
