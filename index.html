@@ -57,6 +57,7 @@
         }
 
         /* Colores de Hover Personalizados */
+        .card-pemex:hover { border-color: #eab308; } /* Yellow - Pemex Risk */
         .card-riesgo:hover { border-color: #06b6d4; } /* Cyan - Riesgo País */
         .card-tren:hover { border-color: #a855f7; } /* Morado - Tren Maya */
         .card-fobaproa:hover { border-color: #e11d48; } /* Rose - Fobaproa */
@@ -185,6 +186,28 @@
         <!-- GRID DE ESTUDIOS -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
+            <!-- 0. NUEVO: BRIEF RIESGO PEMEX -->
+            <a href="https://socionomicslab.org/brief-riesgo-pemex/" class="glass-card card-pemex rounded-3xl p-6 group">
+                <div class="space-y-4">
+                    <div class="w-10 h-10 bg-yellow-500 rounded-xl flex items-center justify-center shadow-lg shadow-yellow-900/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-oil-well text-white"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2 mb-1">
+                            <h3 class="text-base font-black text-white italic uppercase tracking-tight">Riesgo Pemex</h3>
+                            <span class="bg-yellow-500/20 text-yellow-400 text-[9px] font-bold px-2 py-0.5 rounded border border-yellow-500/30 animate-pulse">BRIEF</span>
+                        </div>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
+                            Ingeniería financiera o realidad: Auditoría exprés a la deuda corporativa, los P-Caps y el costo oculto de proveedores.
+                        </p>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
+                    <span class="text-yellow-400">INTELIGENCIA</span>
+                    <span>SHCP / PEMEX</span>
+                </div>
+            </a>
+
             <!-- 1. MONITOR DE RIESGO PAÍS -->
             <a href="https://socionomicslab.org/riesgo-pais/" class="glass-card card-riesgo rounded-3xl p-6 group">
                 <div class="space-y-4">
@@ -194,7 +217,8 @@
                     <div>
                         <div class="flex items-center gap-2 mb-1">
                             <h3 class="text-base font-black text-white italic uppercase tracking-tight">Riesgo País LATAM</h3>
-                            <span class="bg-cyan-500/20 text-cyan-400 text-[9px] font-bold px-2 py-0.5 rounded border border-cyan-500/30 animate-pulse">NUEVO</span>
+                            <!-- Se quitó el "NUEVO" parpadeante para dárselo al Brief, pero lo mantenemos estático para indicar novedad reciente -->
+                            <span class="bg-slate-500/20 text-slate-400 text-[9px] font-bold px-2 py-0.5 rounded border border-slate-500/30">2026</span>
                         </div>
                         <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
                             El Termómetro de la Confianza: Evolución del Riesgo Soberano (EMBI) en América Latina. Análisis macroeconómico de 2013 a 2026.
