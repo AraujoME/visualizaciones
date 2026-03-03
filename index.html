@@ -4,562 +4,727 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="SocioNomics Lab: Data Intelligence, Análisis de Riesgo y Macroeconomía por Eric Araujo Martínez.">
     <title>SocioNomics Lab | Intelligence Unit</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,600;0,900;1,900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,600;0,700;0,900;1,900&family=JetBrains+Mono:wght@400;700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap');
 
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #020617; 
-            color: #94a3b8; 
+        :root {
+            --font-ui: 'Inter', sans-serif;
+            --font-editorial: 'Merriweather', serif;
+            --font-data: 'JetBrains Mono', monospace;
         }
 
-        /* Estilo de Tarjetas Glassmorphism */
-        .glass-card {
-            background: rgba(15, 23, 42, 0.6); 
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            height: 100%;
+        body {
+            font-family: var(--font-ui);
+            background-color: #f1f5f9; /* Gris corporativo base */
+            color: #0f172a; 
+        }
+        
+        .font-editorial { font-family: var(--font-editorial); }
+        .font-data { font-family: var(--font-data); }
+
+        /* ESTILO PANEL FINANCIERO ESTRICTO */
+        .financial-panel {
+            background-color: #ffffff;
+            border: 1px solid #cbd5e1;
+            transition: all 0.15s ease-in-out;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            position: relative;
+            /* Cero curvas para un look de reporte impreso/terminal */
+            border-radius: 0px; 
         }
 
-        .glass-card:hover {
-            transform: translateY(-8px);
-            background: rgba(30, 41, 59, 0.8);
-            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5);
-            border-color: rgba(255, 255, 255, 0.1);
+        .financial-panel:hover {
+            border-color: #0f172a; /* Borde muy oscuro al hacer hover */
+            box-shadow: 4px 4px 0px 0px rgba(15, 23, 42, 0.1); /* Sombra dura estilo editorial */
+            transform: translate(-1px, -1px);
         }
 
-        .glass-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: inherit;
-            border: 1px solid transparent;
-            mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            pointer-events: none;
+        /* Feature Card (Brief Principal) */
+        .feature-brief {
+            background: #ffffff;
+            border: 1px solid #94a3b8;
+            border-left: 6px solid #b91c1c; /* Indicador de urgencia/riesgo alto */
+            border-radius: 0px;
+            box-shadow: 4px 4px 0px 0px rgba(15, 23, 42, 0.05);
+            transition: all 0.2s ease;
+        }
+        .feature-brief:hover {
+            border-color: #0f172a;
+            box-shadow: 6px 6px 0px 0px rgba(15, 23, 42, 0.15);
+        }
+
+        /* Clases para el buscador */
+        .fade-out {
             opacity: 0;
-            transition: opacity 0.4s ease;
+            transform: scale(0.98);
+            pointer-events: none;
         }
 
-        .glass-card:hover::after {
-            opacity: 1;
+        /* Botón corporativo sólido */
+        .btn-corporate {
+            background-color: #0f172a;
+            color: #ffffff;
+            border: 1px solid #0f172a;
+            border-radius: 0px;
+            transition: all 0.2s;
         }
-
-        /* Colores de Hover Personalizados */
-        .card-pemex:hover { border-color: #eab308; } /* Yellow - Pemex Risk */
-        .card-ied:hover { border-color: #3b82f6; } /* Blue - Inversión Extranjera */
-        .card-riesgo:hover { border-color: #06b6d4; } /* Cyan - Riesgo País */
-        .card-tren:hover { border-color: #a855f7; } /* Morado - Tren Maya */
-        .card-fobaproa:hover { border-color: #e11d48; } /* Rose - Fobaproa */
-        .card-violencia:hover { border-color: #dc2626; } /* Rojo - Violencia */
-        .card-despojo:hover { border-color: #ea580c; } /* Orange - Despojo */
-        .card-petroleo26:hover { border-color: #0ea5e9; } /* Sky Blue */
-        .card-universidad:hover { border-color: #6366f1; } 
-        .card-laboral:hover { border-color: #22c55e; }
-        .card-resaca:hover { border-color: #ef4444; }
-        .card-mercado:hover { border-color: #f97316; }
-        .card-pisa:hover { border-color: #3b82f6; }
-        .card-clase:hover { border-color: #14b8a6; }
-        .card-piramide:hover { border-color: #be185d; }
-        .card-pib:hover { border-color: #10b981; }
-        .card-deuda:hover { border-color: #a855f7; }
-        .card-mortalidad:hover { border-color: #eab308; }
-        .card-oncologico:hover { border-color: #6366f1; }
-
-        .brand-title {
-            background: linear-gradient(135deg, #a78bfa 0%, #c084fc 50%, #818cf8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            padding-right: 0.1em; 
-            padding-bottom: 0.1em;
-            filter: drop-shadow(0 0 40px rgba(139, 92, 246, 0.15));
-        }
-
-        /* Botones Sociales Responsivos */
-        .social-link {
-            /* Tamaño Mobile (Más grande para el dedo) */
-            width: 3.5rem; 
-            height: 3.5rem;
-            font-size: 1.5rem; 
-            
-            border-radius: 12px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            color: #64748b;
-        }
-
-        /* Tamaño Escritorio (Más compacto y elegante) */
-        @media (min-width: 768px) {
-            .social-link {
-                width: 48px;
-                height: 48px;
-                font-size: 1.25rem;
-            }
-        }
-
-        .social-link:hover {
-            background: #2e1065;
-            color: #a78bfa;
-            border-color: #a78bfa;
-            transform: scale(1.1);
-        }
-
-        .bg-gradient-radial {
-            background: radial-gradient(circle at 50% 0%, #1e1b4b 0%, #020617 60%);
+        .btn-corporate:hover {
+            background-color: #ffffff;
+            color: #0f172a;
         }
     </style>
 </head>
 
-<body class="selection:bg-indigo-500/30 min-h-screen relative">
+<body class="selection:bg-slate-300 selection:text-slate-900 min-h-screen">
 
-    <!-- IMAGEN DE FONDO -->
-    <div class="fixed inset-0 z-0 bg-gradient-radial"></div>
-    <img src="./visualizacionesportada1.png" class="fixed inset-0 w-full h-full object-cover z-0 opacity-40 mix-blend-overlay pointer-events-none" alt="" onerror="this.style.display='none'">
-    
+    <!-- BARRA SUPERIOR TIPO TICKER -->
+    <div class="w-full bg-slate-900 border-b-2 border-slate-400 py-1.5 hidden md:block">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between items-center text-[9px] font-data text-slate-300 uppercase tracking-widest">
+            <span>SocioNomics Lab • Unidad de Inteligencia</span>
+            <span>Acceso Público / Archivo Desclasificado</span>
+        </div>
+    </div>
+
     <!-- CONTENIDO PRINCIPAL -->
-    <div class="relative z-10 max-w-7xl mx-auto px-6 py-16 md:px-12 md:py-24">
+    <div class="max-w-7xl mx-auto px-6 py-10 md:py-16">
 
-        <!-- HEADER / IDENTIDAD -->
-        <header class="mb-24 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-12 border-b border-white/5 pb-12">
-            <div class="space-y-6">
-                <!-- Badge Superior -->
-                <div class="inline-flex items-center gap-3 bg-indigo-500/10 border border-indigo-500/20 px-4 py-1.5 rounded-full backdrop-blur-md">
-                    <span class="w-2 h-2 rounded-full bg-indigo-400 animate-pulse"></span>
-                    <span class="text-[10px] font-bold uppercase tracking-[0.3em] text-indigo-200">Investigación Independiente</span>
-                </div>
-
+        <!-- HEADER INSTITUCIONAL -->
+        <header class="mb-12 flex flex-col lg:flex-row justify-between items-start lg:items-end gap-10 pb-8 border-b-4 border-slate-900">
+            <div class="space-y-3 max-w-3xl">
                 <!-- Título Marca -->
                 <div>
-                    <h1 class="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-black italic tracking-tighter leading-[0.9] brand-title mb-4 break-words">
-                        SOCIONOMICS<br>LAB
+                    <h1 class="text-4xl sm:text-5xl md:text-6xl font-black tracking-tighter text-slate-900 uppercase">
+                        SocioNomics<span class="text-slate-500 font-light">Lab</span>
                     </h1>
-                    <div class="flex items-center gap-4 mt-2">
-                        <div class="h-0.5 w-12 bg-slate-700"></div>
-                        <p class="text-lg md:text-xl font-medium text-slate-300">
-                            La radiografía visual de <strong class="text-white">México</strong>
-                        </p>
-                    </div>
+                    <p class="text-xs md:text-sm font-bold text-slate-800 uppercase tracking-[0.2em] font-data mt-1">
+                        Research & Data Intelligence
+                    </p>
                 </div>
 
-                <!-- MANIFIESTO (.ORG) -->
-                <div class="max-w-2xl text-sm md:text-base leading-relaxed font-light text-slate-400 space-y-4">
-                    <p>
-                        Hacemos visible lo invisible. Traducimos información compleja sobre economía, política y sociedad en análisis visuales que cualquiera puede entender.
+                <!-- LEMA HÍBRIDO -->
+                <div class="mt-5 max-w-2xl border-l-2 border-slate-300 pl-4">
+                    <p class="text-lg font-bold text-slate-800 mb-1 font-sans tracking-tight">
+                        La radiografía visual de México.
                     </p>
-                    <p class="text-slate-500 text-xs md:text-sm font-medium border-l-2 border-indigo-500/50 pl-3">
-                        Sin afiliación política. Sin fondeo gubernamental ni corporativo. Solo datos, rigor metodológico y transparencia. Un proyecto de <strong class="text-slate-300">Eric Araujo Martínez</strong>.
+                    <p class="text-slate-600 text-sm md:text-base leading-relaxed font-editorial">
+                        Hacemos visible lo invisible. Traducimos información compleja sobre economía, política y sociedad en <em>briefs</em> de precisión y análisis de riesgo para tomadores de decisiones.
                     </p>
+                    <span class="text-xs font-sans font-bold text-slate-800 uppercase tracking-widest mt-3 block">Dirigido por Eric Araujo Martínez</span>
                 </div>
             </div>
 
-            <!-- Redes Sociales (Responsivos) -->
-            <div class="flex gap-4">
-                <a href="mailto:contacto@socionomicslab.org" class="social-link" aria-label="Email de Contacto">
-                    <i class="fa-solid fa-envelope"></i>
+            <!-- Botones de Acción -->
+            <div class="flex flex-col items-start lg:items-end gap-5 w-full lg:w-auto">
+                <a href="mailto:contacto@socionomicslab.org" class="w-full sm:w-auto btn-corporate px-6 py-3 text-xs font-bold uppercase tracking-widest text-center flex items-center justify-center gap-2 shadow-sm">
+                    <i class="fa-solid fa-briefcase"></i> Uso Corporativo / B2B
                 </a>
-                <a href="https://github.com/AraujoME/visualizaciones" target="_blank" class="social-link" aria-label="GitHub">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="social-link" aria-label="LinkedIn">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a href="https://x.com/SocioNomicsLab" target="_blank" class="social-link" aria-label="X (Twitter)">
-                    <i class="fab fa-x-twitter"></i>
-                </a>
+
+                <div class="flex flex-col sm:flex-row gap-6 sm:gap-8 items-start sm:items-center mt-2 w-full justify-start lg:justify-end border-t border-slate-200 pt-4">
+                    
+                    <!-- Sección: Compartir Hub -->
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Compartir:</span>
+                        <a href="https://twitter.com/intent/tweet?text=Te%20comparto%20el%20Intelligence%20Hub%20de%20SocioNomics%20Lab&url=https://socionomicslab.org" target="_blank" class="text-slate-500 hover:text-slate-900 transition-colors" aria-label="Compartir en X"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://socionomicslab.org" target="_blank" class="text-slate-500 hover:text-[#0a66c2] transition-colors" aria-label="Compartir en LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="https://api.whatsapp.com/send?text=Te%20comparto%20el%20Intelligence%20Hub%20de%20SocioNomics%20Lab.%20An%C3%A1lisis%20de%20riesgo%20macroecon%C3%B3mico:%20https://socionomicslab.org" target="_blank" class="text-slate-500 hover:text-[#25D366] transition-colors" aria-label="Compartir en WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+                        <button onclick="copyToClipboard()" class="text-slate-500 hover:text-slate-900 transition-colors relative group" aria-label="Copiar Enlace">
+                            <i class="fa-solid fa-link"></i>
+                            <span id="copy-tooltip-header" class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] font-bold px-2 py-1 rounded opacity-0 transition-opacity pointer-events-none whitespace-nowrap">¡Copiado!</span>
+                        </button>
+                    </div>
+
+                    <div class="hidden sm:block w-px h-5 bg-slate-300"></div>
+
+                    <!-- Sección: Mis Redes (Autor) -->
+                    <div class="flex items-center gap-3">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Autor:</span>
+                        <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="text-slate-500 hover:text-[#0a66c2] transition-colors" aria-label="Mi LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://x.com/SocioNomicsLab" target="_blank" class="text-slate-500 hover:text-slate-900 transition-colors" aria-label="X de SocioNomicsLab"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="mailto:contacto@socionomicslab.org" class="text-slate-500 hover:text-slate-900 transition-colors" aria-label="Correo"><i class="fa-regular fa-envelope"></i></a>
+                    </div>
+                </div>
             </div>
         </header>
 
-        <!-- GRID DE ESTUDIOS -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <!-- DESTACADO PRINCIPAL (Brief de Riesgo) -->
+        <div class="mb-14">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-2 h-2 bg-red-700 animate-pulse"></div>
+                <span class="text-[10px] text-slate-500 font-data uppercase tracking-widest font-bold">Research Highlight</span>
+            </div>
 
-            <!-- 1. NUEVO: BRIEF RIESGO PEMEX -->
-            <a href="https://socionomicslab.org/brief-riesgo-pemex/" class="glass-card card-pemex rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-yellow-500 rounded-xl flex items-center justify-center shadow-lg shadow-yellow-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-oil-well text-white"></i>
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <h3 class="text-base font-black text-white italic uppercase tracking-tight">Riesgo Pemex</h3>
-                            <span class="bg-yellow-500/20 text-yellow-400 text-[9px] font-bold px-2 py-0.5 rounded border border-yellow-500/30 animate-pulse">BRIEF</span>
+            <a href="https://socionomicslab.org/brief-riesgo-pemex/" class="block feature-brief p-8 md:p-10 group">
+                <div class="flex flex-col lg:flex-row gap-8 items-start">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-4 mb-5 pb-3 border-b border-slate-200">
+                            <span class="text-red-700 text-[11px] font-bold uppercase tracking-widest font-data">Riesgo Fiscal</span>
+                            <span class="text-slate-400 text-[10px] font-data uppercase">Reporte Q1 2026</span>
                         </div>
-                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
-                            Ingeniería financiera o realidad: Auditoría exprés a la deuda corporativa, los P-Caps y el costo oculto de proveedores.
+                        
+                        <!-- Título Serif Editorial -->
+                        <h3 class="text-3xl md:text-5xl font-black text-slate-900 mb-4 font-editorial leading-tight group-hover:text-red-800 transition-colors">
+                            Reconfiguración de Pasivos PEMEX
+                        </h3>
+                        
+                        <p class="text-base md:text-lg text-slate-600 leading-relaxed mb-6 font-ui">
+                            Análisis estructural del diferencial entre la deuda financiera oficial reportada ($84.5 MMD) y la transferencia real de riesgo al balance soberano bajo el Índice RFC-SL ($120.6 MMD).
                         </p>
-                    </div>
-                </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-yellow-400">INTELIGENCIA</span>
-                    <span>SHCP / PEMEX</span>
-                </div>
-            </a>
-
-            <!-- 2. NUEVO: INVERSIÓN EXTRANJERA DIRECTA -->
-            <a href="https://socionomicslab.org/inversion-extranjera/" class="glass-card card-ied rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-money-bill-transfer text-white"></i>
-                    </div>
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <h3 class="text-base font-black text-white italic uppercase tracking-tight">IED: Gran Divergencia</h3>
-                            <span class="bg-blue-500/20 text-blue-400 text-[9px] font-bold px-2 py-0.5 rounded border border-blue-500/30 animate-pulse">NUEVO</span>
+                        
+                        <div class="inline-flex items-center text-xs font-bold text-slate-900 uppercase tracking-widest group-hover:text-red-700 transition-colors">
+                            Acceder al Brief <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
                         </div>
-                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
-                            Ladrillos vs. Golondrinas: El colapso del capital nuevo frente a la ilusión de la reinversión de utilidades (2013-2026).
-                        </p>
+                    </div>
+                    
+                    <!-- Data Box Estricto -->
+                    <div class="w-full lg:w-72 bg-slate-50 border border-slate-300 p-6 shrink-0 flex flex-col justify-center">
+                        <p class="text-[10px] text-slate-500 uppercase tracking-widest font-data mb-2">Métrica RFC-SL</p>
+                        <p class="text-4xl font-black text-slate-900 mb-1 font-editorial">$120.6 <span class="text-lg text-slate-500 font-sans">MMD</span></p>
+                        <p class="text-xs text-red-700 font-bold mb-5 font-data">▲ +$36.1 MMD vs Oficial</p>
+                        <div class="h-px w-full bg-slate-300 mb-4"></div>
+                        <p class="text-xs text-slate-600"><strong>Impacto Macro:</strong> ~6.7% del PIB Nacional.</p>
                     </div>
                 </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-blue-400">MACROECONOMÍA</span>
-                    <span>BANXICO / SE</span>
+            </a>
+        </div>
+
+        <!-- BARRA DE BÚSQUEDA Y TÍTULO DE ARCHIVO -->
+        <div class="flex flex-col md:flex-row justify-between items-end md:items-center gap-6 mb-8 mt-16 pb-3 border-b-2 border-slate-900">
+            <h2 class="text-xl font-bold text-slate-900 uppercase tracking-widest font-sans">Archivo de Inteligencia <span class="text-slate-400 font-normal ml-1">(18)</span></h2>
+            
+            <!-- Input de Búsqueda estilo Terminal -->
+            <div class="relative w-full md:w-96 group">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fa-solid fa-search text-slate-400 text-sm"></i>
+                </div>
+                <input type="text" id="search-input" placeholder="Filtrar base de datos..." 
+                    class="w-full bg-white border border-slate-400 text-slate-900 text-xs uppercase tracking-wide rounded-none pl-9 pr-8 py-2.5 focus:outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-all font-data placeholder-slate-400">
+                <button id="clear-search" class="absolute inset-y-0 right-0 pr-3 flex items-center hidden text-slate-400 hover:text-slate-900 transition-colors">
+                    <i class="fa-solid fa-xmark text-sm"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- MENSAJE DE SIN RESULTADOS -->
+        <div id="no-results-msg" class="hidden w-full py-12 text-center bg-white border border-slate-300 mb-8">
+            <p class="text-sm font-bold text-slate-800 uppercase tracking-widest">Cero resultados en base de datos.</p>
+            <p class="text-xs text-slate-500 mt-2 font-data">Ajuste sus parámetros de búsqueda.</p>
+        </div>
+
+        <!-- GRID DE ESTUDIOS (Paneles Financieros) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5" id="research-grid">
+
+            <!-- 2. IED VS CARTERA -->
+            <a href="https://socionomicslab.org/inversion-extranjera-mexico/" class="searchable-card financial-panel group">
+                <div class="h-1 w-full bg-blue-800"></div>
+                <div class="p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-blue-800 font-data">Macroeconomía</span>
+                        <span class="text-[9px] text-slate-500 font-data">Q1 2026</span>
+                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-3 font-editorial leading-snug group-hover:text-blue-800 transition-colors">Ladrillos vs. Golondrinas</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed search-desc">Análisis del comportamiento asimétrico entre la IED (colapso de capital fresco) y la fuga histórica de Inversión de Cartera.</p>
+                </div>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[9px] text-slate-500 search-tags font-data uppercase font-bold">
+                    <span><i class="fa-solid fa-database mr-1"></i> Banxico MBP6</span>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-blue-800 group-hover:translate-x-1 transition-all"></i>
                 </div>
             </a>
 
-            <!-- 3. MONITOR DE RIESGO PAÍS -->
-            <a href="https://socionomicslab.org/riesgo-pais/" class="glass-card card-riesgo rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-cyan-600 rounded-xl flex items-center justify-center shadow-lg shadow-cyan-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-earth-americas text-white"></i>
+            <!-- 3. RIESGO PAÍS -->
+            <a href="https://socionomicslab.org/riesgo-pais/" class="searchable-card financial-panel group">
+                <div class="h-1 w-full bg-blue-800"></div>
+                <div class="p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-blue-800 font-data">Macroeconomía</span>
+                        <span class="text-[9px] text-slate-500 font-data">Q1 2026</span>
                     </div>
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <h3 class="text-base font-black text-white italic uppercase tracking-tight">Riesgo País LATAM</h3>
-                            <span class="bg-slate-500/20 text-slate-400 text-[9px] font-bold px-2 py-0.5 rounded border border-slate-500/30">2026</span>
-                        </div>
-                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
-                            El Termómetro de la Confianza: Evolución del Riesgo Soberano (EMBI) en América Latina. Análisis macroeconómico de 2013 a 2026.
-                        </p>
-                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-3 font-editorial leading-snug group-hover:text-blue-800 transition-colors">Riesgo País LATAM</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed search-desc">El Termómetro de la Confianza: Evolución del Riesgo Soberano (EMBI) en América Latina de 2013 a 2026.</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-cyan-400">MACROECONOMÍA</span>
-                    <span>J.P. Morgan / EMBI</span>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[9px] text-slate-500 search-tags font-data uppercase font-bold">
+                    <span><i class="fa-solid fa-database mr-1"></i> J.P. Morgan</span>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-blue-800 group-hover:translate-x-1 transition-all"></i>
                 </div>
             </a>
 
-            <!-- 4. EL COSTO DE LA DEUDA PÚBLICA (FOBAPROA) -->
-            <a href="https://socionomicslab.org/fobraproa-vs-perdidas4t/" class="glass-card card-fobaproa rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-rose-600 rounded-xl flex items-center justify-center shadow-lg shadow-rose-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-landmark text-white"></i>
+            <!-- 4. FOBAPROA VS 4T -->
+            <a href="https://socionomicslab.org/fobraproa-vs-perdidas4t/" class="searchable-card financial-panel group">
+                <div class="h-1 w-full bg-red-700"></div>
+                <div class="p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-red-700 font-data">Finanzas Públicas</span>
+                        <span class="text-[9px] text-slate-500 font-data">2025</span>
                     </div>
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <h3 class="text-base font-black text-white italic uppercase tracking-tight">Fobaproa vs 4T</h3>
-                        </div>
-                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
-                            Comparativa financiera: Costo histórico del FOBAPROA vs. Proyección de pérdidas en Pemex, CFE y NAIM (2019-2025).
-                        </p>
-                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-3 font-editorial leading-snug group-hover:text-red-700 transition-colors">Fobaproa vs 4T</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed search-desc">Comparativa financiera: Costo histórico del FOBAPROA vs. Proyección de pérdidas en Pemex, CFE y NAIM.</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-rose-400">FINANZAS PÚBLICAS</span>
-                    <span>SHCP / BMV</span>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[9px] text-slate-500 search-tags font-data uppercase font-bold">
+                    <span><i class="fa-solid fa-database mr-1"></i> SHCP / BMV</span>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-red-700 group-hover:translate-x-1 transition-all"></i>
                 </div>
             </a>
 
-            <!-- 5. EL COSTO DE OPORTUNIDAD (TREN MAYA) -->
-            <a href="https://socionomicslab.org/costo-oportunidad/" class="glass-card card-tren rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-train-subway text-white"></i>
+            <!-- 5. COSTO DE OPORTUNIDAD -->
+            <a href="https://socionomicslab.org/costo-oportunidad/" class="searchable-card financial-panel group">
+                <div class="h-1 w-full bg-blue-800"></div>
+                <div class="p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-blue-800 font-data">Economía</span>
+                        <span class="text-[9px] text-slate-500 font-data">2025</span>
                     </div>
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <h3 class="text-base font-black text-white italic uppercase tracking-tight">El Costo de Oportunidad</h3>
-                        </div>
-                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">
-                            Auditoría Presupuestal: Impacto del Tren Maya vs. Recortes en Seguridad, Educación e Infraestructura (2013-2025).
-                        </p>
-                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-3 font-editorial leading-snug group-hover:text-blue-800 transition-colors">Costo de Oportunidad</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed search-desc">Auditoría Presupuestal: Impacto del Tren Maya vs. Recortes en Seguridad, Educación e Infraestructura.</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-purple-400">ECONOMÍA</span>
-                    <span>SHCP / IMCO</span>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[9px] text-slate-500 search-tags font-data uppercase font-bold">
+                    <span><i class="fa-solid fa-database mr-1"></i> SHCP / IMCO</span>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-blue-800 group-hover:translate-x-1 transition-all"></i>
                 </div>
             </a>
 
-            <!-- 6. ¿DÓNDE ESTÁN LOS MUERTOS? -->
-            <a href="https://socionomicslab.org/donde-estan-los-muertos/" class="glass-card card-violencia rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-skull-crossbones text-white"></i>
+            <!-- 6. DÓNDE ESTÁN LOS MUERTOS -->
+            <a href="https://socionomicslab.org/donde-estan-los-muertos/" class="searchable-card financial-panel group">
+                <div class="h-1 w-full bg-amber-600"></div>
+                <div class="p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-amber-700 font-data">Seguridad</span>
+                        <span class="text-[9px] text-slate-500 font-data">2025</span>
                     </div>
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <h3 class="text-base font-black text-white italic uppercase tracking-tight">¿DÓNDE ESTÁN LOS MUERTOS?</h3>
-                            <span class="bg-red-500/20 text-red-400 text-[9px] font-bold px-2 py-0.5 rounded border border-red-500/30">2025</span>
-                        </div>
-                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">Sustitución Estadística: Análisis de la divergencia entre homicidios oficiales (Fiscalías), cuerpos (INEGI) y desapariciones (CNB).</p>
-                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-3 font-editorial leading-snug group-hover:text-amber-600 transition-colors">¿Dónde están los muertos?</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed search-desc">Sustitución Estadística: Análisis de la divergencia entre homicidios oficiales, cuerpos y desapariciones.</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-red-400">SEGURIDAD</span>
-                    <span>SESNSP / INEGI</span>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[9px] text-slate-500 search-tags font-data uppercase font-bold">
+                    <span><i class="fa-solid fa-database mr-1"></i> SESNSP / INEGI</span>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-amber-600 group-hover:translate-x-1 transition-all"></i>
                 </div>
             </a>
 
-            <!-- 7. DESPOJO INMOBILIARIO CDMX -->
-            <a href="https://socionomicslab.org/despojo-inmobiliario-cdmx/" class="glass-card card-despojo rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-house-lock text-white"></i>
+            <!-- 7. DESPOJO CDMX -->
+            <a href="https://socionomicslab.org/despojo-inmobiliario-cdmx/" class="searchable-card financial-panel group">
+                <div class="h-1 w-full bg-amber-600"></div>
+                <div class="p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-amber-700 font-data">Inmobiliario</span>
+                        <span class="text-[9px] text-slate-500 font-data">2025</span>
                     </div>
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <h3 class="text-base font-black text-white italic uppercase tracking-tight">Despojo CDMX</h3>
-                            <span class="bg-orange-500/20 text-orange-400 text-[9px] font-bold px-2 py-0.5 rounded border border-orange-500/30">2025</span>
-                        </div>
-                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">Realidad vs. Oficialidad: Auditoría de incidencia delictiva y la cifra negra inmobiliaria (2015-2025).</p>
-                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-3 font-editorial leading-snug group-hover:text-amber-600 transition-colors">Despojo CDMX</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed search-desc">Realidad vs. Oficialidad: Auditoría de incidencia delictiva y la cifra negra inmobiliaria (2015-2025).</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-orange-400">VIVIENDA</span>
-                    <span>SESNSP / ENVIPE</span>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[9px] text-slate-500 search-tags font-data uppercase font-bold">
+                    <span><i class="fa-solid fa-database mr-1"></i> SESNSP / ENVIPE</span>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-amber-600 group-hover:translate-x-1 transition-all"></i>
                 </div>
             </a>
 
-            <!-- 8. DIPLOMACIA DEL CRUDO 2026 -->
-            <a href="https://socionomicslab.org/petroleoacuba-2026/" class="glass-card card-petroleo26 rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-sky-600 rounded-xl flex items-center justify-center shadow-lg shadow-sky-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-ship text-white"></i>
+            <!-- 8. DIPLOMACIA DEL CRUDO -->
+            <a href="https://socionomicslab.org/petroleoacuba-2026/" class="searchable-card financial-panel group">
+                <div class="h-1 w-full bg-cyan-700"></div>
+                <div class="p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-cyan-800 font-data">Energía</span>
+                        <span class="text-[9px] text-slate-500 font-data">2026</span>
                     </div>
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <h3 class="text-base font-black text-white italic uppercase tracking-tight">Diplomacia del Crudo</h3>
-                            <span class="bg-sky-500/20 text-sky-400 text-[9px] font-bold px-2 py-0.5 rounded border border-sky-500/30">2026</span>
-                        </div>
-                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">Auditoría visual de los envíos de petróleo de México a Cuba (2019-2026). Análisis de impacto financiero y geopolítico.</p>
-                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-3 font-editorial leading-snug group-hover:text-cyan-700 transition-colors">Diplomacia del Crudo</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed search-desc">Auditoría visual de los envíos de petróleo de México a Cuba (2019-2026). Impacto financiero y operativo.</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-sky-400">ENERGÍA</span>
-                    <span>OSINT</span>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[9px] text-slate-500 search-tags font-data uppercase font-bold">
+                    <span><i class="fa-solid fa-database mr-1"></i> PEMEX / OSINT</span>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-cyan-700 group-hover:translate-x-1 transition-all"></i>
                 </div>
             </a>
 
-            <!-- 9. MERCADO LABORAL UNIVERSITARIO -->
-            <a href="https://socionomicslab.org/mercadolaboraluniversitario/" class="glass-card card-universidad rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-indigo-500 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-briefcase text-white"></i>
+            <!-- 9. MERCADO LABORAL -->
+            <a href="https://socionomicslab.org/mercadolaboraluniversitario/" class="searchable-card financial-panel group">
+                <div class="h-1 w-full bg-purple-700"></div>
+                <div class="p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-purple-700 font-data">Educación</span>
+                        <span class="text-[9px] text-slate-500 font-data">2025</span>
                     </div>
-                    <div>
-                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">Mercado Laboral</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">Evolución de ingresos vs. popularidad de las carreras más demandadas en México (2018-2024).</p>
-                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-3 font-editorial leading-snug group-hover:text-purple-700 transition-colors">Mercado Laboral Uni.</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed search-desc">Evolución de ingresos vs. popularidad de las carreras más demandadas en México (2018-2024).</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-indigo-400">EDUCACIÓN</span>
-                    <span>IMCO / ENOE</span>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[9px] text-slate-500 search-tags font-data uppercase font-bold">
+                    <span><i class="fa-solid fa-database mr-1"></i> IMCO / ENOE</span>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-purple-700 group-hover:translate-x-1 transition-all"></i>
                 </div>
             </a>
+
+            <!-- ============================================== -->
+            <!-- ARCHIVO OCULTO POR DEFECTO (Cargar Más)        -->
+            <!-- ============================================== -->
 
             <!-- 10. LA ILUSIÓN DEL EMPLEO -->
-            <a href="https://socionomicslab.org/altasybajaspatronales/" class="glass-card card-laboral rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-green-600 rounded-xl flex items-center justify-center shadow-lg shadow-green-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-users-line text-white"></i>
+            <a href="https://socionomicslab.org/altasybajaspatronales/" class="searchable-card hidden-research hidden financial-panel group">
+                <div class="h-1 w-full bg-emerald-700"></div>
+                <div class="p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-700 font-data">Laboral</span>
+                        <span class="text-[9px] text-slate-500 font-data">2025</span>
                     </div>
-                    <div>
-                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">La Ilusión del Empleo</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">Desglose del impacto administrativo (Plataformas) vs. Realidad de las empresas (Bajas Patronales).</p>
-                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-3 font-editorial leading-snug group-hover:text-emerald-700 transition-colors">La Ilusión del Empleo</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed search-desc">Desglose del impacto administrativo vs. Realidad de las empresas (Bajas Patronales).</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-green-400">LABORAL</span>
-                    <span>IMSS 2025</span>
-                </div>
-            </a>
-
-            <!-- 11. RESACA DEL CRÉDITO -->
-            <a href="https://socionomicslab.org/resaca-del-credito/" class="glass-card card-resaca rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center shadow-lg shadow-red-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-credit-card text-white"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">La Resaca del Crédito</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">Monitor de morosidad (IMOR) en retail: Liverpool, Sanborns y Palacio (2023-2025).</p>
-                    </div>
-                </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-red-400">FINANZAS</span>
-                    <span>BMV 2025</span>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[9px] text-slate-500 search-tags font-data uppercase font-bold">
+                    <span><i class="fa-solid fa-database mr-1"></i> IMSS</span>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-emerald-700 group-hover:translate-x-1 transition-all"></i>
                 </div>
             </a>
 
-            <!-- 12. LA GRAN DIVERGENCIA -->
-            <a href="https://socionomicslab.org/precios-mercado-vs-estado/" class="glass-card card-mercado rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-orange-500 rounded-xl flex items-center justify-center shadow-lg shadow-orange-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-bolt text-white"></i>
+            <!-- 11. LA RESACA DEL CRÉDITO -->
+            <a href="https://socionomicslab.org/resaca-del-credito/" class="searchable-card hidden-research hidden financial-panel group">
+                <div class="h-1 w-full bg-red-700"></div>
+                <div class="p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-red-700 font-data">Finanzas</span>
+                        <span class="text-[9px] text-slate-500 font-data">2025</span>
                     </div>
-                    <div>
-                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">La Gran Divergencia</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">Comparativa de precios: Inflación energética (Estado) vs. Deflación tecnológica (Mercado).</p>
-                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-3 font-editorial leading-snug group-hover:text-red-700 transition-colors">La Resaca del Crédito</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed search-desc">Monitor de morosidad (IMOR) en retail: Liverpool, Sanborns y Palacio (2023-2025).</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-orange-400">ECONOMÍA</span>
-                    <span>CFE / IFT</span>
-                </div>
-            </a>
-
-            <!-- 13. LA CARRERA EDUCATIVA -->
-            <a href="https://socionomicslab.org/comparativapisamexico/" class="glass-card card-pisa rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-graduation-cap text-white"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">La Carrera Educativa</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">Análisis PISA (2012-2022): La brecha estructural entre Latinoamérica y el líder global.</p>
-                    </div>
-                </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-blue-400">EDUCACIÓN</span>
-                    <span>OCDE</span>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[9px] text-slate-500 search-tags font-data uppercase font-bold">
+                    <span><i class="fa-solid fa-database mr-1"></i> BMV</span>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-red-700 group-hover:translate-x-1 transition-all"></i>
                 </div>
             </a>
 
-            <!-- 14. CLASE MEDIA GLOBAL -->
-            <a href="https://socionomicslab.org/clasemedia/" class="glass-card card-clase rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-teal-500 rounded-xl flex items-center justify-center shadow-lg shadow-teal-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-layer-group text-white"></i>
+            <!-- 12. LA GRAN DIVERGENCIA (Precios) -->
+            <a href="https://socionomicslab.org/precios-mercado-vs-estado/" class="searchable-card hidden-research hidden financial-panel group">
+                <div class="h-1 w-full bg-blue-800"></div>
+                <div class="p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-blue-800 font-data">Economía</span>
+                        <span class="text-[9px] text-slate-500 font-data">2024</span>
                     </div>
-                    <div>
-                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">Clase Media Global</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">Estratificación social comparada ajustada por PPA: ¿Quién pertenece realmente?</p>
-                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-3 font-editorial leading-snug group-hover:text-blue-800 transition-colors">Inflación de Estado</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed search-desc">Comparativa de precios: Inflación energética (Estado) vs. Deflación tecnológica (Mercado).</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-teal-400">SOCIOLOGÍA</span>
-                    <span>BM / PEW</span>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[9px] text-slate-500 search-tags font-data uppercase font-bold">
+                    <span><i class="fa-solid fa-database mr-1"></i> CFE / IFT</span>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-blue-800 group-hover:translate-x-1 transition-all"></i>
                 </div>
             </a>
 
-            <!-- 15. PIRÁMIDE POBLACIONAL -->
-            <a href="https://socionomicslab.org/piramidepoblacionalmexico/" class="glass-card card-piramide rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-pink-600 rounded-xl flex items-center justify-center shadow-lg shadow-pink-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-people-group text-white"></i>
+            <!-- 13. CARRERA EDUCATIVA -->
+            <a href="https://socionomicslab.org/comparativapisamexico/" class="searchable-card hidden-research hidden financial-panel group">
+                <div class="h-1 w-full bg-purple-700"></div>
+                <div class="p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-purple-700 font-data">Educación</span>
+                        <span class="text-[9px] text-slate-500 font-data">2024</span>
                     </div>
-                    <div>
-                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">Pirámide Poblacional</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">Simulador interactivo de la transición demográfica de México (1960-2050).</p>
-                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-3 font-editorial leading-snug group-hover:text-purple-700 transition-colors">La Carrera Educativa</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed search-desc">Análisis PISA (2012-2022): La brecha estructural entre Latinoamérica y el líder global.</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-pink-400">DEMOGRAFÍA</span>
-                    <span>CONAPO</span>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[9px] text-slate-500 search-tags font-data uppercase font-bold">
+                    <span><i class="fa-solid fa-database mr-1"></i> OCDE</span>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-purple-700 group-hover:translate-x-1 transition-all"></i>
+                </div>
+            </a>
+
+            <!-- 14. CLASE MEDIA -->
+            <a href="https://socionomicslab.org/clasemedia/" class="searchable-card hidden-research hidden financial-panel group">
+                <div class="h-1 w-full bg-amber-600"></div>
+                <div class="p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-amber-700 font-data">Sociología</span>
+                        <span class="text-[9px] text-slate-500 font-data">2024</span>
+                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-3 font-editorial leading-snug group-hover:text-amber-600 transition-colors">Clase Media Global</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed search-desc">Estratificación social comparada ajustada por PPA: ¿Quién pertenece realmente?</p>
+                </div>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[9px] text-slate-500 search-tags font-data uppercase font-bold">
+                    <span><i class="fa-solid fa-database mr-1"></i> BM / PEW</span>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-amber-600 group-hover:translate-x-1 transition-all"></i>
+                </div>
+            </a>
+
+            <!-- 15. PIRÁMIDE -->
+            <a href="https://socionomicslab.org/piramidepoblacionalmexico/" class="searchable-card hidden-research hidden financial-panel group">
+                <div class="h-1 w-full bg-amber-600"></div>
+                <div class="p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-amber-700 font-data">Demografía</span>
+                        <span class="text-[9px] text-slate-500 font-data">2024</span>
+                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-3 font-editorial leading-snug group-hover:text-amber-600 transition-colors">Pirámide Poblacional</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed search-desc">Simulador interactivo de la transición demográfica de México (1960-2050).</p>
+                </div>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[9px] text-slate-500 search-tags font-data uppercase font-bold">
+                    <span><i class="fa-solid fa-database mr-1"></i> CONAPO</span>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-amber-600 group-hover:translate-x-1 transition-all"></i>
                 </div>
             </a>
 
             <!-- 16. PIB GLOBAL -->
-            <a href="https://socionomicslab.org/pibpercapitappa/" class="glass-card card-pib rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-emerald-500 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-earth-americas text-white"></i>
+            <a href="https://socionomicslab.org/pibpercapitappa/" class="searchable-card hidden-research hidden financial-panel group">
+                <div class="h-1 w-full bg-blue-800"></div>
+                <div class="p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-blue-800 font-data">Geopolítica</span>
+                        <span class="text-[9px] text-slate-500 font-data">2024</span>
                     </div>
-                    <div>
-                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">PIB Global (PPA)</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-3">Comparación de poder adquisitivo: China, Rusia, EEUU y México.</p>
-                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-3 font-editorial leading-snug group-hover:text-blue-800 transition-colors">PIB Global (PPA)</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed search-desc">Comparación de poder adquisitivo real: China, Rusia, EEUU y México.</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-emerald-400">GEOPOLÍTICA</span>
-                    <span>BM / FMI</span>
-                </div>
-            </a>
-
-            <!-- 17. TU DEUDA PERSONAL -->
-            <a href="https://socionomicslab.org/deudapormexicano/" class="glass-card card-deuda rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-money-bill-trend-up text-white"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">Tu Deuda Personal</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">Análisis del SHRFSP por habitante (2000-2025) y su crecimiento nominal.</p>
-                    </div>
-                </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-purple-400">FINANZAS</span>
-                    <span>$139k/hab</span>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[9px] text-slate-500 search-tags font-data uppercase font-bold">
+                    <span><i class="fa-solid fa-database mr-1"></i> BM / FMI</span>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-blue-800 group-hover:translate-x-1 transition-all"></i>
                 </div>
             </a>
 
-            <!-- 18. CRISIS DE MORTALIDAD -->
-            <a href="https://socionomicslab.org/defunciones-oncologico/" class="glass-card card-mortalidad rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center shadow-lg shadow-amber-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-child-reaching text-white"></i>
+            <!-- 17. DEUDA PERSONAL -->
+            <a href="https://socionomicslab.org/deudapormexicano/" class="searchable-card hidden-research hidden financial-panel group">
+                <div class="h-1 w-full bg-red-700"></div>
+                <div class="p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-red-700 font-data">Finanzas Públicas</span>
+                        <span class="text-[9px] text-slate-500 font-data">2024</span>
                     </div>
-                    <div>
-                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">Crisis de Mortalidad</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">Brecha generacional en defunciones por cáncer (2012-2025).</p>
-                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-3 font-editorial leading-snug group-hover:text-red-700 transition-colors">Tu Deuda Personal</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed search-desc">Análisis del SHRFSP (Deuda Pública) por habitante (2000-2025) y su crecimiento.</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-amber-400">SALUD</span>
-                    <span>INEGI</span>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[9px] text-slate-500 search-tags font-data uppercase font-bold">
+                    <span><i class="fa-solid fa-database mr-1"></i> SHCP</span>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-red-700 group-hover:translate-x-1 transition-all"></i>
                 </div>
             </a>
 
-            <!-- 19. REPORTE ONCOLÓGICO (COSTO MEDICINAS) -->
-            <a href="https://socionomicslab.org/oncologicos/" class="glass-card card-oncologico rounded-3xl p-6 group">
-                <div class="space-y-4">
-                    <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-900/20 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-pills text-white"></i>
+            <!-- 18. CRISIS MORTALIDAD -->
+            <a href="https://socionomicslab.org/defunciones-oncologico/" class="searchable-card hidden-research hidden financial-panel group">
+                <div class="h-1 w-full bg-purple-700"></div>
+                <div class="p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-purple-700 font-data">Salud Pública</span>
+                        <span class="text-[9px] text-slate-500 font-data">2024</span>
                     </div>
-                    <div>
-                        <h3 class="text-base font-black text-white italic uppercase tracking-tight">Reporte Oncológico</h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">Monitor de precios y desabasto de quimioterapias en mercado privado.</p>
-                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-3 font-editorial leading-snug group-hover:text-purple-700 transition-colors">Crisis de Mortalidad</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed search-desc">Brecha generacional en defunciones por cáncer en México (2012-2025).</p>
                 </div>
-                <div class="mt-4 pt-3 border-t border-white/5 flex justify-between text-[10px] font-bold text-slate-500">
-                    <span class="text-indigo-400">INVESTIGACIÓN</span>
-                    <span>Precios</span>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[9px] text-slate-500 search-tags font-data uppercase font-bold">
+                    <span><i class="fa-solid fa-database mr-1"></i> INEGI</span>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-purple-700 group-hover:translate-x-1 transition-all"></i>
+                </div>
+            </a>
+
+            <!-- 19. REPORTE ONCOLÓGICO -->
+            <a href="https://socionomicslab.org/oncologicos/" class="searchable-card hidden-research hidden financial-panel group">
+                <div class="h-1 w-full bg-purple-700"></div>
+                <div class="p-6 flex-1">
+                    <div class="flex justify-between items-center mb-4 pb-3 border-b border-slate-200">
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-purple-700 font-data">Investigación</span>
+                        <span class="text-[9px] text-slate-500 font-data">2024</span>
+                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-3 font-editorial leading-snug group-hover:text-purple-700 transition-colors">Mercado Oncológico</h3>
+                    <p class="text-xs text-slate-600 leading-relaxed search-desc">Monitor de precios y desabasto de quimioterapias clave en el mercado privado.</p>
+                </div>
+                <div class="px-6 py-3 bg-slate-50 border-t border-slate-200 flex justify-between items-center text-[9px] text-slate-500 search-tags font-data uppercase font-bold">
+                    <span><i class="fa-solid fa-database mr-1"></i> Farmacias</span>
+                    <i class="fa-solid fa-arrow-right text-slate-300 group-hover:text-purple-700 group-hover:translate-x-1 transition-all"></i>
                 </div>
             </a>
 
         </div>
 
-        <!-- FOOTER -->
-        <footer class="mt-32 pt-10 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-            <div>
-                <p class="text-4xl font-black text-indigo-500 tracking-tighter italic uppercase leading-none">SocioNomics Lab</p>
-                <p class="text-[9px] font-black text-slate-600 uppercase tracking-[0.4em] mt-3">Intelligence for Social Action • 2026</p>
-            </div>
-            
-            <!-- Redes Sociales Footer -->
-            <div class="flex gap-6">
-                <a href="mailto:contacto@socionomicslab.org" class="text-slate-500 hover:text-white transition-colors" aria-label="Email"><i class="fa-solid fa-envelope text-xl"></i></a>
-                <a href="https://github.com/AraujoME/visualizaciones" target="_blank" class="text-slate-500 hover:text-white transition-colors" aria-label="GitHub"><i class="fab fa-github text-xl"></i></a>
-                <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="text-slate-500 hover:text-indigo-500 transition-colors" aria-label="LinkedIn"><i class="fab fa-linkedin-in text-xl"></i></a>
-                <a href="https://x.com/SocioNomicsLab" target="_blank" class="text-slate-500 hover:text-white transition-colors" aria-label="X (Twitter)"><i class="fab fa-x-twitter text-xl"></i></a>
-            </div>
-        </footer>
+        <!-- Botón Ver Archivo Antiguo -->
+        <div class="mt-12 text-center" id="load-more-container">
+            <button id="load-more-btn" class="inline-flex items-center justify-center px-8 py-3 border border-slate-400 hover:border-slate-900 bg-white text-slate-800 rounded-none text-xs font-bold font-data uppercase tracking-widest focus:outline-none transition-all shadow-[2px_2px_0px_0px_rgba(15,23,42,0.1)] hover:shadow-[4px_4px_0px_0px_rgba(15,23,42,0.2)] hover:-translate-y-0.5">
+                Mostrar Archivo Histórico (10) <i class="fa-solid fa-chevron-down ml-3"></i>
+            </button>
+        </div>
+
     </div>
 
+    <!-- FOOTER INSTITUCIONAL -->
+    <footer class="bg-slate-900 text-white mt-12 py-12 border-t-4 border-slate-700">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="text-center md:text-left">
+                <p class="text-2xl font-black tracking-tighter uppercase">SocioNomics<span class="text-slate-400 font-light">Lab</span></p>
+                <p class="text-[10px] font-data text-slate-400 uppercase tracking-[0.2em] mt-2">Intelligence for Social Action • 2026</p>
+            </div>
+            
+            <div class="flex flex-col md:flex-row items-center gap-6 md:gap-8">
+                <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" class="opacity-50 hover:opacity-100 transition-opacity hidden md:block">
+                    <img src="https://licensebuttons.net/l/by-nc/4.0/80x15.png" alt="CC BY-NC 4.0">
+                </a>
+                <div class="hidden md:block w-px h-8 bg-slate-700"></div>
+                
+                <div class="flex flex-col sm:flex-row items-center gap-6 md:gap-8">
+                    <!-- Sección: Compartir Hub (Footer) -->
+                    <div class="flex items-center gap-4">
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Compartir:</span>
+                        <a href="https://twitter.com/intent/tweet?text=Te%20comparto%20el%20Intelligence%20Hub%20de%20SocioNomics%20Lab&url=https://socionomicslab.org" target="_blank" class="text-slate-400 hover:text-white transition-colors" aria-label="Compartir en X"><i class="fa-brands fa-x-twitter text-lg"></i></a>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://socionomicslab.org" target="_blank" class="text-slate-400 hover:text-[#0a66c2] transition-colors" aria-label="Compartir en LinkedIn"><i class="fa-brands fa-linkedin-in text-lg"></i></a>
+                        <a href="https://api.whatsapp.com/send?text=Te%20comparto%20el%20Intelligence%20Hub%20de%20SocioNomics%20Lab.%20An%C3%A1lisis%20de%20riesgo%20macroecon%C3%B3mico:%20https://socionomicslab.org" target="_blank" class="text-slate-400 hover:text-[#25D366] transition-colors" aria-label="Compartir en WhatsApp"><i class="fa-brands fa-whatsapp text-lg"></i></a>
+                        <button onclick="copyToClipboard()" class="text-slate-400 hover:text-white transition-colors relative group" aria-label="Copiar Enlace">
+                            <i class="fa-solid fa-link text-lg"></i>
+                            <span id="copy-tooltip-footer" class="absolute -top-8 left-1/2 -translate-x-1/2 bg-white text-slate-900 text-[10px] font-bold px-2 py-1 opacity-0 transition-opacity pointer-events-none whitespace-nowrap shadow-md">¡Copiado!</span>
+                        </button>
+                    </div>
+                    
+                    <div class="hidden sm:block w-px h-6 bg-slate-700"></div>
+
+                    <!-- Sección: Mis Redes (Footer) -->
+                    <div class="flex items-center gap-4">
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Autor:</span>
+                        <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank" class="text-slate-400 hover:text-[#0a66c2] transition-colors" aria-label="LinkedIn"><i class="fa-brands fa-linkedin text-lg"></i></a>
+                        <a href="https://x.com/SocioNomicsLab" target="_blank" class="text-slate-400 hover:text-white transition-colors" aria-label="Twitter"><i class="fa-brands fa-x-twitter text-lg"></i></a>
+                        <a href="https://github.com/araujome" target="_blank" class="text-slate-400 hover:text-white transition-colors" aria-label="GitHub"><i class="fa-brands fa-github text-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- SCRIPT DE INTERACTIVIDAD -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadMoreBtn = document.getElementById('load-more-btn');
+            const loadMoreContainer = document.getElementById('load-more-container');
+            const searchInput = document.getElementById('search-input');
+            const clearSearchBtn = document.getElementById('clear-search');
+            const allCards = document.querySelectorAll('.searchable-card');
+            const noResultsMsg = document.getElementById('no-results-msg');
+
+            // --- LÓGICA: CARGAR MÁS ---
+            function revealHiddenCards() {
+                const hiddenCards = document.querySelectorAll('.hidden-research:not(.revealed)');
+                
+                hiddenCards.forEach((card, index) => {
+                    card.classList.remove('hidden');
+                    card.classList.add('revealed');
+                    
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(10px)';
+                    
+                    setTimeout(() => {
+                        card.style.transition = 'all 0.3s ease';
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, index * 50); 
+                });
+
+                if (loadMoreContainer) {
+                    loadMoreContainer.style.transition = 'opacity 0.3s ease';
+                    loadMoreContainer.style.opacity = '0';
+                    setTimeout(() => loadMoreContainer.style.display = 'none', 300);
+                }
+            }
+
+            if (loadMoreBtn) {
+                loadMoreBtn.addEventListener('click', revealHiddenCards);
+            }
+
+            // --- LÓGICA: BÚSQUEDA INTELIGENTE ---
+            function performSearch() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                let visibleCount = 0;
+
+                if (searchTerm.length > 0) {
+                    clearSearchBtn.classList.remove('hidden');
+                } else {
+                    clearSearchBtn.classList.add('hidden');
+                }
+
+                if (searchTerm === '') {
+                    allCards.forEach(card => {
+                        card.classList.remove('fade-out');
+                        card.style.display = ''; 
+                        if (card.classList.contains('hidden-research') && !card.classList.contains('revealed')) {
+                            card.classList.add('hidden');
+                        }
+                    });
+                    
+                    noResultsMsg.classList.add('hidden');
+                    
+                    const unrevealedCards = document.querySelectorAll('.hidden-research:not(.revealed)');
+                    if (unrevealedCards.length > 0 && loadMoreContainer) {
+                        loadMoreContainer.style.display = 'block';
+                        setTimeout(() => loadMoreContainer.style.opacity = '1', 50);
+                    }
+                    return;
+                }
+
+                if (loadMoreContainer) loadMoreContainer.style.display = 'none';
+
+                allCards.forEach(card => {
+                    const title = card.querySelector('h3').innerText.toLowerCase();
+                    const desc = card.querySelector('.search-desc').innerText.toLowerCase();
+                    const tags = card.querySelector('.search-tags').innerText.toLowerCase();
+                    const topTags = card.children[1].children[0].innerText.toLowerCase();
+                    
+                    const matches = title.includes(searchTerm) || desc.includes(searchTerm) || tags.includes(searchTerm) || topTags.includes(searchTerm);
+
+                    if (matches) {
+                        card.classList.remove('hidden');
+                        card.style.display = 'flex'; 
+                        setTimeout(() => card.classList.remove('fade-out'), 10);
+                        visibleCount++;
+                    } else {
+                        card.classList.add('fade-out');
+                        setTimeout(() => {
+                            if (searchInput.value.toLowerCase().trim().length > 0 && !title.includes(searchInput.value.toLowerCase().trim())) {
+                                card.style.display = 'none';
+                            }
+                        }, 300); 
+                    }
+                });
+
+                setTimeout(() => {
+                    if (visibleCount === 0) {
+                        noResultsMsg.classList.remove('hidden');
+                    } else {
+                        noResultsMsg.classList.add('hidden');
+                    }
+                }, 300);
+            }
+
+            searchInput.addEventListener('input', performSearch);
+
+            clearSearchBtn.addEventListener('click', () => {
+                searchInput.value = '';
+                performSearch();
+                searchInput.focus();
+            });
+        });
+
+        // --- LÓGICA: COPIAR ENLACE ---
+        function copyToClipboard() {
+            const url = window.location.href;
+            const tempInput = document.createElement("input");
+            tempInput.value = url;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            const tooltipHeader = document.getElementById('copy-tooltip-header');
+            const tooltipFooter = document.getElementById('copy-tooltip-footer');
+            
+            if (tooltipHeader) {
+                tooltipHeader.classList.remove('opacity-0');
+                tooltipHeader.classList.add('opacity-100');
+                setTimeout(() => {
+                    tooltipHeader.classList.remove('opacity-100');
+                    tooltipHeader.classList.add('opacity-0');
+                }, 2000);
+            }
+
+            if (tooltipFooter) {
+                tooltipFooter.classList.remove('opacity-0');
+                tooltipFooter.classList.add('opacity-100');
+                setTimeout(() => {
+                    tooltipFooter.classList.remove('opacity-100');
+                    tooltipFooter.classList.add('opacity-0');
+                }, 2000);
+            }
+        }
+    </script>
 </body>
 </html>
