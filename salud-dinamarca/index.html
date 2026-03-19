@@ -1,0 +1,1366 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Auditoría forense: ¿México tiene un sistema de salud como Dinamarca? Análisis comparativo basado en datos OCDE 2023-2025.">
+    <title>¿Sistema de Salud como Dinamarca? Auditoría Forense | SocioNomics Lab</title>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="¿México tiene un sistema de salud como Dinamarca?">
+    <meta property="og:description"
+        content="Análisis comparativo: México gasta $1,181 USD per cápita vs $6,280 de Dinamarca. Gasto de bolsillo: 47% vs 14.3%">
+    <meta property="og:image" content="https://socionomicslab.org/img/salud-dinamarca-brief.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&family=Merriweather:ital,wght@0,300;0,700;0,900;1,300;1,700&display=swap');
+
+        :root {
+            --font-ui: 'Inter', sans-serif;
+            --font-editorial: 'Merriweather', serif;
+            --font-data: 'JetBrains Mono', monospace;
+            --sn-dark: #0f172a;
+            --sn-red: #b91c1c;
+            --sn-bg: #f1f5f9;
+        }
+
+        body {
+            font-family: var(--font-ui);
+            background-color: var(--sn-bg);
+            color: var(--sn-dark);
+        }
+
+        .font-editorial {
+            font-family: var(--font-editorial);
+        }
+
+        .font-data {
+            font-family: var(--font-data);
+        }
+
+        /* HEADER ESTÁNDAR SNL */
+        .snl-header {
+            background: var(--sn-dark);
+            border-bottom: 2px solid #334155;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 0.75rem 0;
+        }
+
+        .snl-header-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .snl-logo {
+            font-size: 1.25rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.05em;
+            text-decoration: none;
+            color: #ffffff;
+            transition: opacity 0.2s;
+        }
+
+        .snl-logo:hover {
+            opacity: 0.8;
+        }
+
+        .snl-logo-light {
+            color: #94a3b8;
+            font-weight: 300;
+        }
+
+        .snl-tagline {
+            font-family: var(--font-data);
+            font-size: 0.5rem;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-top: 0.125rem;
+        }
+
+        /* Panels */
+        .data-panel {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 0;
+            transition: all 0.15s;
+        }
+
+        .data-panel:hover {
+            border-color: var(--sn-dark);
+            box-shadow: 4px 4px 0 rgba(15, 23, 42, 0.1);
+            transform: translate(-1px, -1px);
+        }
+
+        .critical-panel {
+            border-left: 4px solid var(--sn-red);
+        }
+
+        /* Timeline */
+        .timeline-item {
+            display: flex;
+            gap: 1.5rem;
+            position: relative;
+        }
+
+        .timeline-dot {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 0.25rem;
+            z-index: 10;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 0.5rem;
+            top: 1.5rem;
+            bottom: -1.5rem;
+            width: 2px;
+            background: #cbd5e1;
+        }
+
+        /* Comparison bars */
+        .comparison-bar {
+            height: 2.5rem;
+            background: var(--sn-dark);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+            margin-bottom: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .comparison-bar:hover {
+            box-shadow: 4px 4px 0 rgba(15, 23, 42, 0.1);
+        }
+
+        .comparison-bar.mx {
+            background: var(--sn-red);
+        }
+
+        /* Insight boxes */
+        .insight-box {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-left: 4px solid #10b981;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .insight-box.critical {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border-left-color: var(--sn-red);
+        }
+
+        /* Verdict table */
+        .verdict-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            font-size: 0.875rem;
+        }
+
+        .verdict-table th {
+            background: var(--sn-dark);
+            color: white;
+            padding: 0.75rem;
+            text-align: left;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.625rem;
+            letter-spacing: 0.05em;
+        }
+
+        .verdict-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .verdict-table tr:hover {
+            background: #f8fafc;
+        }
+
+        .verdict-fail {
+            color: var(--sn-red);
+            font-weight: 700;
+        }
+
+        /* Chart containers */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body class="min-h-screen">
+
+    <!-- HEADER ESTÁNDAR SNL -->
+    <nav class="snl-header">
+        <div class="snl-header-container">
+            <div>
+                <a href="https://socionomicslab.org" class="snl-logo" aria-label="Ir al inicio de SocioNomics Lab">
+                    SocioNomics<span class="snl-logo-light">Lab</span>
+                </a>
+                <p class="snl-tagline">Research & Data Intelligence</p>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="https://socionomicslab.org"
+                    class="text-slate-400 hover:text-white text-xs font-bold uppercase tracking-wider transition-colors hidden md:block">Inicio</a>
+                <!-- Botón corporativo alineado con paleta de marca -->
+                <a href="mailto:contacto@socionomicslab.org"
+                    class="bg-white hover:bg-slate-200 text-slate-900 px-4 py-2 text-xs font-bold uppercase tracking-wider transition-colors border border-transparent">Uso
+                    Corporativo</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- TICKER INFO -->
+    <div class="w-full bg-slate-800 border-b border-slate-700 py-2 hidden md:block">
+        <div
+            class="max-w-7xl mx-auto px-6 flex justify-between items-center text-[9px] font-data text-slate-400 uppercase tracking-widest">
+            <span>Brief de Salud Pública • Q1 2026</span>
+            <span>Fuentes: OCDE, OMS, Banco Mundial</span>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-7xl mx-auto px-6 py-12 md:py-16">
+
+        <!-- HERO SECTION -->
+        <section class="mb-16">
+            <div class="flex flex-col xl:flex-row justify-between items-start gap-8 mb-8">
+                <div class="flex-1">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-2 h-2 bg-red-600 animate-pulse"></div>
+                        <span class="text-[10px] text-slate-500 font-data uppercase tracking-widest font-bold">Research
+                            Highlight: Salud Pública</span>
+                    </div>
+
+                    <h1
+                        class="text-4xl md:text-6xl lg:text-7xl font-black text-slate-900 font-editorial italic leading-tight mb-6">
+                        ¿Tenemos un sistema de salud como el de <span
+                            class="text-slate-400 underline decoration-slate-300">Dinamarca?</span>
+                    </h1>
+
+                    <p class="text-xl md:text-2xl text-slate-600 font-editorial leading-relaxed max-w-4xl mb-4">
+                        Auditoría volumétrica de la viabilidad de convergencia entre el modelo mexicano fragmentado y el
+                        sistema universal danés.
+                    </p>
+
+                    <p class="text-sm text-slate-500 font-data uppercase tracking-wider">
+                        Elaborado por <strong class="text-slate-700">Eric Araujo Martínez</strong> • Q1 2026
+                    </p>
+                </div>
+
+                <!-- Compartir + Autor -->
+                <div class="flex flex-wrap items-center justify-start xl:justify-end gap-4 shrink-0 mt-6 xl:mt-0">
+                    <!-- Compartir -->
+                    <div class="flex items-center gap-3 bg-white border border-slate-300 px-4 py-3 rounded-none">
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Compartir:</span>
+                        <a href="https://twitter.com/intent/tweet?text=¿México%20tiene%20sistema%20de%20salud%20como%20Dinamarca?%20Auditoría%20forense&url=https://socionomicslab.org/salud-dinamarca"
+                            target="_blank" aria-label="Compartir en X (Twitter)"
+                            class="text-slate-500 hover:text-slate-900 transition-colors">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://socionomicslab.org/salud-dinamarca"
+                            target="_blank" aria-label="Compartir en LinkedIn"
+                            class="text-slate-500 hover:text-[#0a66c2] transition-colors">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://api.whatsapp.com/send?text=Auditoría:%20Sistema%20de%20salud%20México%20vs%20Dinamarca%20-%20https://socionomicslab.org/salud-dinamarca"
+                            target="_blank" aria-label="Compartir en WhatsApp"
+                            class="text-slate-500 hover:text-[#25d366] transition-colors">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <button onclick="copyToClipboard()" aria-label="Copiar Enlace"
+                            class="text-slate-500 hover:text-slate-900 transition-colors relative group border-none bg-transparent cursor-pointer p-0">
+                            <i class="fa-solid fa-link"></i>
+                            <span id="copy-tooltip-hero"
+                                class="absolute -top-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[9px] font-bold px-2 py-1 opacity-0 transition-opacity pointer-events-none whitespace-nowrap rounded-sm">¡Copiado!</span>
+                        </button>
+                    </div>
+
+                    <!-- Autor -->
+                    <div class="flex items-center gap-3 bg-white border border-slate-300 px-4 py-3 rounded-none">
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Autor:</span>
+                        <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank"
+                            aria-label="LinkedIn de Eric Araujo"
+                            class="text-slate-500 hover:text-[#0a66c2] transition-colors">
+                            <i class="fa-brands fa-linkedin"></i>
+                        </a>
+                        <a href="https://x.com/SocioNomicsLab" target="_blank" aria-label="X de SocioNomics Lab"
+                            class="text-slate-500 hover:text-slate-900 transition-colors">
+                            <i class="fa-brands fa-x-twitter"></i>
+                        </a>
+                        <a href="mailto:contacto@socionomicslab.org" aria-label="Enviar correo"
+                            class="text-slate-500 hover:text-slate-900 transition-colors">
+                            <i class="fa-regular fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Quick View -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="data-panel critical-panel p-6">
+                    <p class="text-[9px] font-data text-slate-500 uppercase tracking-widest mb-2">Gasto de Bolsillo</p>
+                    <p class="text-4xl font-black text-red-700 font-data mb-1">47%</p>
+                    <p class="text-xs text-slate-600">del gasto total en salud</p>
+                </div>
+                <div class="data-panel p-6">
+                    <p class="text-[9px] font-data text-slate-500 uppercase tracking-widest mb-2">Gasto Per Cápita</p>
+                    <p class="text-4xl font-black text-slate-900 font-data mb-1">$1,181</p>
+                    <p class="text-xs text-slate-600">USD PPP (5.3x menos que Dinamarca)</p>
+                </div>
+                <div class="data-panel p-6">
+                    <p class="text-[9px] font-data text-slate-500 uppercase tracking-widest mb-2">Esperanza de Vida</p>
+                    <p class="text-4xl font-black text-slate-900 font-data mb-1">75.5</p>
+                    <p class="text-xs text-slate-600">años (último lugar OCDE 2025)</p>
+                </div>
+            </div>
+
+            <!-- MEJORA 2: Disclaimer Metodológico Visible -->
+            <div class="bg-blue-50 border-l-4 border-blue-600 p-4 mt-8 mb-6 text-xs">
+                <p class="font-bold text-blue-900 mb-2">📊 Transparencia Metodológica</p>
+                <p class="text-blue-800 leading-relaxed">
+                    Todos los datos financieros se expresan en USD con Paridad de Poder Adquisitivo (PPP)
+                    para neutralizar diferencias en costo de vida. Las fuentes son organismos internacionales
+                    verificables (OCDE 2023-2025, OMS, CIEP 2024). La comparación demográfica contextualiza
+                    las diferencias estructurales entre ambos países.
+                </p>
+            </div>
+
+        </section>
+
+        <!-- SECCIÓN 1: CONTEXTO POLÍTICO -->
+        <section class="mb-16">
+            <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-8 font-editorial">El Origen de la Comparación
+            </h2>
+
+            <div class="data-panel p-8 mb-8">
+                <p class="text-lg text-slate-700 leading-relaxed mb-6 font-editorial">
+                    El 1 de diciembre de 2018, durante su toma de posesión, el presidente Andrés Manuel López Obrador
+                    prometió:
+                    <strong>"Vamos a tener un sistema de salud como el de Dinamarca, o mejor."</strong>
+                    Seis años después, en su último informe de gobierno (septiembre 2024), reafirmó:
+                    <strong>"Ya se puede decir con orgullo que tenemos un sistema de salud mejor que el de
+                        Dinamarca."</strong>
+                </p>
+
+                <!-- Timeline -->
+                <div class="space-y-8 mt-8">
+                    <div class="timeline-item">
+                        <div>
+                            <div class="timeline-dot bg-emerald-500"></div>
+                            <div class="timeline-line"></div>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-xs font-data text-emerald-600 uppercase tracking-wider mb-2">1 Diciembre 2018
+                            </p>
+                            <h4 class="text-lg font-black text-slate-900 mb-2">La Promesa</h4>
+                            <blockquote class="border-l-2 border-slate-300 pl-4 italic text-slate-700 font-editorial">
+                                "Vamos a tener un sistema de salud como el de Dinamarca, o mejor. Y va a ser gratuito y
+                                de calidad."
+                            </blockquote>
+                            <p class="text-xs text-slate-500 mt-2">— AMLO, Discurso de toma de posesión</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div>
+                            <div class="timeline-dot bg-amber-500"></div>
+                            <div class="timeline-line"></div>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-xs font-data text-amber-600 uppercase tracking-wider mb-2">1 Mayo 2023</p>
+                            <h4 class="text-lg font-black text-slate-900 mb-2">Reiteración a Mitad de Sexenio</h4>
+                            <blockquote class="border-l-2 border-slate-300 pl-4 italic text-slate-700 font-editorial">
+                                "Ya tenemos un sistema de salud público como el de Dinamarca, con atención gratuita,
+                                medicina gratuita."
+                            </blockquote>
+                            <p class="text-xs text-slate-500 mt-2">— AMLO, Conferencia matutina</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div>
+                            <div class="timeline-dot bg-red-600"></div>
+                        </div>
+                        <div class="flex-1">
+                            <p class="text-xs font-data text-red-600 uppercase tracking-wider mb-2">1 Septiembre 2024
+                            </p>
+                            <h4 class="text-lg font-black text-slate-900 mb-2">Declaración de Victoria</h4>
+                            <blockquote class="border-l-2 border-slate-300 pl-4 italic text-slate-700 font-editorial">
+                                "Ya se puede decir con orgullo que tenemos un sistema de salud mejor que el de
+                                Dinamarca."
+                            </blockquote>
+                            <p class="text-xs text-slate-500 mt-2">— AMLO, Sexto Informe de Gobierno</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-100 border-l-4 border-slate-900 p-6">
+                <p class="text-sm font-bold text-slate-900 mb-2">Nota metodológica:</p>
+                <p class="text-sm text-slate-700 leading-relaxed">
+                    Esta auditoría evalúa la viabilidad de dicha afirmación mediante <strong>18 indicadores
+                        verificables</strong>
+                    de organismos internacionales (OCDE, OMS, Banco Mundial) bajo el marco metodológico de los
+                    <strong>6 Building Blocks</strong> de la Organización Mundial de la Salud.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 2: MARCO METODOLÓGICO -->
+        <section class="mb-16">
+            <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-8 font-editorial">¿Cómo Comparar Sistemas Tan
+                Diferentes?</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <!-- Dinamarca -->
+                <div class="data-panel p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="text-3xl" aria-hidden="true">🇩🇰</span>
+                        <h3 class="text-xl font-black text-slate-900">Dinamarca</h3>
+                    </div>
+                    <p class="text-sm font-bold text-emerald-700 uppercase tracking-wider mb-4">Modelo Beveridge</p>
+                    <ul class="space-y-3 text-sm text-slate-700">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-emerald-600 mt-1"></i>
+                            <span><strong>Financiamiento:</strong> Impuestos generales (Sistema Nacional de
+                                Salud)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-emerald-600 mt-1"></i>
+                            <span><strong>Cobertura:</strong> Universal automática por residencia</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-emerald-600 mt-1"></i>
+                            <span><strong>Proveedores:</strong> Mayormente públicos integrados</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-emerald-600 mt-1"></i>
+                            <span><strong>Presión fiscal:</strong> 46.9% del PIB</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-check text-emerald-600 mt-1"></i>
+                            <span><strong>PIB per cápita:</strong> $68,037 USD</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- México -->
+                <div class="data-panel critical-panel p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <span class="text-3xl" aria-hidden="true">🇲🇽</span>
+                        <h3 class="text-xl font-black text-slate-900">México</h3>
+                    </div>
+                    <p class="text-sm font-bold text-red-700 uppercase tracking-wider mb-4">Modelo Bismarck Fragmentado
+                    </p>
+                    <ul class="space-y-3 text-sm text-slate-700">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-exclamation text-red-600 mt-1"></i>
+                            <span><strong>Financiamiento:</strong> Mixto (seguridad social + impuestos +
+                                bolsillo)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-exclamation text-red-600 mt-1"></i>
+                            <span><strong>Cobertura:</strong> Segmentada por empleo (7 subsistemas)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-exclamation text-red-600 mt-1"></i>
+                            <span><strong>Proveedores:</strong> Fragmentados (IMSS, ISSSTE, IMSS-B, Estatales,
+                                Privado)</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-exclamation text-red-600 mt-1"></i>
+                            <span><strong>Presión fiscal:</strong> 16.9% del PIB</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-exclamation text-red-600 mt-1"></i>
+                            <span><strong>PIB per cápita:</strong> $11,497 USD</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4 class="text-sm font-black text-emerald-900 uppercase tracking-wider mb-3">Ajuste metodológico clave
+                </h4>
+                <p class="text-sm text-slate-800 leading-relaxed">
+                    Todos los datos financieros se expresan en <strong>USD con Paridad de Poder Adquisitivo
+                        (PPP)</strong>
+                    para neutralizar diferencias en costo de vida. Dinamarca es 5.9x más rico que México en términos
+                    nominales,
+                    pero esta brecha se reduce al ajustar por PPA.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 3: DIMENSIÓN FINANCIAMIENTO -->
+        <section class="mb-16">
+            <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-8 font-editorial">Dimensión 1: Financiamiento
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Gasto Total % PIB -->
+                <div class="data-panel p-6">
+                    <p class="text-[9px] font-data text-slate-500 uppercase tracking-widest mb-4">Gasto Total Salud (%
+                        PIB)</p>
+                    <div class="space-y-2 mb-4">
+                        <div class="comparison-bar">
+                            <span class="text-white text-xs font-bold">🇩🇰 Dinamarca</span>
+                            <span class="text-white text-lg font-black font-data">10.5%</span>
+                        </div>
+                        <div class="comparison-bar mx">
+                            <span class="text-white text-xs font-bold">🇲🇽 México</span>
+                            <span class="text-white text-lg font-black font-data">5.5%</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600"><strong>Brecha:</strong> -5.0 puntos porcentuales</p>
+                </div>
+
+                <!-- Gasto Per Cápita -->
+                <div class="data-panel p-6">
+                    <p class="text-[9px] font-data text-slate-500 uppercase tracking-widest mb-4">Gasto Per Cápita (USD
+                        PPP)</p>
+                    <div class="space-y-2 mb-4">
+                        <div class="comparison-bar">
+                            <span class="text-white text-xs font-bold" aria-hidden="true">🇩🇰</span>
+                            <span class="text-white text-lg font-black font-data">$6,280</span>
+                        </div>
+                        <div class="comparison-bar mx">
+                            <span class="text-white text-xs font-bold" aria-hidden="true">🇲🇽</span>
+                            <span class="text-white text-lg font-black font-data">$1,181</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-red-700 font-bold"><strong>Brecha:</strong> 5.3x menos en México</p>
+                </div>
+
+                <!-- Gasto Bolsillo -->
+                <div class="data-panel critical-panel p-6">
+                    <p class="text-[9px] font-data text-red-600 uppercase tracking-widest mb-4">Gasto de Bolsillo (%
+                        Total)</p>
+                    <div class="space-y-2 mb-4">
+                        <div class="comparison-bar">
+                            <span class="text-white text-xs font-bold" aria-hidden="true">🇩🇰</span>
+                            <span class="text-white text-lg font-black font-data">14.3%</span>
+                        </div>
+                        <div class="comparison-bar mx">
+                            <span class="text-white text-xs font-bold" aria-hidden="true">🇲🇽</span>
+                            <span class="text-white text-lg font-black font-data">47.0%</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-red-700 font-bold">⚠️ <strong>Impuesto a la enfermedad</strong></p>
+                </div>
+            </div>
+
+            <!-- Gráfica Comparativa -->
+            <div class="data-panel p-8 mb-8">
+                <h3 class="text-lg font-black text-slate-900 mb-6">Comparativa Regional: Gasto Per Cápita</h3>
+                <div class="chart-container">
+                    <canvas id="chartGasto"
+                        aria-label="Gráfica de barras comparando el gasto per cápita regional"></canvas>
+                </div>
+            </div>
+
+            <!-- Insight Box -->
+            <div class="insight-box critical">
+                <h4 class="text-sm font-black text-red-900 uppercase tracking-wider mb-3">¿Qué se necesita para alcanzar
+                    a Dinamarca?</h4>
+                <p class="text-sm text-slate-800 leading-relaxed mb-4">
+                    Para alcanzar el gasto per cápita de Dinamarca ($6,280 USD PPP), México tendría que
+                    <strong>eficientar radicalmente su gasto público</strong>:
+                </p>
+                <ul class="space-y-2 text-sm text-slate-800">
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle text-red-600 text-[6px] mt-2"></i>
+                        <span>Reasignar <strong>$642,474 millones de dólares anuales</strong> desde gasto corriente
+                            ineficiente hacia salud (126M habitantes × $5,099 diferencia)</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle text-red-600 text-[6px] mt-2"></i>
+                        <span>Esto equivale a <strong>+3.8% adicional del PIB</strong> mexicano (de 5.5% actual a
+                            9.3%)</span>
+                    </li>
+                    <li class="flex items-start gap-2">
+                        <i class="fa-solid fa-circle text-red-600 text-[6px] mt-2"></i>
+                        <span>Incremento del presupuesto federal de salud de <strong>+138%</strong> mediante
+                            reasignación de gasto improductivo</span>
+                    </li>
+                </ul>
+                <div class="mt-4 pt-4 border-t border-red-200">
+                    <p class="text-xs text-slate-700 leading-relaxed italic">
+                        <strong>Nota:</strong> En un contexto de corrupción estructural, aumentar impuestos sin reforma
+                        institucional
+                        profunda solo incrementaría la captura de recursos públicos. La vía es <strong>eficientar el
+                            gasto existente</strong>,
+                        eliminar duplicidades (7 subsistemas), y redirigir recursos desde gasto corriente (nóminas,
+                        publicidad, fideicomisos opacos)
+                        hacia infraestructura sanitaria y capital humano.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 4: CAPITAL HUMANO -->
+        <section class="mb-16">
+            <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-8 font-editorial">Dimensión 2: Capital Humano
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <!-- Médicos -->
+                <div class="data-panel p-8">
+                    <h3 class="text-lg font-black text-slate-900 mb-6">Médicos por 1,000 habitantes</h3>
+                    <div class="chart-container" style="height: 200px;">
+                        <canvas id="chartMedicos" aria-label="Gráfica comparando número de médicos"></canvas>
+                    </div>
+                    <div class="mt-6 space-y-2 text-sm">
+                        <p class="text-slate-700"><strong>Déficit:</strong> -2.0 médicos x 1k hab</p>
+                        <p class="text-red-700 font-bold">Requiere: <strong>+252,000 médicos</strong></p>
+                        <p class="text-xs text-slate-500">Tiempo estimado: 10 años (25,000 nuevos/año)</p>
+                    </div>
+                </div>
+
+                <!-- Enfermeras -->
+                <div class="data-panel p-8">
+                    <h3 class="text-lg font-black text-slate-900 mb-6">Enfermeras por 1,000 habitantes</h3>
+                    <div class="chart-container" style="height: 200px;">
+                        <canvas id="chartEnfermeras" aria-label="Gráfica comparando número de enfermeras"></canvas>
+                    </div>
+                    <div class="mt-6 space-y-2 text-sm">
+                        <p class="text-slate-700"><strong>Déficit:</strong> -7.2 enfermeras x 1k hab</p>
+                        <p class="text-red-700 font-bold">Requiere: <strong>+907,200 enfermeras</strong></p>
+                        <p class="text-xs text-slate-500">Tiempo estimado: 26 años (35,000 nuevas/año)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5: RESULTADOS DE SALUD -->
+        <section class="mb-16">
+            <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-8 font-editorial">Dimensión 3: Resultados de
+                Salud</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <!-- Esperanza de vida -->
+                <div class="data-panel p-6">
+                    <p class="text-[9px] font-data text-slate-500 uppercase tracking-widest mb-4">Esperanza de Vida al
+                        Nacer</p>
+                    <div class="text-center mb-4">
+                        <p class="text-5xl font-black text-slate-900 font-data mb-2">75.5</p>
+                        <p class="text-xs text-slate-600">años (México 2025)</p>
+                    </div>
+                    <p class="text-sm text-slate-700 text-center">vs. <strong>84.3 años</strong> (Dinamarca)</p>
+                    <p class="text-xs text-red-700 font-bold text-center mt-2">Brecha: -8.8 años</p>
+                    <p class="text-xs text-slate-500 text-center mt-4"><strong>Último lugar</strong> en la OCDE (2025)
+                    </p>
+                </div>
+
+                <!-- Mortalidad infantil -->
+                <div class="data-panel critical-panel p-6">
+                    <p class="text-[9px] font-data text-red-600 uppercase tracking-widest mb-4">Mortalidad Infantil (x
+                        1,000)</p>
+                    <div class="text-center mb-4">
+                        <p class="text-5xl font-black text-red-700 font-data mb-2">13.2</p>
+                        <p class="text-xs text-slate-600">por 1,000 nacidos vivos (MX)</p>
+                    </div>
+                    <p class="text-sm text-slate-700 text-center">vs. <strong>3.1</strong> (Dinamarca)</p>
+                    <p class="text-xs text-red-700 font-bold text-center mt-2">⚠️ 4.3x mayor en México</p>
+                </div>
+
+                <!-- Mortalidad materna -->
+                <div class="data-panel critical-panel p-6">
+                    <p class="text-[9px] font-data text-red-600 uppercase tracking-widest mb-4">Mortalidad Materna (x
+                        100k)</p>
+                    <div class="text-center mb-4">
+                        <p class="text-5xl font-black text-red-700 font-data mb-2">33.0</p>
+                        <p class="text-xs text-slate-600">por 100k nacidos vivos (MX)</p>
+                    </div>
+                    <p class="text-sm text-slate-700 text-center">vs. <strong>4.0</strong> (Dinamarca)</p>
+                    <p class="text-xs text-red-700 font-bold text-center mt-2">⚠️ 8.3x mayor en México</p>
+                </div>
+            </div>
+
+            <!-- Insight: Mortalidad evitable -->
+            <div class="insight-box critical">
+                <h4 class="text-sm font-black text-red-900 uppercase tracking-wider mb-3">Mortalidad Evitable</h4>
+                <p class="text-sm text-slate-800 leading-relaxed">
+                    Según OCDE (2023), México registra <strong>337.5 muertes evitables por 100,000 habitantes</strong>,
+                    comparado con <strong>172.0 en Dinamarca</strong>. Esto significa que con un sistema de salud
+                    eficiente,
+                    <strong>aproximadamente 209,000 muertes anuales en México podrían evitarse</strong>.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 5.5: DIMENSIÓN DEMOGRÁFICA -->
+        <section class="mb-16">
+            <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-8 font-editorial">Dimensión 4: Contexto
+                Demográfico</h2>
+
+            <div class="data-panel p-8 mb-8">
+                <p class="text-lg text-slate-700 leading-relaxed mb-6 font-editorial">
+                    La comparación de sistemas de salud debe considerar la <strong>estructura demográfica
+                        diferencial</strong>.
+                    Dinamarca tiene una población envejecida que demanda más servicios geriátricos especializados,
+                    mientras México enfrenta el reto de atender una población más joven con alta carga de enfermedades
+                    prevenibles.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                <!-- Edad Mediana -->
+                <div class="data-panel p-8">
+                    <h3 class="text-lg font-black text-slate-900 mb-6">Edad Mediana de la Población</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm text-slate-600">🇩🇰 Dinamarca</span>
+                                <span class="text-2xl font-black text-slate-900 font-data">42.2</span>
+                            </div>
+                            <div class="w-full bg-slate-200 h-3">
+                                <div class="bg-slate-900 h-3" style="width: 100%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-sm text-slate-600">🇲🇽 México</span>
+                                <span class="text-2xl font-black text-red-700 font-data">29.0</span>
+                            </div>
+                            <div class="w-full bg-slate-200 h-3">
+                                <div class="bg-red-700 h-3" style="width: 68.7%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-xs text-slate-600 mt-6">
+                        <strong>Implicación:</strong> México tiene una población 13.2 años más joven.
+                        La demanda de servicios está concentrada en atención primaria, materna e infantil.
+                    </p>
+                </div>
+
+                <!-- Pirámide Poblacional -->
+                <div class="data-panel p-8">
+                    <h3 class="text-lg font-black text-slate-900 mb-6">Estructura por Edad (2024)</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-xs font-data text-slate-500 uppercase tracking-wider mb-2">0-14 años (Niños)
+                            </p>
+                            <div class="flex gap-4">
+                                <div class="flex-1">
+                                    <p class="text-xs text-slate-600 mb-1">🇩🇰 16.6%</p>
+                                    <div class="w-full bg-slate-200 h-2">
+                                        <div class="bg-slate-900 h-2" style="width: 59%"></div>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-xs text-slate-600 mb-1">🇲🇽 28.1%</p>
+                                    <div class="w-full bg-slate-200 h-2">
+                                        <div class="bg-red-700 h-2" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-data text-slate-500 uppercase tracking-wider mb-2">15-64 años (Edad
+                                laboral)</p>
+                            <div class="flex gap-4">
+                                <div class="flex-1">
+                                    <p class="text-xs text-slate-600 mb-1">🇩🇰 64.1%</p>
+                                    <div class="w-full bg-slate-200 h-2">
+                                        <div class="bg-slate-900 h-2" style="width: 97%"></div>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-xs text-slate-600 mb-1">🇲🇽 66.0%</p>
+                                    <div class="w-full bg-slate-200 h-2">
+                                        <div class="bg-red-700 h-2" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <p class="text-xs font-data text-slate-500 uppercase tracking-wider mb-2">65+ años (Adultos
+                                mayores)</p>
+                            <div class="flex gap-4">
+                                <div class="flex-1">
+                                    <p class="text-xs text-slate-600 mb-1">🇩🇰 19.3%</p>
+                                    <div class="w-full bg-slate-200 h-2">
+                                        <div class="bg-slate-900 h-2" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="text-xs text-slate-600 mb-1">🇲🇽 5.9%</p>
+                                    <div class="w-full bg-slate-200 h-2">
+                                        <div class="bg-red-700 h-2" style="width: 31%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="insight-box">
+                <h4 class="text-sm font-black text-emerald-900 uppercase tracking-wider mb-3">Ventana demográfica vs.
+                    Envejecimiento</h4>
+                <p class="text-sm text-slate-800 leading-relaxed mb-4">
+                    Dinamarca gasta <strong>$1,956 USD per cápita en adultos mayores (19.3% de población)</strong>,
+                    mientras México invierte solo <strong>$189 USD per cápita en este grupo (5.9%)</strong>.
+                </p>
+                <p class="text-sm text-slate-800 leading-relaxed">
+                    Sin embargo, México enfrenta mayor carga absoluta en salud materna e infantil:
+                    <strong>35.4 millones de menores de 15 años</strong> vs. solo <strong>993,000 en Dinamarca</strong>.
+                    Escalar el modelo danés requeriría ajustar la distribución del gasto por grupo etario.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 6: BARRERAS ESTRUCTURALES -->
+        <section class="mb-16">
+            <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-8 font-editorial">Barreras Estructurales para
+                la Convergencia</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Barrera 1: Eficiencia del gasto -->
+                <div class="data-panel p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                            <i class="fa-solid fa-chart-pie text-red-700 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-black text-slate-900">Ineficiencia del Gasto Público</h3>
+                    </div>
+                    <div class="mb-4">
+                        <p class="text-xs font-data text-slate-500 uppercase tracking-wider mb-2">Gasto público total (%
+                            PIB)</p>
+                        <div class="space-y-2">
+                            <div class="comparison-bar">
+                                <span class="text-white text-xs">🇩🇰 Dinamarca</span>
+                                <span class="text-white font-black font-data">50.8%</span>
+                            </div>
+                            <div class="comparison-bar mx">
+                                <span class="text-white text-xs">🇲🇽 México</span>
+                                <span class="text-white font-black font-data">27.2%</span>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-700 leading-relaxed mb-4">
+                        México gasta <strong>27.2% de su PIB</strong> en gasto público total, pero solo <strong>2.9% va
+                            a salud</strong> (10.7%).
+                        Dinamarca gasta <strong>50.8%</strong> del PIB, con <strong>10.5% en salud</strong> (20.7%).
+                    </p>
+                    <div class="bg-amber-50 border-l-4 border-amber-600 p-4">
+                        <p class="text-xs text-slate-800 leading-relaxed">
+                            <strong>La vía no es aumentar impuestos en un país con corrupción endémica</strong>,
+                            sino reasignar gasto existente: eliminar subsidios regresivos, nóminas duplicadas,
+                            fideicomisos opacos, y gasto en publicidad gubernamental hacia salud, educación e
+                            infraestructura productiva.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Barrera 2: Fragmentación -->
+                <div class="data-panel critical-panel p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                            <i class="fa-solid fa-puzzle-piece text-red-700 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-black text-slate-900">Fragmentación Institucional</h3>
+                    </div>
+                    <p class="text-sm font-bold text-slate-800 mb-3">7 subsistemas paralelos sin interoperabilidad:</p>
+                    <ul class="space-y-2 text-sm text-slate-700 mb-4">
+                        <li class="flex items-center gap-2">
+                            <div class="w-2 h-2 bg-red-600 rounded-full"></div><span>IMSS (trabajadores privados)</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <div class="w-2 h-2 bg-red-600 rounded-full"></div><span>ISSSTE (trabajadores
+                                públicos)</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <div class="w-2 h-2 bg-red-600 rounded-full"></div><span>PEMEX, SEDENA, SEMAR</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <div class="w-2 h-2 bg-red-600 rounded-full"></div><span>IMSS-Bienestar</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <div class="w-2 h-2 bg-red-600 rounded-full"></div><span>Servicios Estatales</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <div class="w-2 h-2 bg-red-600 rounded-full"></div><span>Sector Privado</span>
+                        </li>
+                    </ul>
+                    <p class="text-sm text-slate-700">Dinamarca opera con <strong>1 sistema nacional integrado</strong>.
+                    </p>
+                </div>
+
+                <!-- Barrera 3: Gasto Catastrófico -->
+                <div class="data-panel critical-panel p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                            <i class="fa-solid fa-triangle-exclamation text-red-700 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-black text-slate-900">Gasto Catastrófico</h3>
+                    </div>
+                    <div class="text-center mb-4">
+                        <p class="text-6xl font-black text-red-700 font-data mb-2">47%</p>
+                        <p class="text-sm text-slate-600">del gasto total en salud sale del bolsillo de las familias</p>
+                    </div>
+                    <p class="text-sm text-slate-700 leading-relaxed">
+                        Según CIEP (2024), el gasto de bolsillo aumentó 7.9% en términos reales.
+                        Los hogares del decil más pobre enfrentan mayor presión: <strong>9,651 hogares adicionales
+                            con gasto catastrófico</strong> entre 2022-2024.
+                    </p>
+                </div>
+
+                <!-- Barrera 4: Desabasto -->
+                <div class="data-panel critical-panel p-8">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                            <i class="fa-solid fa-capsules text-red-700 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-black text-slate-900">Desabasto de Medicamentos</h3>
+                    </div>
+                    <div class="text-center mb-4">
+                        <p class="text-6xl font-black text-red-700 font-data mb-2">36%</p>
+                        <p class="text-sm text-slate-600">de recetas NO surtidas en IMSS-Bienestar (2023)</p>
+                    </div>
+                    <p class="text-sm text-slate-700 leading-relaxed">
+                        En Dinamarca, la tasa de surtimiento de recetas es <strong>>95%</strong>.
+                        6 de cada 10 mexicanos se atienden en farmacias o consultorios privados,
+                        aunque reportan afiliación pública.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN 7: DICTAMEN FINAL -->
+        <section class="mb-16">
+            <h2 class="text-3xl md:text-4xl font-black text-slate-900 mb-8 font-editorial">Dictamen de Auditoría</h2>
+
+            <!-- Tabla Resumen -->
+            <div class="overflow-x-auto mb-8">
+                <table class="verdict-table">
+                    <thead>
+                        <tr>
+                            <th>Dimensión</th>
+                            <th>Indicador Clave</th>
+                            <th>México</th>
+                            <th>Dinamarca</th>
+                            <th>Brecha</th>
+                            <th>Veredicto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="3"><strong>Financiamiento</strong></td>
+                            <td>Gasto % PIB</td>
+                            <td>5.5%</td>
+                            <td>10.5%</td>
+                            <td class="text-red-600">-5.0 pp</td>
+                            <td class="verdict-fail">❌ Insuficiente</td>
+                        </tr>
+                        <tr>
+                            <td>Gasto per cápita (USD PPP)</td>
+                            <td>$1,181</td>
+                            <td>$6,280</td>
+                            <td class="text-red-600">-$5,099</td>
+                            <td class="verdict-fail">❌ Crítico</td>
+                        </tr>
+                        <tr>
+                            <td>Gasto bolsillo (%)</td>
+                            <td class="text-red-600">47%</td>
+                            <td>14.3%</td>
+                            <td class="text-red-600">+32.7 pp</td>
+                            <td class="verdict-fail">❌ Crítico</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2"><strong>Capital Humano</strong></td>
+                            <td>Médicos x 1k hab</td>
+                            <td>2.4</td>
+                            <td>4.4</td>
+                            <td class="text-red-600">-2.0</td>
+                            <td class="verdict-fail">❌ Deficitario</td>
+                        </tr>
+                        <tr>
+                            <td>Enfermeras x 1k hab</td>
+                            <td>3.0</td>
+                            <td>10.2</td>
+                            <td class="text-red-600">-7.2</td>
+                            <td class="verdict-fail">❌ Crítico</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Infraestructura</strong></td>
+                            <td>Camas x 1k hab</td>
+                            <td>1.0</td>
+                            <td>2.6</td>
+                            <td class="text-red-600">-1.6</td>
+                            <td class="verdict-fail">❌ Insuficiente</td>
+                        </tr>
+                        <tr>
+                            <td rowspan="3"><strong>Resultados</strong></td>
+                            <td>Esperanza de vida</td>
+                            <td>75.5 años</td>
+                            <td>84.3 años</td>
+                            <td class="text-red-600">-8.8 años</td>
+                            <td class="verdict-fail">❌ Último OCDE</td>
+                        </tr>
+                        <tr>
+                            <td>Mortalidad infantil (x 1k)</td>
+                            <td class="text-red-600">13.2</td>
+                            <td>3.1</td>
+                            <td class="text-red-600">+10.1</td>
+                            <td class="verdict-fail">❌ Crítico</td>
+                        </tr>
+                        <tr>
+                            <td>Mortalidad materna (x 100k)</td>
+                            <td class="text-red-600">33.0</td>
+                            <td>4.0</td>
+                            <td class="text-red-600">+29.0</td>
+                            <td class="verdict-fail">❌ Crítico</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Conclusión Editorial -->
+            <div class="data-panel p-10">
+                <blockquote class="font-editorial text-xl md:text-2xl text-slate-800 italic leading-relaxed space-y-6">
+                    <p>
+                        "La convergencia con Dinamarca no es una cuestión de voluntad política, sino de
+                        <strong>eficiencia en el uso de recursos públicos</strong>.
+                        México tendría que reasignar <strong>$642,474 millones de dólares anuales</strong> desde gasto
+                        improductivo hacia salud
+                        (+3.8% del PIB), formar <strong>252,000 médicos adicionales</strong> y <strong>907,000
+                            enfermeras</strong>,
+                        y construir <strong>201,600 camas hospitalarias</strong>."
+                    </p>
+                    <p>
+                        "En un contexto de corrupción estructural, aumentar impuestos sin reformar instituciones solo
+                        incrementaría la captura de recursos.
+                        La vía es <strong>eficientar el gasto existente</strong>: eliminar los 7 subsistemas
+                        fragmentados, redirigir recursos desde
+                        gasto corriente ineficiente (nóminas duplicadas, fideicomisos opacos, subsidios regresivos,
+                        publicidad gubernamental)
+                        hacia infraestructura sanitaria real. Sin esta reingeniería del gasto público,
+                        el modelo danés seguirá siendo un <strong>espejismo estadístico</strong> inalcanzable en el
+                        horizonte de política pública mexicana."
+                    </p>
+                </blockquote>
+
+                <div class="mt-10 flex items-center gap-4 pt-8 border-t border-slate-200">
+                    <div
+                        class="w-16 h-16 bg-slate-900 text-white flex items-center justify-center font-black text-2xl rounded-none">
+                        EA
+                    </div>
+                    <div>
+                        <p class="text-sm font-black text-slate-900 uppercase tracking-wider">Eric Araujo Martínez</p>
+                        <p class="text-xs font-data text-slate-500 uppercase tracking-wide">Lead Health Policy Analyst
+                        </p>
+                        <p class="text-xs text-slate-400">SocioNomics Lab • Q1 2026</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FUENTES -->
+        <section class="mb-16">
+            <h3 class="text-2xl font-black text-slate-900 mb-6 font-editorial">Fuentes Oficiales Verificadas</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white border border-slate-300 p-6">
+                    <p class="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-3">Financiamiento</p>
+                    <ul class="space-y-2 text-xs text-slate-700">
+                        <li>• OCDE - Health at a Glance 2023</li>
+                        <li>• OCDE - Panorama de la Salud 2025</li>
+                        <li>• CIEP - Gasto de Bolsillo ENIGH 2024</li>
+                        <li>• Banco Mundial - World Development Indicators</li>
+                    </ul>
+                </div>
+                <div class="bg-white border border-slate-300 p-6">
+                    <p class="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-3">Capital Humano e
+                        Infraestructura</p>
+                    <ul class="space-y-2 text-xs text-slate-700">
+                        <li>• OCDE - Health Workforce Statistics 2023</li>
+                        <li>• OMS - Global Health Observatory</li>
+                        <li>• INEGI - Estadísticas de Salud 2024</li>
+                    </ul>
+                </div>
+                <div class="bg-white border border-slate-300 p-6">
+                    <p class="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-3">Resultados de Salud</p>
+                    <ul class="space-y-2 text-xs text-slate-700">
+                        <li>• OCDE - Life Expectancy Database 2025</li>
+                        <li>• OMS - Maternal and Child Health Statistics</li>
+                        <li>• INEGI - Estadísticas Vitales 2023</li>
+                    </ul>
+                </div>
+                <div class="bg-white border border-slate-300 p-6">
+                    <p class="text-xs font-bold text-emerald-700 uppercase tracking-wider mb-3">Contexto Político</p>
+                    <ul class="space-y-2 text-xs text-slate-700">
+                        <li>• Presidencia de la República - Discursos oficiales</li>
+                        <li>• Sexto Informe de Gobierno (sep 2024)</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER CLAUDE ACTUALIZADO -->
+    <footer class="bg-slate-900 text-white py-12 border-t-4 border-slate-700">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="text-center md:text-left">
+                    <p class="text-2xl font-black tracking-tighter uppercase">
+                        SocioNomics<span class="text-slate-400 font-light">Lab</span>
+                    </p>
+                    <p class="text-[9px] font-data text-slate-500 uppercase tracking-[0.3em] mt-2">
+                        Intelligence for Social Action • 2026
+                    </p>
+                </div>
+
+                <div class="flex flex-col items-center md:items-end gap-6">
+                    <div class="flex flex-wrap items-center gap-6 justify-center md:justify-end">
+
+                        <!-- Compartir (Footer) -->
+                        <div class="flex items-center gap-3">
+                            <span
+                                class="text-[9px] font-black text-slate-500 uppercase tracking-widest">Compartir:</span>
+                            <a href="https://twitter.com/intent/tweet?text=¿México%20tiene%20sistema%20de%20salud%20como%20Dinamarca?%20Auditoría%20forense&url=https://socionomicslab.org/salud-dinamarca"
+                                target="_blank" aria-label="Compartir en X"
+                                class="text-slate-400 hover:text-white transition-colors">
+                                <i class="fa-brands fa-x-twitter"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://socionomicslab.org/salud-dinamarca"
+                                target="_blank" aria-label="Compartir en LinkedIn"
+                                class="text-slate-400 hover:text-[#0a66c2] transition-colors">
+                                <i class="fa-brands fa-linkedin-in"></i>
+                            </a>
+                            <a href="https://api.whatsapp.com/send?text=Auditoría:%20Sistema%20de%20salud%20México%20vs%20Dinamarca%20-%20https://socionomicslab.org/salud-dinamarca"
+                                target="_blank" aria-label="Compartir en WhatsApp"
+                                class="text-slate-400 hover:text-[#25d366] transition-colors">
+                                <i class="fa-brands fa-whatsapp"></i>
+                            </a>
+                        </div>
+
+                        <div class="hidden md:block w-px h-6 bg-slate-700"></div>
+
+                        <!-- Autor (Footer) -->
+                        <div class="flex items-center gap-3">
+                            <span class="text-[9px] font-black text-slate-500 uppercase tracking-widest">Autor:</span>
+                            <a href="https://www.linkedin.com/in/ericaraujom/" target="_blank"
+                                aria-label="Perfil del Autor"
+                                class="text-slate-400 hover:text-[#0a66c2] transition-colors">
+                                <i class="fa-brands fa-linkedin"></i>
+                            </a>
+                            <a href="https://x.com/SocioNomicsLab" target="_blank" aria-label="X del Autor"
+                                class="text-slate-400 hover:text-white transition-colors">
+                                <i class="fa-brands fa-x-twitter"></i>
+                            </a>
+                            <a href="mailto:contacto@socionomicslab.org" aria-label="Correo de Contacto"
+                                class="text-slate-400 hover:text-white transition-colors">
+                                <i class="fa-regular fa-envelope"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Licencias -->
+                    <div class="flex items-center gap-4">
+                        <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank"
+                            aria-label="Licencia Creative Commons"
+                            class="opacity-50 hover:opacity-100 transition-opacity">
+                            <img src="https://licensebuttons.net/l/by-nc/4.0/80x15.png" alt="CC BY-NC 4.0">
+                        </a>
+                        <a href="https://opensource.org/license/MIT" target="_blank"
+                            class="text-[9px] font-data font-bold text-slate-600 hover:text-white transition-colors flex items-center gap-1.5">
+                            <i class="fa-brands fa-github"></i> MIT LICENSE
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MEJORA 3: Metadata en Footer -->
+            <div class="text-[9px] text-slate-500 text-center mt-8 pt-6 border-t border-slate-800 font-data">
+                Última actualización: Marzo 2026 | Datos: OCDE 2023-2025, CIEP 2024, OMS 2023
+            </div>
+
+        </div>
+    </footer>
+
+    <script>
+        // MEJORA 1: Metadatos para auditabilidad
+        // FUENTES DE DATOS:
+        // OCDE - Health at a Glance 2023 (gasto, médicos, enfermeras)
+        // OCDE - Panorama de la Salud 2025 (esperanza de vida)
+        // CIEP - Gasto de Bolsillo ENIGH 2024 (47%, +7.9% real 2022-2024)
+        // OMS - Global Health Observatory (mortalidad infantil/materna)
+        // ONU - World Population Prospects 2024 (demografía)
+
+        // Copy to clipboard
+        function copyToClipboard() {
+            const url = window.location.href;
+            const tempInput = document.createElement("input");
+            tempInput.value = url;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            const tooltip = document.getElementById('copy-tooltip-hero');
+            if (tooltip) {
+                tooltip.style.opacity = '1';
+                setTimeout(() => { tooltip.style.opacity = '0'; }, 2000);
+            }
+        }
+
+        // Charts
+        window.addEventListener('load', function () {
+            // Chart 1: Gasto Per Cápita Regional
+            const ctxGasto = document.getElementById('chartGasto').getContext('2d');
+            new Chart(ctxGasto, {
+                type: 'bar',
+                data: {
+                    labels: ['México', 'Colombia', 'Costa Rica', 'Chile', 'Argentina', 'Dinamarca'],
+                    datasets: [{
+                        label: 'Gasto Per Cápita (USD PPP)',
+                        data: [1181, 1300, 1372, 2603, 2345, 6280],
+                        backgroundColor: ['#b91c1c', '#64748b', '#64748b', '#64748b', '#64748b', '#0f172a'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1e293b',
+                            titleColor: '#10b981',
+                            bodyColor: '#f1f5f9',
+                            callbacks: {
+                                label: (context) => '$' + context.parsed.y.toLocaleString() + ' USD'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#e2e8f0' },
+                            ticks: {
+                                color: '#64748b',
+                                callback: (value) => '$' + (value / 1000).toFixed(1) + 'k'
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#64748b', font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+
+            // Chart 2: Médicos
+            const ctxMedicos = document.getElementById('chartMedicos').getContext('2d');
+            new Chart(ctxMedicos, {
+                type: 'bar',
+                data: {
+                    labels: ['México', 'Dinamarca'],
+                    datasets: [{
+                        data: [2.4, 4.4],
+                        backgroundColor: ['#b91c1c', '#0f172a'],
+                        barThickness: 60
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => context.parsed.y + ' médicos x 1k hab'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 5,
+                            grid: { color: '#e2e8f0' },
+                            ticks: { color: '#64748b' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#64748b', font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+
+            // Chart 3: Enfermeras
+            const ctxEnfermeras = document.getElementById('chartEnfermeras').getContext('2d');
+            new Chart(ctxEnfermeras, {
+                type: 'bar',
+                data: {
+                    labels: ['México', 'Dinamarca'],
+                    datasets: [{
+                        data: [3.0, 10.2],
+                        backgroundColor: ['#b91c1c', '#0f172a'],
+                        barThickness: 60
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: (context) => context.parsed.y + ' enfermeras x 1k hab'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 12,
+                            grid: { color: '#e2e8f0' },
+                            ticks: { color: '#64748b' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#64748b', font: { size: 11 } }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
