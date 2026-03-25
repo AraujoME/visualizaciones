@@ -8,6 +8,19 @@
         content="Auditoría forense: ¿México tiene un sistema de salud como Dinamarca? Análisis comparativo basado en datos OCDE 2023-2025.">
     <title>¿Sistema de Salud como Dinamarca? Auditoría Forense | SocioNomics Lab</title>
 
+
+    <!-- Metadatos para Redes Sociales (Para que salga la portada) -->
+<meta property="og:title" content="¿México tiene sistema de salud como Dinamarca? Auditoría forense">
+<meta property="og:description" content="Un análisis detallado sobre el sistema de salud en México comparado con Dinamarca.">
+<meta property="og:image" content="[https://socionomicslab.org/salud-dinamarca/img/portada-dinamarca.png](https://socionomicslab.org/salud-dinamarca/img/portada-dinamarca.png)">
+<meta property="og:url" content="[https://socionomicslab.org/salud-dinamarca/](https://socionomicslab.org/salud-dinamarca/)">
+<meta property="og:type" content="article">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="¿México tiene sistema de salud como Dinamarca?">
+<meta name="twitter:description" content="Auditoría forense: Sistema de salud México vs Dinamarca.">
+<meta name="twitter:image" content="[https://socionomicslab.org/salud-dinamarca/img/portada-dinamarca.png](https://socionomicslab.org/salud-dinamarca/img/portada-dinamarca.png)">
+
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="¿México tiene un sistema de salud como Dinamarca?">
@@ -1361,6 +1374,32 @@
             });
         });
     </script>
+    <script>
+function copyToClipboard() {
+    var dummy = document.createElement('input');
+    var text = "[https://socionomicslab.org/salud-dinamarca/](https://socionomicslab.org/salud-dinamarca/)";
+    
+    document.body.appendChild(dummy);
+    dummy.value = text;
+    dummy.select();
+    document.execCommand('copy');
+    document.body.removeChild(dummy);
+    
+    // Activar tu tooltip de Tailwind (muestra el "¡Copiado!")
+    var tooltip = document.getElementById("copy-tooltip-hero");
+    if (tooltip) {
+        tooltip.classList.remove("opacity-0");
+        tooltip.classList.add("opacity-100");
+        
+        // Volver a ocultarlo después de 2 segundos
+        setTimeout(function() {
+            tooltip.classList.remove("opacity-100");
+            tooltip.classList.add("opacity-0");
+        }, 2000);
+    }
+}
+</script>
+
 </body>
 
 </html>
